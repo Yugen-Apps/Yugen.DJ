@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Devices.Enumeration;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 using Windows.Storage;
@@ -25,11 +28,20 @@ namespace Yugen.DJ.ViewModels
         };
 
         private readonly MediaPlayer _mediaPlayer = new MediaPlayer();
+        private bool _isLeft;
         private bool _isPaused = true;
         private double _volume = 100;
-        private double _pitch;
+        private double _pitch = 0;
         private TimeSpan _targetElapsedTime = new TimeSpan(10000);
         private ICommand _openButtonCommand;
+        private DeviceInformation _selectedAudioDeviceInformation;
+
+        public VinylViewModel(bool isLeft)
+        {
+            _isLeft = isLeft;
+        }
+
+        public ObservableCollection<DeviceInformation> AudioDeviceInformationCollection { get; set; } = new ObservableCollection<DeviceInformation>();
 
         public bool IsPaused
         {
@@ -67,7 +79,8 @@ namespace Yugen.DJ.ViewModels
             {
                 Set(ref _pitch, value);
 
-                _mediaPlayer.PlaybackSession.PlaybackRate = 1 + _pitch / 100;
+                var ratio = _pitch == 0 ? 0 : _pitch / 100;
+                _mediaPlayer.PlaybackSession.PlaybackRate = 1 + ratio;
             }
         }
 
@@ -83,7 +96,31 @@ namespace Yugen.DJ.ViewModels
             set => TargetElapsedTime = new TimeSpan(value);
         }
 
+        public DeviceInformation SelectedAudioDeviceInformation
+        {
+            get { return _selectedAudioDeviceInformation; }
+            set
+            {
+                Set(ref _selectedAudioDeviceInformation, value);
+
+                if (_selectedAudioDeviceInformation != null)
+                {
+                    _mediaPlayer.AudioDevice = _selectedAudioDeviceInformation;
+                }
+            }
+        }
+
         public ICommand OpenButtonCommand => _openButtonCommand ?? (_openButtonCommand = new AsyncRelayCommand(OpenButtonCommandBehavior));
+
+        public async Task LoadAudioDevces()
+        {
+            DeviceInformationCollection deviceInfoCollection = await DeviceInformation.FindAllAsync(DeviceClass.AudioRender);
+
+            foreach (var deviceInfo in deviceInfoCollection)
+            {
+                AudioDeviceInformationCollection.Add(deviceInfo);
+            }
+        }
 
         private async Task OpenButtonCommandBehavior()
         {
@@ -91,10 +128,7 @@ namespace Yugen.DJ.ViewModels
                 new List<string> { ".mp3" },
                 Windows.Storage.Pickers.PickerLocationId.MusicLibrary);
 
-            using (var inputStream = await masterFile.OpenReadAsync())
-            {
-                _mediaPlayer.Source = MediaSource.CreateFromStream(inputStream, masterFile.ContentType);
-            }
+            _mediaPlayer.Source = MediaSource.CreateFromStorageFile(masterFile);
         }
     }
 }

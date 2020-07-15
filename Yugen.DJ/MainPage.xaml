@@ -9,7 +9,8 @@
       xmlns:viewmodels="using:Yugen.DJ.ViewModels"
       mc:Ignorable="d"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-      Unloaded="Control_Unloaded">
+      Loaded="OnLoaded"
+      Unloaded="OnUnloaded">
     
     <Page.DataContext>
         <viewmodels:DeckViewModel x:Name="ViewModel" />
@@ -81,10 +82,16 @@
 
         <StackPanel Grid.Row="2"
                     Orientation="Horizontal">
+            
+            <ComboBox Header="AudioDevice:"
+                      ItemsSource="{x:Bind ViewModel.VinylLeft.AudioDeviceInformationCollection, Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.VinylLeft.SelectedAudioDeviceInformation, Mode=TwoWay}"
+                      DisplayMemberPath="Name"
+                      Margin="5" />
 
             <ComboBox Header="TargetElapsedTime:"
-                      SelectedItem="{x:Bind ViewModel.VinylLeft.SelectedTargetElapsedTime, Mode=TwoWay}"
                       ItemsSource="{x:Bind ViewModel.VinylLeft.TargetElapsedTimeList, Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.VinylLeft.SelectedTargetElapsedTime, Mode=TwoWay}"
                       Margin="5" />
 
             <ToggleButton Content="Pause"
@@ -97,12 +104,18 @@
         </StackPanel>
         
         <StackPanel Grid.Row="2"
-                    Grid.Column="2"
+                    Grid.Column="4"
                     Orientation="Horizontal">
 
+            <ComboBox Header="AudioDevice:"
+                      ItemsSource="{x:Bind ViewModel.VinylRight.AudioDeviceInformationCollection, Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.VinylRight.SelectedAudioDeviceInformation, Mode=TwoWay}"
+                      DisplayMemberPath="Name"
+                      Margin="5" />
+
             <ComboBox Header="TargetElapsedTime:"
-                      SelectedItem="{x:Bind ViewModel.VinylRight.SelectedTargetElapsedTime, Mode=TwoWay}"
                       ItemsSource="{x:Bind ViewModel.VinylRight.TargetElapsedTimeList, Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.VinylRight.SelectedTargetElapsedTime, Mode=TwoWay}"
                       Margin="5" />
 
             <ToggleButton Content="Pause"
