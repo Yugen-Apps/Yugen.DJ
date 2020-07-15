@@ -32,18 +32,17 @@
                                       CreateResources="OnCreateResources"
                                       Draw="OnDraw"
                                       Paused="{x:Bind ViewModel.VinylLeft.IsPaused, Mode=OneWay}"
-                                      TargetElapsedTime="{x:Bind ViewModel.VinylLeft.TargetElapsedTime, Mode=OneWay}" 
-                                      Visibility="Visible"/>
+                                      TargetElapsedTime="{x:Bind ViewModel.VinylLeft.TargetElapsedTime, Mode=OneWay}" />
         
         <canvas:CanvasAnimatedControl x:Name="AnimatedControl2"
                                       Grid.Column="2"
                                       CreateResources="OnCreateResources2"
                                       Draw="OnDraw2"
                                       Paused="{x:Bind ViewModel.VinylRight.IsPaused, Mode=OneWay}"
-                                      TargetElapsedTime="{x:Bind ViewModel.VinylRight.TargetElapsedTime, Mode=OneWay}"
-                                      Visibility="Visible" />
+                                      TargetElapsedTime="{x:Bind ViewModel.VinylRight.TargetElapsedTime, Mode=OneWay}" />
 
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1"
+                    Orientation="Horizontal">
 
             <ComboBox Header="TargetElapsedTime:"
                       SelectedItem="{x:Bind ViewModel.VinylLeft.SelectedTargetElapsedTime, Mode=TwoWay}"
@@ -54,10 +53,14 @@
                           Margin="5"
                           IsChecked="{x:Bind ViewModel.VinylLeft.IsPaused, Mode=TwoWay}" />
 
+            <Button Content="Open"
+                    Command="{x:Bind ViewModel.VinylLeft.OpenButtonCommand}" />
+
         </StackPanel>
         
         <StackPanel Grid.Row="1"
-                    Grid.Column="2">
+                    Grid.Column="2"
+                    Orientation="Horizontal">
 
             <ComboBox Header="TargetElapsedTime:"
                       SelectedItem="{x:Bind ViewModel.VinylRight.SelectedTargetElapsedTime, Mode=TwoWay}"
@@ -67,6 +70,9 @@
             <ToggleButton Content="Pause"
                           Margin="5"
                           IsChecked="{x:Bind ViewModel.VinylRight.IsPaused, Mode=TwoWay}" />
+
+            <Button Content="Open"
+                    Command="{x:Bind ViewModel.VinylRight.OpenButtonCommand}" />
 
         </StackPanel>
 
