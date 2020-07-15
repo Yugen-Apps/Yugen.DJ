@@ -19,10 +19,13 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -33,15 +36,50 @@
                                       Draw="OnDraw"
                                       Paused="{x:Bind ViewModel.VinylLeft.IsPaused, Mode=OneWay}"
                                       TargetElapsedTime="{x:Bind ViewModel.VinylLeft.TargetElapsedTime, Mode=OneWay}" />
-        
+
+        <Slider Grid.Column="1"
+                Header="Volume"
+                Height="400"
+                Orientation="Vertical"
+                TickFrequency="10"
+                TickPlacement="Outside"
+                Value="{x:Bind ViewModel.VinylLeft.Volume, Mode=TwoWay}"/>
+
+        <Slider Grid.Column="3"
+                Header="Volume"
+                Height="400"
+                Orientation="Vertical"
+                TickFrequency="10"
+                TickPlacement="Outside"
+                Value="{x:Bind ViewModel.VinylRight.Volume, Mode=TwoWay}" />
+
         <canvas:CanvasAnimatedControl x:Name="AnimatedControl2"
-                                      Grid.Column="2"
+                                      Grid.Column="4"
                                       CreateResources="OnCreateResources2"
                                       Draw="OnDraw2"
                                       Paused="{x:Bind ViewModel.VinylRight.IsPaused, Mode=OneWay}"
                                       TargetElapsedTime="{x:Bind ViewModel.VinylRight.TargetElapsedTime, Mode=OneWay}" />
 
-        <StackPanel Grid.Row="1"
+
+        <Slider Grid.Row="1"
+                Grid.Column="0"
+                Header="Pitch"
+                Minimum="-50"
+                Maximum="+50"
+                TickFrequency="10"
+                TickPlacement="Outside"
+                Value="{x:Bind ViewModel.VinylLeft.Pitch, Mode=TwoWay}" />
+
+        <Slider Grid.Row="1"
+                Grid.Column="4"
+                Header="Pitch"
+                Minimum="-50"
+                Maximum="+50"
+                TickFrequency="10"
+                TickPlacement="Outside"
+                Value="{x:Bind ViewModel.VinylRight.Pitch, Mode=TwoWay}" />
+
+        <StackPanel Grid.Row="2"
                     Orientation="Horizontal">
 
             <ComboBox Header="TargetElapsedTime:"
@@ -58,7 +96,7 @@
 
         </StackPanel>
         
-        <StackPanel Grid.Row="1"
+        <StackPanel Grid.Row="2"
                     Grid.Column="2"
                     Orientation="Horizontal">
 

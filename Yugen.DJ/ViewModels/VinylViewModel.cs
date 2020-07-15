@@ -26,6 +26,8 @@ namespace Yugen.DJ.ViewModels
 
         private readonly MediaPlayer _mediaPlayer = new MediaPlayer();
         private bool _isPaused = true;
+        private double _volume = 100;
+        private double _pitch;
         private TimeSpan _targetElapsedTime = new TimeSpan(10000);
         private ICommand _openButtonCommand;
 
@@ -44,6 +46,28 @@ namespace Yugen.DJ.ViewModels
                 {
                     _mediaPlayer.Play();
                 }
+            }
+        }
+
+        public double Volume
+        {
+            get { return _volume; }
+            set
+            {
+                Set(ref _volume, value);
+
+                _mediaPlayer.Volume = _volume / 100;
+            }
+        }
+
+        public double Pitch
+        {
+            get { return _pitch; }
+            set
+            {
+                Set(ref _pitch, value);
+
+                _mediaPlayer.PlaybackSession.PlaybackRate = 1 + _pitch / 100;
             }
         }
 
