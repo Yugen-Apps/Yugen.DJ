@@ -6,56 +6,69 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
       xmlns:System="using:System"
+      xmlns:viewmodels="using:Yugen.DJ.ViewModels"
       mc:Ignorable="d"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
       Unloaded="Control_Unloaded">
-
+    
+    <Page.DataContext>
+        <viewmodels:DeckViewModel x:Name="ViewModel" />
+    </Page.DataContext>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel>
-
-            <ComboBox Header="TargetElapsedTime:"
-                      SelectedItem="{x:Bind SelectedTargetElapsedTime, Mode=TwoWay}"
-                      Margin="5">
-                <x:Int32>41666</x:Int32>
-                <x:Int32>83333</x:Int32>
-                <x:Int32>166666</x:Int32>
-                <x:Int32>333333</x:Int32>
-                <x:Int32>500000</x:Int32>
-                <x:Int32>666666</x:Int32>
-                <x:Int32>1000000</x:Int32>
-                <x:Int32>1333333</x:Int32>
-                <x:Int32>2000000</x:Int32>
-                <x:Int32>3000000</x:Int32>
-                <x:Int32>4000000</x:Int32>
-                <x:Int32>5000000</x:Int32>
-                <x:Int32>6000000</x:Int32>
-                <x:Int32>7000000</x:Int32>
-                <x:Int32>8000000</x:Int32>
-                <x:Int32>9000000</x:Int32>
-                <x:Int32>10000000</x:Int32>
-            </ComboBox>
-
-            <ToggleButton Content="Pause"
-                          Checked="Pause_Checked"
-                          Unchecked="Pause_Unchecked"
-                          Margin="5" />
-
-        </StackPanel>
-
-        <canvas:CanvasAnimatedControl x:Name="animatedControl"
-                                      Grid.Column="1"
+        <canvas:CanvasAnimatedControl x:Name="AnimatedControl"
+                                      Grid.Column="0"
                                       CreateResources="OnCreateResources"
                                       Draw="OnDraw"
-                                      Update="OnUpdate" />
+                                      Paused="{x:Bind ViewModel.VinylLeft.IsPaused, Mode=OneWay}"
+                                      TargetElapsedTime="{x:Bind ViewModel.VinylLeft.TargetElapsedTime, Mode=OneWay}" 
+                                      Visibility="Visible"/>
+        
+        <canvas:CanvasAnimatedControl x:Name="AnimatedControl2"
+                                      Grid.Column="2"
+                                      CreateResources="OnCreateResources2"
+                                      Draw="OnDraw2"
+                                      Paused="{x:Bind ViewModel.VinylRight.IsPaused, Mode=OneWay}"
+                                      TargetElapsedTime="{x:Bind ViewModel.VinylRight.TargetElapsedTime, Mode=OneWay}"
+                                      Visibility="Visible" />
+
+        <StackPanel Grid.Row="1">
+
+            <ComboBox Header="TargetElapsedTime:"
+                      SelectedItem="{x:Bind ViewModel.VinylLeft.SelectedTargetElapsedTime, Mode=TwoWay}"
+                      ItemsSource="{x:Bind ViewModel.VinylLeft.TargetElapsedTimeList, Mode=OneWay}"
+                      Margin="5" />
+
+            <ToggleButton Content="Pause"
+                          Margin="5"
+                          IsChecked="{x:Bind ViewModel.VinylLeft.IsPaused, Mode=TwoWay}" />
+
+        </StackPanel>
+        
+        <StackPanel Grid.Row="1"
+                    Grid.Column="2">
+
+            <ComboBox Header="TargetElapsedTime:"
+                      SelectedItem="{x:Bind ViewModel.VinylRight.SelectedTargetElapsedTime, Mode=TwoWay}"
+                      ItemsSource="{x:Bind ViewModel.VinylRight.TargetElapsedTimeList, Mode=OneWay}"
+                      Margin="5" />
+
+            <ToggleButton Content="Pause"
+                          Margin="5"
+                          IsChecked="{x:Bind ViewModel.VinylRight.IsPaused, Mode=TwoWay}" />
+
+        </StackPanel>
 
     </Grid>
 </Page>

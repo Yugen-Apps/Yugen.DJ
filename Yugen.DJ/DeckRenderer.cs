@@ -14,18 +14,18 @@ using Windows.UI;
 
 namespace Yugen.DJ
 {
-    internal class SweepRenderer
+    internal class DeckRenderer
     {
         private const float size = 1000;
         private const float center = size / 2;
         private const float lineLength = size / 10;
         private const float radius = (size / 2) - lineLength;
 
-        private CanvasBitmap _bitmapTiger;
+        private CanvasBitmap _vinylBitmap;
 
-        public SweepRenderer(CanvasAnimatedControl sender, CanvasBitmap bitmapTiger)
+        public DeckRenderer(CanvasAnimatedControl sender, CanvasBitmap vinylBitmap)
         {
-            _bitmapTiger = bitmapTiger;
+            _vinylBitmap = vinylBitmap;
         }
 
         public void Draw(ICanvasAnimatedControl sender, CanvasTimingInformation timingInformation, CanvasDrawingSession ds)
@@ -62,14 +62,14 @@ namespace Yugen.DJ
 
             try
             {
-                var originalImageRect = _bitmapTiger.GetBounds(ds);
+                var originalImageRect = _vinylBitmap.GetBounds(ds);
                 Vector2 endpoint = new Vector2((float)originalImageRect.Width / 2, (float)originalImageRect.Height / 2);
 
                 ds.Clear(Colors.Transparent);
 
                 ICanvasImage image = new Transform2DEffect
                 {
-                    Source = _bitmapTiger,
+                    Source = _vinylBitmap,
                     TransformMatrix = Matrix3x2.CreateRotation(angle, endpoint),
                 };
 

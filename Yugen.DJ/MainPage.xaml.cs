@@ -17,30 +17,12 @@ namespace Yugen.DJ
 
         private const float height = 1000;
 
-        private SweepRenderer sweepRenderer;
+        private DeckRenderer sweepRenderer;
+        private DeckRenderer sweepRenderer2;
 
         public MainPage()
         {
             this.InitializeComponent();
-        }
-
-        public int SelectedTargetElapsedTime
-        {
-            get
-            {
-                return (int)animatedControl.TargetElapsedTime.Ticks;
-            }
-            set
-            {
-                animatedControl.TargetElapsedTime = new TimeSpan(value);
-
-                // If we're paused then do one step to allow the display to update for the new
-                // value.
-                if (animatedControl.Paused)
-                {
-                    animatedControl.Paused = false;
-                }
-            }
         }
 
         private static void CalculateLayout(Size size, float width, float height, out Matrix3x2 counterTransform, out Matrix3x2 graphTransform)
@@ -90,8 +72,8 @@ namespace Yugen.DJ
 
         private async Task Canvas_CreateResourcesAsync(CanvasAnimatedControl sender)
         {
-            var bitmapTiger = await CanvasBitmap.LoadAsync(sender, "Assets/Vinyl.png");
-            sweepRenderer = new SweepRenderer(sender, bitmapTiger);
+            var vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Assets/Vinyl.png");
+            sweepRenderer = new DeckRenderer(sender, vinylBitmap);
         }
 
         private void OnDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
@@ -110,27 +92,38 @@ namespace Yugen.DJ
             sweepRenderer.Draw(sender, args.Timing, ds);
         }
 
-        private void OnUpdate(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
+        private void OnCreateResources2(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
+            args.TrackAsyncAction(Canvas_CreateResourcesAsync2(sender).AsAsyncAction());
         }
 
-        private void Pause_Checked(object sender, RoutedEventArgs e)
+        private async Task Canvas_CreateResourcesAsync2(CanvasAnimatedControl sender)
         {
-            var button = (ToggleButton)sender;
-            this.animatedControl.Paused = button.IsChecked.Value;
+            var vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Assets/Vinyl.png");
+            sweepRenderer2 = new DeckRenderer(sender, vinylBitmap);
         }
 
-        private void Pause_Unchecked(object sender, RoutedEventArgs e)
+        private void OnDraw2(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
-            var button = (ToggleButton)sender;
-            this.animatedControl.Paused = button.IsChecked.Value;
+            int updateCount = (int)(args.Timing.UpdateCount);
+
+            var ds = args.DrawingSession;
+
+            // Pick layout
+            var size = sender.Size;
+
+            CalculateLayout(size, width, height, out Matrix3x2 counterTransform, out Matrix3x2 graphTransform);
+
+            // Draw
+            ds.Transform = counterTransform;
+            sweepRenderer2.Draw(sender, args.Timing, ds);
         }
 
         private void Control_Unloaded(object sender, RoutedEventArgs e)
         {
             // Explicitly remove references to allow the Win2D controls to get garbage collected
-            animatedControl.RemoveFromVisualTree();
-            animatedControl = null;
+            AnimatedControl.RemoveFromVisualTree();
+            AnimatedControl = null;
         }
     }
 }
