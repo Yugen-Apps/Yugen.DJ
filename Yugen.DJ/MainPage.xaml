@@ -38,21 +38,58 @@
                                       Paused="{x:Bind ViewModel.VinylLeft.IsPaused, Mode=OneWay}"
                                       TargetElapsedTime="{x:Bind ViewModel.VinylLeft.TargetElapsedTime, Mode=OneWay}" />
 
-        <Slider Grid.Column="1"
-                Header="Volume"
-                Height="400"
-                Orientation="Vertical"
-                TickFrequency="10"
-                TickPlacement="Outside"
-                Value="{x:Bind ViewModel.VinylLeft.Volume, Mode=TwoWay}"/>
 
-        <Slider Grid.Column="3"
-                Header="Volume"
-                Height="400"
-                Orientation="Vertical"
-                TickFrequency="10"
-                TickPlacement="Outside"
-                Value="{x:Bind ViewModel.VinylRight.Volume, Mode=TwoWay}" />
+        <StackPanel Grid.Column="1">
+
+            <ToggleButton Margin="5"
+                          IsChecked="{x:Bind ViewModel.VinylLeft.IsHeadPhones, Mode=TwoWay}">
+                <FontIcon Glyph="&#xE7F6;" />
+            </ToggleButton>
+
+            <Slider Header="Volume"
+                    Height="400"
+                    Orientation="Vertical"
+                    TickFrequency="10"
+                    TickPlacement="Outside"
+                    Value="{x:Bind ViewModel.VinylLeft.Volume, Mode=TwoWay}" />
+            
+        </StackPanel>
+
+        
+        <StackPanel Grid.Column="2">
+
+            <ComboBox Header="Master Audio Device:"
+                      ItemsSource="{x:Bind ViewModel.AudioDeviceInformationCollection, Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.MasterAudioDeviceInformation, Mode=TwoWay}"
+                      DisplayMemberPath="Name"
+                      Margin="5"
+                      Width="200" />
+
+            <ComboBox Header="Headphones Audio Device:"
+                      ItemsSource="{x:Bind ViewModel.AudioDeviceInformationCollection, Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.HeadphonesAudioDeviceInformation, Mode=TwoWay}"
+                      DisplayMemberPath="Name"
+                      Margin="5"
+                      Width="200" />
+
+        </StackPanel>
+
+        
+        <StackPanel Grid.Column="3">
+
+            <ToggleButton Margin="5"
+                          IsChecked="{x:Bind ViewModel.VinylRight.IsHeadPhones, Mode=TwoWay}">
+                <FontIcon Glyph="&#xE7F6;" />
+            </ToggleButton>
+
+            <Slider Header="Volume"
+                    Height="400"
+                    Orientation="Vertical"
+                    TickFrequency="10"
+                    TickPlacement="Outside"
+                    Value="{x:Bind ViewModel.VinylRight.Volume, Mode=TwoWay}" />
+            
+        </StackPanel>
 
         <canvas:CanvasAnimatedControl x:Name="AnimatedControl2"
                                       Grid.Column="4"
@@ -69,7 +106,19 @@
                 Maximum="+50"
                 TickFrequency="10"
                 TickPlacement="Outside"
-                Value="{x:Bind ViewModel.VinylLeft.Pitch, Mode=TwoWay}" />
+                Value="{x:Bind ViewModel.VinylLeft.Pitch, Mode=TwoWay}"
+                Width="400"/>
+
+
+        <Slider Grid.Row="1"
+                Grid.Column="2"
+                Header="Fader"
+                Minimum="-100"
+                Maximum="+100"
+                TickFrequency="10"
+                TickPlacement="Outside"
+                Value="{x:Bind ViewModel.Fader, Mode=TwoWay}" 
+                Width="200"/>
 
         <Slider Grid.Row="1"
                 Grid.Column="4"
@@ -78,16 +127,11 @@
                 Maximum="+50"
                 TickFrequency="10"
                 TickPlacement="Outside"
-                Value="{x:Bind ViewModel.VinylRight.Pitch, Mode=TwoWay}" />
+                Value="{x:Bind ViewModel.VinylRight.Pitch, Mode=TwoWay}" 
+                Width="400"/>
 
         <StackPanel Grid.Row="2"
                     Orientation="Horizontal">
-            
-            <ComboBox Header="AudioDevice:"
-                      ItemsSource="{x:Bind ViewModel.VinylLeft.AudioDeviceInformationCollection, Mode=OneWay}"
-                      SelectedItem="{x:Bind ViewModel.VinylLeft.SelectedAudioDeviceInformation, Mode=TwoWay}"
-                      DisplayMemberPath="Name"
-                      Margin="5" />
 
             <ComboBox Header="TargetElapsedTime:"
                       ItemsSource="{x:Bind ViewModel.VinylLeft.TargetElapsedTimeList, Mode=OneWay}"
@@ -106,12 +150,6 @@
         <StackPanel Grid.Row="2"
                     Grid.Column="4"
                     Orientation="Horizontal">
-
-            <ComboBox Header="AudioDevice:"
-                      ItemsSource="{x:Bind ViewModel.VinylRight.AudioDeviceInformationCollection, Mode=OneWay}"
-                      SelectedItem="{x:Bind ViewModel.VinylRight.SelectedAudioDeviceInformation, Mode=TwoWay}"
-                      DisplayMemberPath="Name"
-                      Margin="5" />
 
             <ComboBox Header="TargetElapsedTime:"
                       ItemsSource="{x:Bind ViewModel.VinylRight.TargetElapsedTimeList, Mode=OneWay}"

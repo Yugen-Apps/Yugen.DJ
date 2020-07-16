@@ -127,8 +127,7 @@ namespace Yugen.DJ
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {
-            await ViewModel.VinylLeft.LoadAudioDevces();
-            await ViewModel.VinylRight.LoadAudioDevces();
+            await ViewModel.LoadAudioDevces();
         }
     }
 }

@@ -29,19 +29,25 @@ namespace Yugen.DJ.ViewModels
 
         private readonly MediaPlayer _mediaPlayer = new MediaPlayer();
         private bool _isLeft;
+        private bool _isHeadPhones;
         private bool _isPaused = true;
         private double _volume = 100;
         private double _pitch = 0;
         private TimeSpan _targetElapsedTime = new TimeSpan(10000);
         private ICommand _openButtonCommand;
-        private DeviceInformation _selectedAudioDeviceInformation;
+        private DeviceInformation _masterAudioDeviceInformation;
+        private DeviceInformation _headphonesAudioDeviceInformation;
 
         public VinylViewModel(bool isLeft)
         {
             _isLeft = isLeft;
         }
 
-        public ObservableCollection<DeviceInformation> AudioDeviceInformationCollection { get; set; } = new ObservableCollection<DeviceInformation>();
+        public void Init(DeviceInformation masterAudioDeviceInformation, DeviceInformation headphonesAudioDeviceInformation)
+        {
+            _masterAudioDeviceInformation = masterAudioDeviceInformation;
+            _headphonesAudioDeviceInformation = headphonesAudioDeviceInformation;
+        }
 
         public bool IsPaused
         {
@@ -57,6 +63,24 @@ namespace Yugen.DJ.ViewModels
                 else
                 {
                     _mediaPlayer.Play();
+                }
+            }
+        }
+
+        public bool IsHeadPhones
+        {
+            get { return _isHeadPhones; }
+            set
+            {
+                Set(ref _isHeadPhones, value);
+
+                if (_isHeadPhones)
+                {
+                    _mediaPlayer.AudioDevice = _headphonesAudioDeviceInformation;
+                }
+                else
+                {
+                    _mediaPlayer.AudioDevice = _masterAudioDeviceInformation;
                 }
             }
         }
@@ -96,31 +120,8 @@ namespace Yugen.DJ.ViewModels
             set => TargetElapsedTime = new TimeSpan(value);
         }
 
-        public DeviceInformation SelectedAudioDeviceInformation
-        {
-            get { return _selectedAudioDeviceInformation; }
-            set
-            {
-                Set(ref _selectedAudioDeviceInformation, value);
-
-                if (_selectedAudioDeviceInformation != null)
-                {
-                    _mediaPlayer.AudioDevice = _selectedAudioDeviceInformation;
-                }
-            }
-        }
-
-        public ICommand OpenButtonCommand => _openButtonCommand ?? (_openButtonCommand = new AsyncRelayCommand(OpenButtonCommandBehavior));
-
-        public async Task LoadAudioDevces()
-        {
-            DeviceInformationCollection deviceInfoCollection = await DeviceInformation.FindAllAsync(DeviceClass.AudioRender);
-
-            foreach (var deviceInfo in deviceInfoCollection)
-            {
-                AudioDeviceInformationCollection.Add(deviceInfo);
-            }
-        }
+        public ICommand OpenButtonCommand => _openButtonCommand 
+            ?? (_openButtonCommand = new AsyncRelayCommand(OpenButtonCommandBehavior));
 
         private async Task OpenButtonCommandBehavior()
         {
