@@ -1,14 +1,12 @@
 ﻿using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Devices.Enumeration;
-using Windows.Media.Core;
-using Windows.Media.Playback;
+using Windows.Media.Audio;
+using Windows.Media.Devices;
+using Windows.Media.Render;
 using Windows.Storage;
 using Yugen.Toolkit.Standard.Mvvm.ComponentModel;
 using Yugen.Toolkit.Standard.Mvvm.Input;
@@ -29,7 +27,6 @@ namespace Yugen.DJ.ViewModels
             750000
         };
 
-        private readonly MediaPlayer _mediaPlayer = new MediaPlayer();
         private bool _isLeft;
         private bool _isHeadPhones;
         private bool _isPaused = true;
@@ -43,6 +40,12 @@ namespace Yugen.DJ.ViewModels
         private DeviceInformation _masterAudioDeviceInformation;
         private DeviceInformation _headphonesAudioDeviceInformation;
 
+        private AudioGraph graph;
+        private AudioGraph graph2;
+        private AudioFileInputNode fileInput;
+        private AudioDeviceOutputNode deviceOutput;
+        private AudioDeviceOutputNode deviceOutput2;
+
         public VinylViewModel(bool isLeft)
         {
             _isLeft = isLeft;
@@ -52,6 +55,90 @@ namespace Yugen.DJ.ViewModels
         {
             _masterAudioDeviceInformation = masterAudioDeviceInformation;
             _headphonesAudioDeviceInformation = headphonesAudioDeviceInformation;
+
+            UpdateSettings();
+        }
+
+        private async void UpdateSettings()
+        {
+            //if (fileInput != null)
+            //{
+            //    // Release the file and dispose the contents of the node
+            //    fileInput.Dispose();
+            //    // Stop playback since a new file is being loaded.
+            //    if (_isPaused)
+            //    {
+            //        graph.Stop();
+            //    }
+            //}
+
+            // Create an AudioGraph with default settings
+            AudioGraphSettings settings = new AudioGraphSettings(AudioRenderCategory.Media);
+            settings.PrimaryRenderDevice = _headphonesAudioDeviceInformation;
+
+            //if (_isHeadPhones)
+            //{
+            //    settings.PrimaryRenderDevice = _headphonesAudioDeviceInformation;
+            //}
+            //else
+            //{
+            //    settings.PrimaryRenderDevice = _masterAudioDeviceInformation;
+            //}
+
+            CreateAudioGraphResult result = await AudioGraph.CreateAsync(settings);
+            if (result.Status != AudioGraphCreationStatus.Success)
+            {
+                return;
+            }
+
+            graph = result.Graph;
+            graph.QuantumProcessed += Graph_QuantumProcessed;
+
+            // Create a device output node
+            CreateAudioDeviceOutputNodeResult deviceOutputNodeResult = await graph.CreateDeviceOutputNodeAsync();
+            if (deviceOutputNodeResult.Status != AudioDeviceNodeCreationStatus.Success)
+            {
+                return;
+            }
+            deviceOutput = deviceOutputNodeResult.DeviceOutputNode;
+
+            AudioGraphSettings settings2 = new AudioGraphSettings(AudioRenderCategory.Media);
+            settings2.PrimaryRenderDevice = _masterAudioDeviceInformation;
+            CreateAudioGraphResult result2 = await AudioGraph.CreateAsync(settings2);
+            if (result2.Status != AudioGraphCreationStatus.Success)
+            {
+                return;
+            }
+            graph2 = result2.Graph;
+            CreateAudioDeviceOutputNodeResult deviceOutputNodeResult2 = await graph2.CreateDeviceOutputNodeAsync();
+            if (deviceOutputNodeResult2.Status != AudioDeviceNodeCreationStatus.Success)
+            {
+                return;
+            }
+            deviceOutput2 = deviceOutputNodeResult2.DeviceOutputNode;
+
+            //if (fileInput != null && file != null)
+            //{
+            //    CreateAudioFileInputNodeResult fileInputResult = await graph.CreateFileInputNodeAsync(file);
+            //    if (AudioFileNodeCreationStatus.Success != fileInputResult.Status)
+            //    {
+            //        return;
+            //    }
+
+            //    fileInput = fileInputResult.FileInputNode;
+
+            //    NaturalDuration = fileInput.Duration;
+
+            //    fileInput.AddOutgoingConnection(deviceOutput);
+            //}
+        }
+
+        private void Graph_QuantumProcessed(AudioGraph sender, object args)
+        {
+            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                Position = fileInput.Position;
+            });
         }
 
         public bool IsPaused
@@ -63,11 +150,13 @@ namespace Yugen.DJ.ViewModels
 
                 if (_isPaused)
                 {
-                    _mediaPlayer.Pause();
+                    graph.Stop();
+                    graph2.Stop();
                 }
                 else
                 {
-                    _mediaPlayer.Play();
+                    graph.Start();
+                    graph2.Start();
                 }
             }
         }
@@ -79,14 +168,7 @@ namespace Yugen.DJ.ViewModels
             {
                 Set(ref _isHeadPhones, value);
 
-                if (_isHeadPhones)
-                {
-                    _mediaPlayer.AudioDevice = _headphonesAudioDeviceInformation;
-                }
-                else
-                {
-                    _mediaPlayer.AudioDevice = _masterAudioDeviceInformation;
-                }
+                UpdateSettings();
             }
         }
 
@@ -120,7 +202,8 @@ namespace Yugen.DJ.ViewModels
                 Set(ref _pitch, value);
 
                 var ratio = _pitch == 0 ? 0 : _pitch / 100;
-                _mediaPlayer.PlaybackSession.PlaybackRate = 1 + ratio;
+
+                fileInput.PlaybackSpeedFactor = 1 + ratio;
             }
         }
 
@@ -151,39 +234,57 @@ namespace Yugen.DJ.ViewModels
         public ICommand OpenButtonCommand => _openButtonCommand
             ?? (_openButtonCommand = new AsyncRelayCommand(OpenButtonCommandBehavior));
 
+        private StorageFile file;
+
         private async Task OpenButtonCommandBehavior()
         {
-            StorageFile masterFile = await FilePickerHelper.OpenFile(
+            // If another file is already loaded into the FileInput node
+            if (fileInput != null)
+            {
+                // Release the file and dispose the contents of the node
+                fileInput.Dispose();
+                // Stop playback since a new file is being loaded.
+                if (_isPaused)
+                {
+                    graph.Stop();
+                    graph2.Stop();
+                }
+            }
+
+            file = await FilePickerHelper.OpenFile(
                 new List<string> { ".mp3" },
                 Windows.Storage.Pickers.PickerLocationId.MusicLibrary);
 
-            _mediaPlayer.Source = MediaSource.CreateFromStorageFile(masterFile);
-
-            _mediaPlayer.PlaybackSession.NaturalDurationChanged += PlaybackSession_NaturalDurationChanged;
-            _mediaPlayer.PlaybackSession.PositionChanged += PlaybackSession_PositionChanged;
-        }
-
-        private void PlaybackSession_PositionChanged(MediaPlaybackSession sender, object args)
-        {
-            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            if (file == null)
             {
-                Position = sender.Position;
-            });
-        }
+                return;
+            }
 
-        private void PlaybackSession_NaturalDurationChanged(MediaPlaybackSession sender, object args)
-        {
-            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            CreateAudioFileInputNodeResult fileInputResult = await graph.CreateFileInputNodeAsync(file);
+            if (AudioFileNodeCreationStatus.Success != fileInputResult.Status)
             {
-                NaturalDuration = sender.NaturalDuration;
-            });
+                return;
+            }
+            fileInput = fileInputResult.FileInputNode;
+
+            NaturalDuration = fileInput.Duration;
+            
+            fileInput.AddOutgoingConnection(deviceOutput);
+
+            CreateAudioFileInputNodeResult fileInputResult2 = await graph2.CreateFileInputNodeAsync(file);
+            if (AudioFileNodeCreationStatus.Success != fileInputResult2.Status)
+            {
+                return;
+            }
+            var fileInput2 = fileInputResult2.FileInputNode;
+            fileInput2.AddOutgoingConnection(deviceOutput2);
         }
 
         private void SetVolume()
         {
             var volume = _volume * _fader;
 
-            _mediaPlayer.Volume = volume / 100;
+            deviceOutput.OutgoingGain = volume / 100;
         }
     }
 }
