@@ -119,14 +119,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DeviceInformationDisplay.cs" />
-    <Compile Include="DeviceSelectorInfo.cs" />
     <Compile Include="ViewModels\DeckViewModel.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DeckRenderer.cs" />
+    <Compile Include="Renderer\VinylRenderer.cs" />
     <Compile Include="ViewModels\VinylViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

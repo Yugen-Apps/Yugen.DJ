@@ -18,6 +18,7 @@
     
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
@@ -31,14 +32,27 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        <StackPanel Grid.Column="0"
+                    Orientation="Horizontal">
+            <TextBlock Text="bpm" />
+        </StackPanel>
+        
+        <StackPanel Grid.Column="4"
+                    Orientation="Horizontal">
+            <TextBlock Text="bpm" />
+        </StackPanel>
+
+        
         <canvas:CanvasAnimatedControl x:Name="AnimatedControl"
+                                      Grid.Row="1"
                                       Grid.Column="0"
                                       CreateResources="OnCreateResources"
                                       Draw="OnDraw"
                                       Paused="{x:Bind ViewModel.VinylLeft.IsPaused, Mode=OneWay}"
                                       TargetElapsedTime="{x:Bind ViewModel.VinylLeft.TargetElapsedTime, Mode=OneWay}" />
 
-        <StackPanel Grid.Column="1">
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1">
 
             <ToggleButton Margin="5"
                           IsChecked="{x:Bind ViewModel.VinylLeft.IsHeadPhones, Mode=TwoWay}">
@@ -53,8 +67,9 @@
                     Value="{x:Bind ViewModel.VinylLeft.Volume, Mode=TwoWay}" />
             
         </StackPanel>
-        
-        <StackPanel Grid.Column="2">
+
+        <StackPanel Grid.Row="1"
+                    Grid.Column="2">
 
             <ComboBox Header="Master Audio Device:"
                       ItemsSource="{x:Bind ViewModel.AudioDeviceInformationCollection, Mode=OneWay}"
@@ -71,8 +86,9 @@
                       Width="200" />
 
         </StackPanel>
-        
-        <StackPanel Grid.Column="3">
+
+        <StackPanel Grid.Row="1"
+                    Grid.Column="3">
 
             <ToggleButton Margin="5"
                           IsChecked="{x:Bind ViewModel.VinylRight.IsHeadPhones, Mode=TwoWay}">
@@ -89,6 +105,7 @@
         </StackPanel>
 
         <canvas:CanvasAnimatedControl x:Name="AnimatedControl2"
+                                      Grid.Row="1"
                                       Grid.Column="4"
                                       CreateResources="OnCreateResources2"
                                       Draw="OnDraw2"
@@ -96,7 +113,7 @@
                                       TargetElapsedTime="{x:Bind ViewModel.VinylRight.TargetElapsedTime, Mode=OneWay}" />
 
 
-        <Slider Grid.Row="1"
+        <Slider Grid.Row="2"
                 Grid.Column="0"
                 Header="Pitch"
                 Minimum="-50"
@@ -106,7 +123,7 @@
                 Value="{x:Bind ViewModel.VinylLeft.Pitch, Mode=TwoWay}"
                 Width="400"/>
 
-        <Slider Grid.Row="1"
+        <Slider Grid.Row="2"
                 Grid.Column="2"
                 Header="Fader"
                 Minimum="-10"
@@ -116,7 +133,7 @@
                 Value="{x:Bind ViewModel.CrossFader, Mode=TwoWay}" 
                 Width="200"/>
 
-        <Slider Grid.Row="1"
+        <Slider Grid.Row="2"
                 Grid.Column="4"
                 Header="Pitch"
                 Minimum="-50"
@@ -127,7 +144,7 @@
                 Width="400"/>
 
         
-        <StackPanel Grid.Row="2"
+        <StackPanel Grid.Row="3"
                     Orientation="Horizontal">
 
             <ComboBox Header="TargetElapsedTime:"
@@ -144,7 +161,7 @@
 
         </StackPanel>
         
-        <StackPanel Grid.Row="2"
+        <StackPanel Grid.Row="3"
                     Grid.Column="4"
                     Orientation="Horizontal">
 

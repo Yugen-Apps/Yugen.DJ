@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Yugen.DJ.Renderer;
 
 namespace Yugen.DJ
 {
@@ -16,8 +17,8 @@ namespace Yugen.DJ
 
         private const float height = 1000;
 
-        private DeckRenderer sweepRenderer;
-        private DeckRenderer sweepRenderer2;
+        private VinylRenderer sweepRenderer;
+        private VinylRenderer sweepRenderer2;
 
         public MainPage()
         {
@@ -71,8 +72,8 @@ namespace Yugen.DJ
 
         private async Task Canvas_CreateResourcesAsync(CanvasAnimatedControl sender)
         {
-            var vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Assets/Vinyl.png");
-            sweepRenderer = new DeckRenderer(sender, vinylBitmap);
+            var vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Assets/Vinyl.png", 60);
+            sweepRenderer = new VinylRenderer(sender, vinylBitmap);
         }
 
         private void OnDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
@@ -98,8 +99,8 @@ namespace Yugen.DJ
 
         private async Task Canvas_CreateResourcesAsync2(CanvasAnimatedControl sender)
         {
-            var vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Assets/Vinyl.png");
-            sweepRenderer2 = new DeckRenderer(sender, vinylBitmap);
+            var vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Assets/Vinyl.png", 60);
+            sweepRenderer2 = new VinylRenderer(sender, vinylBitmap);
         }
 
         private void OnDraw2(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)

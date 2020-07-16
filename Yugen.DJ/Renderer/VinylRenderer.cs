@@ -12,18 +12,13 @@ using Windows.Foundation;
 using Windows.Graphics.Display;
 using Windows.UI;
 
-namespace Yugen.DJ
+namespace Yugen.DJ.Renderer
 {
-    internal class DeckRenderer
+    internal class VinylRenderer
     {
-        private const float size = 1000;
-        private const float center = size / 2;
-        private const float lineLength = size / 10;
-        private const float radius = (size / 2) - lineLength;
-
         private CanvasBitmap _vinylBitmap;
 
-        public DeckRenderer(CanvasAnimatedControl sender, CanvasBitmap vinylBitmap)
+        public VinylRenderer(CanvasAnimatedControl sender, CanvasBitmap vinylBitmap)
         {
             _vinylBitmap = vinylBitmap;
         }
@@ -35,16 +30,16 @@ namespace Yugen.DJ
 
             if (sender.IsFixedTimeStep)
             {
-                double updatesPerSecond = 1000.0 / sender.TargetElapsedTime.TotalMilliseconds;
-                seconds = (int)((timingInformation.UpdateCount / updatesPerSecond) % 10);
+                var updatesPerSecond = 1000.0 / sender.TargetElapsedTime.TotalMilliseconds;
+                seconds = (int)(timingInformation.UpdateCount / updatesPerSecond % 10);
 
-                double updates = (double)timingInformation.UpdateCount;
-                fractionSecond = (updates / updatesPerSecond) % 1.0;
+                var updates = (double)timingInformation.UpdateCount;
+                fractionSecond = updates / updatesPerSecond % 1.0;
             }
             else
             {
-                double totalMilliseconds = timingInformation.TotalTime.TotalMilliseconds;
-                double millisecondsThisIteration = totalMilliseconds % 1000;
+                var totalMilliseconds = timingInformation.TotalTime.TotalMilliseconds;
+                var millisecondsThisIteration = totalMilliseconds % 1000;
 
                 fractionSecond = millisecondsThisIteration / 1000.0f;
                 seconds = (int)timingInformation.TotalTime.TotalSeconds % 10;
@@ -57,20 +52,20 @@ namespace Yugen.DJ
 
         public void Rotate(CanvasDrawingSession ds, double fractionSecond)
         {
-            float fractionSecondAngle = (float)(2 * Math.PI * fractionSecond);
-            float angle = (float)(fractionSecondAngle % (2 * Math.PI));
+            var fractionSecondAngle = (float)(2 * Math.PI * fractionSecond);
+            var angle = (float)(fractionSecondAngle % (2 * Math.PI));
 
             try
             {
                 var originalImageRect = _vinylBitmap.GetBounds(ds);
-                Vector2 endpoint = new Vector2((float)originalImageRect.Width / 2, (float)originalImageRect.Height / 2);
+                var endpoint = new Vector2((float)originalImageRect.Width / 2, (float)originalImageRect.Height / 2);
 
                 ds.Clear(Colors.Transparent);
 
                 ICanvasImage image = new Transform2DEffect
                 {
                     Source = _vinylBitmap,
-                    TransformMatrix = Matrix3x2.CreateRotation(angle, endpoint),
+                    TransformMatrix = Matrix3x2.CreateRotation(angle, endpoint)
                 };
 
                 var sourceRect = image.GetBounds(ds);
