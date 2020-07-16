@@ -32,6 +32,7 @@ namespace Yugen.DJ.ViewModels
         private bool _isHeadPhones;
         private bool _isPaused = true;
         private double _volume = 100;
+        private double _fader = 0;
         private double _pitch = 0;
         private TimeSpan _targetElapsedTime = new TimeSpan(10000);
         private ICommand _openButtonCommand;
@@ -92,7 +93,18 @@ namespace Yugen.DJ.ViewModels
             {
                 Set(ref _volume, value);
 
-                _mediaPlayer.Volume = _volume / 100;
+                SetVolume();
+            }
+        }
+
+        public double Fader
+        {
+            get { return _fader; }
+            set
+            {
+                Set(ref _fader, value);
+
+                SetVolume();
             }
         }
 
@@ -120,7 +132,7 @@ namespace Yugen.DJ.ViewModels
             set => TargetElapsedTime = new TimeSpan(value);
         }
 
-        public ICommand OpenButtonCommand => _openButtonCommand 
+        public ICommand OpenButtonCommand => _openButtonCommand
             ?? (_openButtonCommand = new AsyncRelayCommand(OpenButtonCommandBehavior));
 
         private async Task OpenButtonCommandBehavior()
@@ -130,6 +142,13 @@ namespace Yugen.DJ.ViewModels
                 Windows.Storage.Pickers.PickerLocationId.MusicLibrary);
 
             _mediaPlayer.Source = MediaSource.CreateFromStorageFile(masterFile);
+        }
+
+        private void SetVolume()
+        {
+            var volume = _volume * _fader;
+
+            _mediaPlayer.Volume = volume / 100;
         }
     }
 }
