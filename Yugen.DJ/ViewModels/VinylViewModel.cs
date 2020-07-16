@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.Toolkit.Uwp.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Devices.Enumeration;
@@ -35,6 +37,8 @@ namespace Yugen.DJ.ViewModels
         private double _fader = 0;
         private double _pitch = 0;
         private TimeSpan _targetElapsedTime = new TimeSpan(10000);
+        private TimeSpan _naturalDuration = new TimeSpan();
+        private TimeSpan _position = new TimeSpan();
         private ICommand _openButtonCommand;
         private DeviceInformation _masterAudioDeviceInformation;
         private DeviceInformation _headphonesAudioDeviceInformation;
@@ -132,6 +136,18 @@ namespace Yugen.DJ.ViewModels
             set => TargetElapsedTime = new TimeSpan(value);
         }
 
+        public TimeSpan NaturalDuration
+        {
+            get { return _naturalDuration; }
+            set { Set(ref _naturalDuration, value); }
+        }    
+        
+        public TimeSpan Position
+        {
+            get { return _position; }
+            set { Set(ref _position, value); }
+        }
+
         public ICommand OpenButtonCommand => _openButtonCommand
             ?? (_openButtonCommand = new AsyncRelayCommand(OpenButtonCommandBehavior));
 
@@ -142,6 +158,25 @@ namespace Yugen.DJ.ViewModels
                 Windows.Storage.Pickers.PickerLocationId.MusicLibrary);
 
             _mediaPlayer.Source = MediaSource.CreateFromStorageFile(masterFile);
+
+            _mediaPlayer.PlaybackSession.NaturalDurationChanged += PlaybackSession_NaturalDurationChanged;
+            _mediaPlayer.PlaybackSession.PositionChanged += PlaybackSession_PositionChanged;
+        }
+
+        private void PlaybackSession_PositionChanged(MediaPlaybackSession sender, object args)
+        {
+            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                Position = sender.Position;
+            });
+        }
+
+        private void PlaybackSession_NaturalDurationChanged(MediaPlaybackSession sender, object args)
+        {
+            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                NaturalDuration = sender.NaturalDuration;
+            });
         }
 
         private void SetVolume()

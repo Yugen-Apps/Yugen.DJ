@@ -34,12 +34,26 @@
 
         <StackPanel Grid.Column="0"
                     Orientation="Horizontal">
-            <TextBlock Text="bpm" />
+            <TextBlock Margin="2"
+                       Text="Duration" />
+            <TextBlock Margin="2"
+                       Text="{x:Bind ViewModel.VinylLeft.NaturalDuration, Mode=OneWay}" />
+            <TextBlock Margin="2"
+                       Text="Position" />
+            <TextBlock Margin="2"
+                       Text="{x:Bind ViewModel.VinylLeft.Position, Mode=OneWay}" />
         </StackPanel>
         
         <StackPanel Grid.Column="4"
                     Orientation="Horizontal">
-            <TextBlock Text="bpm" />
+            <TextBlock Margin="2"
+                       Text="Duration" />
+            <TextBlock Margin="2"
+                       Text="{x:Bind ViewModel.VinylRight.NaturalDuration, Mode=OneWay}" />
+            <TextBlock Margin="2"
+                       Text="Position" />
+            <TextBlock Margin="2"
+                       Text="{x:Bind ViewModel.VinylRight.Position, Mode=OneWay}" />
         </StackPanel>
 
         
