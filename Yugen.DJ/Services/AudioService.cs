@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Media.Audio;
 using Windows.Media.Render;
+using Windows.Security.Cryptography.Core;
 using Windows.Storage;
 using Yugen.DJ.DependencyInjection;
 using Yugen.DJ.Interfaces;
@@ -95,6 +96,14 @@ namespace Yugen.DJ.Services
             //{
             //    headphonesDeviceOutput.OutgoingGain = volume;
             //}
+        }
+
+        public void IsHeadphones(bool isHeadphone)
+        {
+            if (headphonesDeviceOutput != null)
+            {
+                headphonesDeviceOutput.OutgoingGain = isHeadphone ? 1 : 0;
+            }
         }
 
         private async Task InitMasterDevice()

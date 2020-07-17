@@ -15,5 +15,6 @@ namespace Yugen.DJ.Interfaces
         void TogglePlay(bool isPaused);
         void ChangePitch(double pitch);
         void ChangeVolume(double volume, double fader);
+        void IsHeadphones(bool isHeadphone);
     }
 }
