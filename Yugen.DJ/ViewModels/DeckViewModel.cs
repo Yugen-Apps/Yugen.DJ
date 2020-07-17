@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
+using Yugen.DJ.DependencyInjection;
+using Yugen.DJ.Interfaces;
 using Yugen.Toolkit.Standard.Extensions;
 using Yugen.Toolkit.Standard.Mvvm.ComponentModel;
 
@@ -10,9 +11,15 @@ namespace Yugen.DJ.ViewModels
 {
     public class DeckViewModel : ViewModelBase
     {
+        private readonly IAudioDeviceService _audioDeviceService;
         private double _crossFader = 0;
         private DeviceInformation _masterAudioDeviceInformation;
         private DeviceInformation _headphonesAudioDeviceInformation;
+
+        public DeckViewModel()
+        {
+            _audioDeviceService = Ioc.Default.GetService<IAudioDeviceService>();
+        }
 
         public ObservableCollection<DeviceInformation> AudioDeviceInformationCollection { get; set; } = new ObservableCollection<DeviceInformation>();
 
@@ -23,26 +30,30 @@ namespace Yugen.DJ.ViewModels
             {
                 Set(ref _crossFader, value);
 
-                var absoluteValue = 20 - (_crossFader + 10);
-                var percentace = 100 * absoluteValue / 20;
-                VinylLeft.Fader = percentace / 100;
-
-                absoluteValue = _crossFader + 10;
-                percentace = 100 * absoluteValue / 20;
-                VinylRight.Fader = percentace / 100;
+                SetFader();
             }
         }
 
         public DeviceInformation MasterAudioDeviceInformation
         {
             get { return _masterAudioDeviceInformation; }
-            set { Set(ref _masterAudioDeviceInformation, value); }
-        }  
-        
+            set
+            {
+                Set(ref _masterAudioDeviceInformation, value);
+
+                _audioDeviceService.MasterAudioDeviceInformation = _masterAudioDeviceInformation;
+            }
+        }
+
         public DeviceInformation HeadphonesAudioDeviceInformation
         {
             get { return _headphonesAudioDeviceInformation; }
-            set { Set(ref _headphonesAudioDeviceInformation, value); }
+            set
+            {
+                Set(ref _headphonesAudioDeviceInformation, value);
+
+                _audioDeviceService.HeadphonesAudioDeviceInformation = _headphonesAudioDeviceInformation;
+            }
         }
 
         public VinylViewModel VinylLeft { get; set; } = new VinylViewModel(true);
@@ -51,14 +62,27 @@ namespace Yugen.DJ.ViewModels
 
         public async Task LoadAudioDevces()
         {
-            DeviceInformationCollection deviceInfoCollection = await DeviceInformation.FindAllAsync(DeviceClass.AudioRender);
-            AudioDeviceInformationCollection.AddRange(deviceInfoCollection);
+            await _audioDeviceService.Init();
+            AudioDeviceInformationCollection.AddRange(_audioDeviceService.DeviceInfoCollection);
 
-            MasterAudioDeviceInformation = deviceInfoCollection.FirstOrDefault();
-            HeadphonesAudioDeviceInformation = deviceInfoCollection.ElementAtOrDefault(1) ?? MasterAudioDeviceInformation;
+            MasterAudioDeviceInformation = _audioDeviceService.MasterAudioDeviceInformation;
+            HeadphonesAudioDeviceInformation = _audioDeviceService.HeadphonesAudioDeviceInformation;
 
-            VinylLeft.Init(MasterAudioDeviceInformation, HeadphonesAudioDeviceInformation);
-            VinylRight.Init(MasterAudioDeviceInformation, HeadphonesAudioDeviceInformation);
+            await VinylLeft.Init();
+            await VinylRight.Init();
+
+            SetFader();
+        }
+
+        private void SetFader()
+        {
+            var absoluteValue = 20 - (_crossFader + 10);
+            var percentace = 100 * absoluteValue / 20;
+            VinylLeft.Fader = percentace / 100;
+
+            absoluteValue = _crossFader + 10;
+            percentace = 100 * absoluteValue / 20;
+            VinylRight.Fader = percentace / 100;
         }
     }
 }
