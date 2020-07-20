@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AudioVisualizer;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -47,14 +48,14 @@ namespace Yugen.DJ.Services
                 Windows.Storage.Pickers.PickerLocationId.MusicLibrary);
 
             if (file == null)
-            {
                 return;
-            }
 
             DisposeFileInputs();
 
             await AddFileToMasterDevice();
             await AddFileToHeadsetDevice();
+
+            AddFileInputToAudioVisualizer();
         }
 
         public void TogglePlay(bool isPaused)
@@ -115,18 +116,14 @@ namespace Yugen.DJ.Services
 
             CreateAudioGraphResult result = await AudioGraph.CreateAsync(settings);
             if (result.Status != AudioGraphCreationStatus.Success)
-            {
                 return;
-            }
 
             masterAudioGraph = result.Graph;
             masterAudioGraph.QuantumProcessed += Graph_QuantumProcessed;
 
             CreateAudioDeviceOutputNodeResult deviceOutputNodeResult = await masterAudioGraph.CreateDeviceOutputNodeAsync();
             if (deviceOutputNodeResult.Status != AudioDeviceNodeCreationStatus.Success)
-            {
                 return;
-            }
 
             masterDeviceOutput = deviceOutputNodeResult.DeviceOutputNode;
         }
@@ -134,9 +131,7 @@ namespace Yugen.DJ.Services
         private async Task InitHeadphonesDevice()
         {
             if (_audioDeviceService.HeadphonesAudioDeviceInformation == null)
-            {
                 return;
-            }
 
             AudioGraphSettings settings = new AudioGraphSettings(AudioRenderCategory.Media)
             {
@@ -145,17 +140,13 @@ namespace Yugen.DJ.Services
 
             CreateAudioGraphResult result = await AudioGraph.CreateAsync(settings);
             if (result.Status != AudioGraphCreationStatus.Success)
-            {
                 return;
-            }
 
             headphonesAudioGraph = result.Graph;
 
             CreateAudioDeviceOutputNodeResult deviceOutputNodeResult = await headphonesAudioGraph.CreateDeviceOutputNodeAsync();
             if (deviceOutputNodeResult.Status != AudioDeviceNodeCreationStatus.Success)
-            {
                 return;
-            }
 
             headphonesDeviceOutput = deviceOutputNodeResult.DeviceOutputNode;
         }
@@ -184,9 +175,7 @@ namespace Yugen.DJ.Services
         {
             CreateAudioFileInputNodeResult masterFileInputResult = await masterAudioGraph.CreateFileInputNodeAsync(file);
             if (AudioFileNodeCreationStatus.Success != masterFileInputResult.Status)
-            {
                 return;
-            }
 
             masterFileInput = masterFileInputResult.FileInputNode;
             masterFileInput.AddOutgoingConnection(masterDeviceOutput);
@@ -195,18 +184,51 @@ namespace Yugen.DJ.Services
         private async Task AddFileToHeadsetDevice()
         {
             if (headphonesAudioGraph == null)
-            {
                 return;
-            }
 
             CreateAudioFileInputNodeResult headphonesFileInputResult = await headphonesAudioGraph.CreateFileInputNodeAsync(file);
             if (AudioFileNodeCreationStatus.Success != headphonesFileInputResult.Status)
-            {
                 return;
-            }
 
             headphonesFileInput = headphonesFileInputResult.FileInputNode;
             headphonesFileInput.AddOutgoingConnection(headphonesDeviceOutput);
+        }
+
+
+        private PlaybackSource _source;
+        private SpectrumVisualizer _spectrumVisualizer;
+        private DiscreteVUBar _leftVUBarChanel0;
+        private DiscreteVUBar _leftVUBarChanel1;
+
+        public void AddAudioVisualizer(SpectrumVisualizer spectrumVisualizer)
+        {
+            _spectrumVisualizer = spectrumVisualizer;
+        }
+
+        public void AddAudioVisualizer(DiscreteVUBar leftVUBarChanel0, DiscreteVUBar leftVUBarChanel1)
+        {
+            _leftVUBarChanel0 = leftVUBarChanel0;
+            _leftVUBarChanel1 = leftVUBarChanel1;
+        }
+
+        private void AddFileInputToAudioVisualizer()
+        {
+            if (masterFileInput == null)
+                return;
+
+            _source = PlaybackSource.CreateFromAudioNode(masterFileInput);
+            _source.SourceChanged += Playback_SourceChanged;
+
+            _spectrumVisualizer.Source = _source.Source;
+            _leftVUBarChanel0.Source = _source.Source;
+            _leftVUBarChanel1.Source = _source.Source;
+        }
+
+        private void Playback_SourceChanged(object sender, IVisualizationSource source)
+        {
+            _spectrumVisualizer.Source = source;
+            _leftVUBarChanel0.Source = source;
+            _leftVUBarChanel1.Source = source;
         }
     }
 }

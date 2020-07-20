@@ -119,16 +119,22 @@ namespace Yugen.DJ
             sweepRenderer2.Draw(sender, args.Timing, ds);
         }
 
+        private async void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.LoadAudioDevces();
+
+            ViewModel.VinylLeft.AddAudioVisualizer(LeftSpectrumVisualizer);
+            ViewModel.VinylLeft.AddAudioVisualizer(LeftVUBarChanel0, LeftVUBarChanel1);            
+            
+            ViewModel.VinylRight.AddAudioVisualizer(RightSpectrumVisualizer);
+            ViewModel.VinylRight.AddAudioVisualizer(RightVUBarChanel0, RightVUBarChanel1);
+        }
+
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             // Explicitly remove references to allow the Win2D controls to get garbage collected
             AnimatedControl.RemoveFromVisualTree();
             AnimatedControl = null;
-        }
-
-        private async void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            await ViewModel.LoadAudioDevces();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AudioVisualizer;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Threading.Tasks;
@@ -146,5 +147,11 @@ namespace Yugen.DJ.ViewModels
 
             NaturalDuration = _audioService.NaturalDuration;
         }
+
+        public void AddAudioVisualizer(SpectrumVisualizer spectrumVisualizer) => 
+            _audioService.AddAudioVisualizer(spectrumVisualizer);
+
+        internal void AddAudioVisualizer(DiscreteVUBar leftVUBarChanel0, DiscreteVUBar leftVUBarChanel1) => 
+            _audioService.AddAudioVisualizer(leftVUBarChanel0, leftVUBarChanel1);
     }
 }
