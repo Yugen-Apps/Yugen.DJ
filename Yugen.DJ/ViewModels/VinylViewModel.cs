@@ -27,6 +27,7 @@ namespace Yugen.DJ.ViewModels
         private readonly IAudioService _audioService;
         private readonly bool _isLeft;
         private bool _isHeadPhones;
+        private bool _isTouched;
         private bool _isPaused = true;
         private double _volume = 100;
         private double _fader;
@@ -72,6 +73,12 @@ namespace Yugen.DJ.ViewModels
 
                 _audioService?.IsHeadphones(_isHeadPhones);
             }
+        }
+
+        public bool IsTouched
+        {
+            get { return _isTouched; }
+            set { Set(ref _isTouched, value); }
         }
 
         public double Volume

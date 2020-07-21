@@ -65,6 +65,7 @@ namespace Yugen.DJ
             }
         }
 
+
         private void OnCreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
             args.TrackAsyncAction(Canvas_CreateResourcesAsync(sender).AsAsyncAction());
@@ -89,7 +90,20 @@ namespace Yugen.DJ
 
             // Draw
             ds.Transform = counterTransform;
-            sweepRenderer.Draw(sender, args.Timing, ds);
+
+            if (!ViewModel.VinylLeft.IsTouched)
+            {
+                sweepRenderer.Draw(sender, args.Timing, ds);
+            }
+        }
+
+        private void OnPointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            ViewModel.VinylLeft.IsTouched = true;
+        }
+        private void OnPointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            ViewModel.VinylLeft.IsTouched = false;
         }
 
         private void OnCreateResources2(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
@@ -116,8 +130,23 @@ namespace Yugen.DJ
 
             // Draw
             ds.Transform = counterTransform;
-            sweepRenderer2.Draw(sender, args.Timing, ds);
+
+            if (!ViewModel.VinylRight.IsTouched)
+            {
+                sweepRenderer2.Draw(sender, args.Timing, ds);
+            }
         }
+
+        private void OnPointerPressed2(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            ViewModel.VinylRight.IsTouched = true;
+        }
+
+        private void OnPointerReleased2(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            ViewModel.VinylRight.IsTouched = false;
+        }
+
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {

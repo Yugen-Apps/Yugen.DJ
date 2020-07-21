@@ -27,23 +27,12 @@ namespace Yugen.DJ.Renderer
         {
             double fractionSecond;
             int seconds;
+      
+            var updatesPerSecond = 1000.0 / sender.TargetElapsedTime.TotalMilliseconds;
+            seconds = (int)(timingInformation.UpdateCount / updatesPerSecond % 10);
 
-            if (sender.IsFixedTimeStep)
-            {
-                var updatesPerSecond = 1000.0 / sender.TargetElapsedTime.TotalMilliseconds;
-                seconds = (int)(timingInformation.UpdateCount / updatesPerSecond % 10);
-
-                var updates = (double)timingInformation.UpdateCount;
-                fractionSecond = updates / updatesPerSecond % 1.0;
-            }
-            else
-            {
-                var totalMilliseconds = timingInformation.TotalTime.TotalMilliseconds;
-                var millisecondsThisIteration = totalMilliseconds % 1000;
-
-                fractionSecond = millisecondsThisIteration / 1000.0f;
-                seconds = (int)timingInformation.TotalTime.TotalSeconds % 10;
-            }
+            var updates = (double)timingInformation.UpdateCount;
+            fractionSecond = updates / updatesPerSecond % 1.0;     
 
             var Angle = (float)Math.PI * (seconds / 10.0f) * 2.0f;
 

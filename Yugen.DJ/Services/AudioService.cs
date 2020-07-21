@@ -2,11 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.Media.Audio;
 using Windows.Media.Render;
-using Windows.Security.Cryptography.Core;
 using Windows.Storage;
+using Windows.Storage.FileProperties;
 using Yugen.DJ.DependencyInjection;
 using Yugen.DJ.Interfaces;
 using Yugen.Toolkit.Uwp.Helpers;
@@ -49,13 +50,16 @@ namespace Yugen.DJ.Services
 
             if (file == null)
                 return;
-
+            MusicProperties musicProps = await file.Properties.GetMusicPropertiesAsync();
+            
             DisposeFileInputs();
 
             await AddFileToMasterDevice();
             await AddFileToHeadsetDevice();
 
             AddFileInputToAudioVisualizer();
+
+            //AddAudioFrameInputNode();
         }
 
         public void TogglePlay(bool isPaused)
@@ -153,6 +157,7 @@ namespace Yugen.DJ.Services
 
         private void Graph_QuantumProcessed(AudioGraph sender, object args)
         {
+            var a = _source.Source.GetData();
             PositionChanged?.Invoke(sender, masterFileInput?.Position ?? new TimeSpan());
         }
 
@@ -217,18 +222,91 @@ namespace Yugen.DJ.Services
                 return;
 
             _source = PlaybackSource.CreateFromAudioNode(masterFileInput);
-            _source.SourceChanged += Playback_SourceChanged;
-
+            
             _spectrumVisualizer.Source = _source.Source;
             _leftVUBarChanel0.Source = _source.Source;
             _leftVUBarChanel1.Source = _source.Source;
         }
 
-        private void Playback_SourceChanged(object sender, IVisualizationSource source)
-        {
-            _spectrumVisualizer.Source = source;
-            _leftVUBarChanel0.Source = source;
-            _leftVUBarChanel1.Source = source;
-        }
+
+        //private Stream fileStream;
+        //AudioFrameInputNode audioFrameInputNode;
+
+        //private void AddAudioFrameInputNode()
+        //{
+        //  var ras = await file.OpenReadAsync();
+        //  fileStream = ras.AsStreamForRead();
+        //
+        //    AudioEncodingProperties audioEncodingProperties = new AudioEncodingProperties();
+        //    audioEncodingProperties.BitsPerSample = 32;
+        //    audioEncodingProperties.ChannelCount = 2;
+        //    audioEncodingProperties.SampleRate = 44100;
+        //    audioEncodingProperties.Subtype = MediaEncodingSubtypes.Float;
+
+        //    audioFrameInputNode = masterAudioGraph.CreateFrameInputNode(audioEncodingProperties);
+        //    audioFrameInputNode.QuantumStarted += FrameInputNode_QuantumStarted;
+
+        //    audioFrameInputNode.AddOutgoingConnection(deviceOutputNode);
+        //    audioGraph.Start();
+        //}
+
+        //private unsafe void FrameInputNode_QuantumStarted(AudioFrameInputNode sender, FrameInputNodeQuantumStartedEventArgs args)
+        //{
+        //    var bufferSize = args.RequiredSamples * sizeof(float) * 2;
+        //    AudioFrame audioFrame = new AudioFrame((uint)bufferSize);
+
+        //    if (fileStream == null)
+        //        return;
+
+        //    using (var audioBuffer = audioFrame.LockBuffer(AudioBufferAccessMode.Write))
+        //    {
+        //        using (var bufferReference = audioBuffer.CreateReference())
+        //        {
+        //            byte* dataInBytes;
+        //            uint capacityInBytes;
+        //            float* dataInFloat;
+
+        //            // Get the buffer from the AudioFrame
+        //            ((IMemoryBufferByteAccess)bufferReference).GetBuffer(out dataInBytes, out capacityInBytes);
+        //            dataInFloat = (float*)dataInBytes;
+
+        //            var managedBuffer = new byte[capacityInBytes];
+
+        //            var lastLength = fileStream.Length - fileStream.Position;
+        //            int readLength = (int)(lastLength < capacityInBytes ? lastLength : capacityInBytes);
+
+        //            if (readLength <= 0)
+        //            {
+        //                fileStream.Close();
+        //                fileStream = null;
+        //                return;
+        //            }
+
+        //            fileStream.Read(managedBuffer, 0, readLength);
+
+        //            for (int i = 0; i < readLength; i += 8)
+        //            {
+        //                dataInBytes[i + 4] = managedBuffer[i + 0];
+        //                dataInBytes[i + 5] = managedBuffer[i + 1];
+        //                dataInBytes[i + 6] = managedBuffer[i + 2];
+        //                dataInBytes[i + 7] = managedBuffer[i + 3];
+        //                dataInBytes[i + 0] = managedBuffer[i + 4];
+        //                dataInBytes[i + 1] = managedBuffer[i + 5];
+        //                dataInBytes[i + 2] = managedBuffer[i + 6];
+        //                dataInBytes[i + 3] = managedBuffer[i + 7];
+        //            }
+        //        }
+        //    }
+
+        //    audioFrameInputNode.AddFrame(audioFrame);
+        //}
+    }
+
+    [ComImport]
+    [Guid("5B0D3235-4DBA-4D44-865E-8F1D0E4FD04D")]
+    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    unsafe interface IMemoryBufferByteAccess
+    {
+        void GetBuffer(out byte* buffer, out uint capacity);
     }
 }

@@ -78,7 +78,9 @@
                                       CreateResources="OnCreateResources"
                                       Draw="OnDraw"
                                       Paused="{x:Bind ViewModel.VinylLeft.IsPaused, Mode=OneWay}"
-                                      TargetElapsedTime="{x:Bind ViewModel.VinylLeft.TargetElapsedTime, Mode=OneWay}" />
+                                      TargetElapsedTime="{x:Bind ViewModel.VinylLeft.TargetElapsedTime, Mode=OneWay}"
+                                      PointerPressed="OnPointerPressed"
+                                      PointerReleased="OnPointerReleased"/>
 
         <StackPanel Grid.Row="1"
                     Grid.Column="1">
@@ -162,7 +164,9 @@
                                       CreateResources="OnCreateResources2"
                                       Draw="OnDraw2"
                                       Paused="{x:Bind ViewModel.VinylRight.IsPaused, Mode=OneWay}"
-                                      TargetElapsedTime="{x:Bind ViewModel.VinylRight.TargetElapsedTime, Mode=OneWay}" />
+                                      TargetElapsedTime="{x:Bind ViewModel.VinylRight.TargetElapsedTime, Mode=OneWay}"
+                                      PointerPressed="OnPointerPressed2"
+                                      PointerReleased="OnPointerReleased2" />
 
 
         <Slider Grid.Row="2"
