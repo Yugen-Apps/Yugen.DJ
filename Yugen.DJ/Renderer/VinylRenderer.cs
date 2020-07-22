@@ -23,18 +23,31 @@ namespace Yugen.DJ.Renderer
             _vinylBitmap = vinylBitmap;
         }
 
-        public void Draw(ICanvasAnimatedControl sender, CanvasTimingInformation timingInformation, CanvasDrawingSession ds)
+        //public void Draw(ICanvasAnimatedControl sender, CanvasTimingInformation timingInformation, CanvasDrawingSession ds)
+        //{
+        //    double fractionSecond;
+        //    int seconds;
+
+        //    var updatesPerSecond = 1000.0 / sender.TargetElapsedTime.TotalMilliseconds;
+        //    seconds = (int)(timingInformation.UpdateCount / updatesPerSecond % 10);
+
+        //    var updates = (double)timingInformation.UpdateCount;
+        //    fractionSecond = updates / updatesPerSecond % 1.0;
+
+        //    var Angle = (float)Math.PI * (seconds / 10.0f) * 2.0f;
+
+        //    Rotate(ds, fractionSecond);
+        //}
+
+        public void Draw(ICanvasAnimatedControl sender, TimeSpan timingInformation, CanvasDrawingSession ds)
         {
             double fractionSecond;
             int seconds;
-      
-            var updatesPerSecond = 1000.0 / sender.TargetElapsedTime.TotalMilliseconds;
-            seconds = (int)(timingInformation.UpdateCount / updatesPerSecond % 10);
 
-            var updates = (double)timingInformation.UpdateCount;
-            fractionSecond = updates / updatesPerSecond % 1.0;     
+            seconds = timingInformation.Seconds;
 
-            var Angle = (float)Math.PI * (seconds / 10.0f) * 2.0f;
+            fractionSecond = timingInformation.Milliseconds / 100;
+            fractionSecond /= 10;
 
             Rotate(ds, fractionSecond);
         }
@@ -58,6 +71,27 @@ namespace Yugen.DJ.Renderer
                 };
 
                 var sourceRect = image.GetBounds(ds);
+                ds.DrawImage(image);
+            }
+            catch
+            {
+            }
+        }
+
+        public void Draw(CanvasDrawingSession ds)
+        {
+            try
+            {
+                var originalImageRect = _vinylBitmap.GetBounds(ds);
+                var endpoint = new Vector2((float)originalImageRect.Width / 2, (float)originalImageRect.Height / 2);
+
+                ds.Clear(Colors.Transparent);
+
+                ICanvasImage image = new Transform2DEffect
+                {
+                    Source = _vinylBitmap,
+                };
+
                 ds.DrawImage(image);
             }
             catch

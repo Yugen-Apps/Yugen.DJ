@@ -2,9 +2,12 @@
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.UI;
+using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Yugen.DJ.Renderer;
@@ -19,6 +22,9 @@ namespace Yugen.DJ
 
         private VinylRenderer leftVinylRenderer;
         private VinylRenderer rightVinylRenderer;
+        private TouchPointsRenderer leftTouchPointsRenderer = new TouchPointsRenderer();
+        private TouchPointsRenderer rightTouchPointsRenderer = new TouchPointsRenderer();
+
 
         public MainPage()
         {
@@ -48,10 +54,20 @@ namespace Yugen.DJ
         {
             var ds = args.DrawingSession;
             ds.Transform = CalculateLayout(sender.Size, width, height);
-                       
-            if (!ViewModel.VinylLeft.IsTouched)
+
+            if (ViewModel.VinylLeft.IsPaused)
             {
-                leftVinylRenderer.Draw(sender, args.Timing, ds);
+                leftVinylRenderer.Draw(ds);
+            }
+            else
+            {
+                leftVinylRenderer.Draw(sender, ViewModel.VinylLeft.Position, ds);
+            }
+
+            ds.Transform = Matrix3x2.Identity;
+            lock (leftTouchPointsRenderer)
+            {
+                leftTouchPointsRenderer.Draw(ds);
             }
         }
 
@@ -60,9 +76,19 @@ namespace Yugen.DJ
             var ds = args.DrawingSession;
             ds.Transform = CalculateLayout(sender.Size, width, height);
 
-            if (!ViewModel.VinylRight.IsTouched)
+            if (ViewModel.VinylRight.IsPaused)
             {
-                rightVinylRenderer.Draw(sender, args.Timing, ds);
+                rightVinylRenderer.Draw(ds);
+            }
+            else
+            {
+                rightVinylRenderer.Draw(sender, ViewModel.VinylRight.Position, ds);
+            }
+
+            ds.Transform = Matrix3x2.Identity;
+            lock (rightTouchPointsRenderer)
+            {
+                rightTouchPointsRenderer.Draw(ds);
             }
         }
 
@@ -89,6 +115,43 @@ namespace Yugen.DJ
             if (vinylViewModel != null)
             {
                 vinylViewModel.IsTouched = true;
+
+                if (vinylViewModel.IsLeft)
+                {
+                    lock (leftTouchPointsRenderer)
+                    {
+                        leftTouchPointsRenderer.OnPointerPressed();
+                    }
+                }
+                else
+                {
+                    lock (rightTouchPointsRenderer)
+                    {
+                        rightTouchPointsRenderer.OnPointerPressed();
+                    }
+                }
+            }
+        }
+
+        private void OnPointerMoved(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            var canvasAnimatedControl = GetCanvasAnimatedControl(sender);
+            if (canvasAnimatedControl == null)
+                return;
+
+            if (canvasAnimatedControl.Name == nameof(LeftCanvasAnimatedControl))
+            {
+                lock (leftTouchPointsRenderer)
+                {
+                    leftTouchPointsRenderer.OnPointerMoved(e.GetIntermediatePoints(canvasAnimatedControl));
+                }
+            }
+            else
+            {
+                lock (rightTouchPointsRenderer)
+                {
+                    rightTouchPointsRenderer.OnPointerMoved(e.GetIntermediatePoints(canvasAnimatedControl));
+                }
             }
         }
 
@@ -102,16 +165,19 @@ namespace Yugen.DJ
         }
 
 
+        private CanvasAnimatedControl GetCanvasAnimatedControl(object sender) =>
+            sender is CanvasAnimatedControl canvasAnimatedControl
+                ? canvasAnimatedControl : null;
+
         private VinylViewModel GetVinylViedModel(object sender)
         {
-            if (sender is CanvasAnimatedControl canvasAnimatedControl)
-            {
-                return canvasAnimatedControl.Name == nameof(LeftCanvasAnimatedControl)
-                    ? ViewModel.VinylLeft
-                    : ViewModel.VinylRight;
-            }
+            var canvasAnimatedControl = GetCanvasAnimatedControl(sender);
+            if (canvasAnimatedControl == null)
+                return null;
 
-            return null;
+            return canvasAnimatedControl.Name == nameof(LeftCanvasAnimatedControl)
+                ? ViewModel.VinylLeft
+                : ViewModel.VinylRight;
         }
 
 
@@ -133,6 +199,52 @@ namespace Yugen.DJ
             LeftCanvasAnimatedControl = null;
             RightCanvasAnimatedControl.RemoveFromVisualTree();
             RightCanvasAnimatedControl = null;
+        }
+    }
+
+    class TouchPointsRenderer
+    {
+        Queue<Vector2> points = new Queue<Vector2>();
+        const int maxPoints = 100;
+
+        public void OnPointerPressed()
+        {
+            points.Clear();
+        }
+
+        public void OnPointerMoved(IList<PointerPoint> intermediatePoints)
+        {
+            foreach (var point in intermediatePoints)
+            {
+                if (point.IsInContact)
+                {
+                    if (points.Count > maxPoints)
+                    {
+                        points.Dequeue();
+                    }
+
+                    points.Enqueue(point.Position.ToVector2());
+                }
+            }
+        }
+
+        public void Draw(CanvasDrawingSession ds)
+        {
+            int pointerPointIndex = 0;
+            Vector2 prev = new Vector2(0, 0);
+            const float penRadius = 10;
+            foreach (Vector2 p in points)
+            {
+                if (pointerPointIndex != 0)
+                {
+                    ds.DrawLine(prev, p, Colors.DarkRed, penRadius * 2);
+                }
+                prev = p;
+                pointerPointIndex++;
+            }
+
+            if (points.Count > 0)
+                points.Dequeue();
         }
     }
 }

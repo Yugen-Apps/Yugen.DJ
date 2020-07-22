@@ -25,7 +25,7 @@ namespace Yugen.DJ.ViewModels
         };
 
         private readonly IAudioService _audioService;
-        private readonly bool _isLeft;
+
         private bool _isHeadPhones;
         private bool _isTouched;
         private bool _isPaused = true;
@@ -39,19 +39,13 @@ namespace Yugen.DJ.ViewModels
 
         public VinylViewModel(bool isLeft)
         {
-            _isLeft = isLeft;
+            IsLeft = isLeft;
             IsHeadPhones = isLeft ? true : false;
             _audioService = Ioc.Default.GetService<IAudioService>();
             _audioService.PositionChanged += AudioServiceOnPositionChanged;
         }
 
-        private void AudioServiceOnPositionChanged(object sender, TimeSpan position)
-        {
-            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
-            {
-                Position = position;
-            });
-        }
+        public bool IsLeft { get; }
 
         public bool IsPaused
         {
@@ -146,6 +140,20 @@ namespace Yugen.DJ.ViewModels
             await _audioService.Init();
         }
 
+        public void AddAudioVisualizer(SpectrumVisualizer spectrumVisualizer) =>
+            _audioService.AddAudioVisualizer(spectrumVisualizer);
+
+        internal void AddAudioVisualizer(DiscreteVUBar leftVUBarChanel0, DiscreteVUBar leftVUBarChanel1) =>
+            _audioService.AddAudioVisualizer(leftVUBarChanel0, leftVUBarChanel1);
+
+        private void AudioServiceOnPositionChanged(object sender, TimeSpan position)
+        {
+            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
+            {
+                Position = position;
+            });
+        }
+
         private async Task OpenButtonCommandBehavior()
         {
             IsPaused = true;
@@ -154,11 +162,5 @@ namespace Yugen.DJ.ViewModels
 
             NaturalDuration = _audioService.NaturalDuration;
         }
-
-        public void AddAudioVisualizer(SpectrumVisualizer spectrumVisualizer) => 
-            _audioService.AddAudioVisualizer(spectrumVisualizer);
-
-        internal void AddAudioVisualizer(DiscreteVUBar leftVUBarChanel0, DiscreteVUBar leftVUBarChanel1) => 
-            _audioService.AddAudioVisualizer(leftVUBarChanel0, leftVUBarChanel1);
     }
 }
