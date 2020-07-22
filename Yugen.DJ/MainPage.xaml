@@ -72,11 +72,11 @@
         </StackPanel>
 
 
-        <canvas:CanvasAnimatedControl x:Name="AnimatedControl"
+        <canvas:CanvasAnimatedControl x:Name="LeftCanvasAnimatedControl"
                                       Grid.Row="1"
                                       Grid.Column="0"
                                       CreateResources="OnCreateResources"
-                                      Draw="OnDraw"
+                                      Draw="OnLeftDraw"
                                       Paused="{x:Bind ViewModel.VinylLeft.IsPaused, Mode=OneWay}"
                                       TargetElapsedTime="{x:Bind ViewModel.VinylLeft.TargetElapsedTime, Mode=OneWay}"
                                       PointerPressed="OnPointerPressed"
@@ -158,15 +158,15 @@
 
         </StackPanel>
 
-        <canvas:CanvasAnimatedControl x:Name="AnimatedControl2"
+        <canvas:CanvasAnimatedControl x:Name="RightCanvasAnimatedControl"
                                       Grid.Row="1"
                                       Grid.Column="4"
-                                      CreateResources="OnCreateResources2"
-                                      Draw="OnDraw2"
+                                      CreateResources="OnCreateResources"
+                                      Draw="OnRightDraw"
                                       Paused="{x:Bind ViewModel.VinylRight.IsPaused, Mode=OneWay}"
                                       TargetElapsedTime="{x:Bind ViewModel.VinylRight.TargetElapsedTime, Mode=OneWay}"
-                                      PointerPressed="OnPointerPressed2"
-                                      PointerReleased="OnPointerReleased2" />
+                                      PointerPressed="OnPointerPressed"
+                                      PointerReleased="OnPointerReleased" />
 
 
         <Slider Grid.Row="2"

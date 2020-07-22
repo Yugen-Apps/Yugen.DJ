@@ -157,7 +157,7 @@ namespace Yugen.DJ.Services
 
         private void Graph_QuantumProcessed(AudioGraph sender, object args)
         {
-            var a = _source.Source.GetData();
+            var a = _source?.Source?.GetData();
             PositionChanged?.Invoke(sender, masterFileInput?.Position ?? new TimeSpan());
         }
 

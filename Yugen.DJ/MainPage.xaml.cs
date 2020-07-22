@@ -8,63 +8,22 @@ using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Yugen.DJ.Renderer;
+using Yugen.DJ.ViewModels;
 
 namespace Yugen.DJ
 {
     public sealed partial class MainPage : Page
     {
         private const float width = 1000;
-
         private const float height = 1000;
 
-        private VinylRenderer sweepRenderer;
-        private VinylRenderer sweepRenderer2;
+        private VinylRenderer leftVinylRenderer;
+        private VinylRenderer rightVinylRenderer;
 
         public MainPage()
         {
             this.InitializeComponent();
         }
-
-        private static void CalculateLayout(Size size, float width, float height, out Matrix3x2 counterTransform, out Matrix3x2 graphTransform)
-        {
-            bool verticalLayout = true;
-            if (size.Width > size.Height)
-                verticalLayout = false;
-
-            if (verticalLayout)
-            {
-                float targetWidth = (float)size.Width;
-                float targetHeight = (float)size.Height / 2;
-
-                float scaleFactor = targetHeight / height;
-
-                if ((width * scaleFactor) > targetWidth)
-                {
-                    scaleFactor = targetWidth / width;
-                }
-
-                float xoffset = (targetWidth / 2) - (height * scaleFactor) / 2;
-                counterTransform = Matrix3x2.CreateScale(scaleFactor, scaleFactor) * Matrix3x2.CreateTranslation(xoffset, 0);
-                graphTransform = Matrix3x2.CreateScale(scaleFactor, scaleFactor) * Matrix3x2.CreateTranslation(xoffset, targetHeight);
-            }
-            else
-            {
-                float targetWidth = (float)size.Width / 2;
-                float targetHeight = (float)size.Height;
-
-                float scaleFactor = targetWidth / width;
-
-                if ((height * scaleFactor) > targetHeight)
-                {
-                    scaleFactor = targetHeight / height;
-                }
-
-                float yoffset = (targetHeight / 2) - (height * scaleFactor) / 2;
-                counterTransform = Matrix3x2.CreateScale(scaleFactor, scaleFactor) * Matrix3x2.CreateTranslation(0, yoffset);
-                graphTransform = Matrix3x2.CreateScale(scaleFactor, scaleFactor) * Matrix3x2.CreateTranslation(targetWidth, yoffset);
-            }
-        }
-
 
         private void OnCreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
@@ -74,77 +33,85 @@ namespace Yugen.DJ
         private async Task Canvas_CreateResourcesAsync(CanvasAnimatedControl sender)
         {
             var vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Assets/Vinyl.png", 60);
-            sweepRenderer = new VinylRenderer(sender, vinylBitmap);
-        }
-
-        private void OnDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
-        {
-            int updateCount = (int)(args.Timing.UpdateCount);
-
-            var ds = args.DrawingSession;
-
-            // Pick layout
-            var size = sender.Size;
-
-            CalculateLayout(size, width, height, out Matrix3x2 counterTransform, out Matrix3x2 graphTransform);
-
-            // Draw
-            ds.Transform = counterTransform;
-
-            if (!ViewModel.VinylLeft.IsTouched)
+            if (sender.Name == nameof(LeftCanvasAnimatedControl))
             {
-                sweepRenderer.Draw(sender, args.Timing, ds);
+                leftVinylRenderer = new VinylRenderer(sender, vinylBitmap);
+            }
+            else
+            {
+                rightVinylRenderer = new VinylRenderer(sender, vinylBitmap);
             }
         }
 
-        private void OnPointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        {
-            ViewModel.VinylLeft.IsTouched = true;
-        }
-        private void OnPointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        {
-            ViewModel.VinylLeft.IsTouched = false;
-        }
 
-        private void OnCreateResources2(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
+        private void OnLeftDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
-            args.TrackAsyncAction(Canvas_CreateResourcesAsync2(sender).AsAsyncAction());
-        }
-
-        private async Task Canvas_CreateResourcesAsync2(CanvasAnimatedControl sender)
-        {
-            var vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Assets/Vinyl.png", 60);
-            sweepRenderer2 = new VinylRenderer(sender, vinylBitmap);
-        }
-
-        private void OnDraw2(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
-        {
-            int updateCount = (int)(args.Timing.UpdateCount);
-
             var ds = args.DrawingSession;
+            ds.Transform = CalculateLayout(sender.Size, width, height);
+                       
+            if (!ViewModel.VinylLeft.IsTouched)
+            {
+                leftVinylRenderer.Draw(sender, args.Timing, ds);
+            }
+        }
 
-            // Pick layout
-            var size = sender.Size;
-
-            CalculateLayout(size, width, height, out Matrix3x2 counterTransform, out Matrix3x2 graphTransform);
-
-            // Draw
-            ds.Transform = counterTransform;
+        private void OnRightDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
+        {
+            var ds = args.DrawingSession;
+            ds.Transform = CalculateLayout(sender.Size, width, height);
 
             if (!ViewModel.VinylRight.IsTouched)
             {
-                sweepRenderer2.Draw(sender, args.Timing, ds);
+                rightVinylRenderer.Draw(sender, args.Timing, ds);
             }
         }
 
-        private void OnPointerPressed2(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        private static Matrix3x2 CalculateLayout(Size size, float width, float height)
         {
-            ViewModel.VinylRight.IsTouched = true;
+            float targetWidth = (float)size.Width / 2;
+            float targetHeight = (float)size.Height;
+            float scaleFactor = targetWidth / width;
+
+            if ((height * scaleFactor) > targetHeight)
+            {
+                scaleFactor = targetHeight / height;
+            }
+
+            float yoffset = (targetHeight / 2) - (height * scaleFactor) / 2;
+
+            return Matrix3x2.CreateScale(scaleFactor, scaleFactor) * Matrix3x2.CreateTranslation(0, yoffset);
         }
 
-        private void OnPointerReleased2(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+
+        private void OnPointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            ViewModel.VinylRight.IsTouched = false;
+            var vinylViewModel = GetVinylViedModel(sender);
+            if (vinylViewModel != null)
+            {
+                vinylViewModel.IsTouched = true;
+            }
+        }
+
+        private void OnPointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            var vinylViewModel = GetVinylViedModel(sender);
+            if (vinylViewModel != null)
+            {
+                vinylViewModel.IsTouched = false;
+            }
+        }
+
+
+        private VinylViewModel GetVinylViedModel(object sender)
+        {
+            if (sender is CanvasAnimatedControl canvasAnimatedControl)
+            {
+                return canvasAnimatedControl.Name == nameof(LeftCanvasAnimatedControl)
+                    ? ViewModel.VinylLeft
+                    : ViewModel.VinylRight;
+            }
+
+            return null;
         }
 
 
@@ -153,8 +120,8 @@ namespace Yugen.DJ
             await ViewModel.LoadAudioDevces();
 
             ViewModel.VinylLeft.AddAudioVisualizer(LeftSpectrumVisualizer);
-            ViewModel.VinylLeft.AddAudioVisualizer(LeftVUBarChanel0, LeftVUBarChanel1);            
-            
+            ViewModel.VinylLeft.AddAudioVisualizer(LeftVUBarChanel0, LeftVUBarChanel1);
+
             ViewModel.VinylRight.AddAudioVisualizer(RightSpectrumVisualizer);
             ViewModel.VinylRight.AddAudioVisualizer(RightVUBarChanel0, RightVUBarChanel1);
         }
@@ -162,8 +129,10 @@ namespace Yugen.DJ
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             // Explicitly remove references to allow the Win2D controls to get garbage collected
-            AnimatedControl.RemoveFromVisualTree();
-            AnimatedControl = null;
+            LeftCanvasAnimatedControl.RemoveFromVisualTree();
+            LeftCanvasAnimatedControl = null;
+            RightCanvasAnimatedControl.RemoveFromVisualTree();
+            RightCanvasAnimatedControl = null;
         }
     }
 }
