@@ -2,12 +2,9 @@
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
-using System.Collections.Generic;
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.UI;
-using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Yugen.DJ.Renderer;
@@ -33,10 +30,10 @@ namespace Yugen.DJ
 
         private void OnCreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
-            args.TrackAsyncAction(Canvas_CreateResourcesAsync(sender).AsAsyncAction());
+            args.TrackAsyncAction(CreateResourcesAsync(sender).AsAsyncAction());
         }
 
-        private async Task Canvas_CreateResourcesAsync(CanvasAnimatedControl sender)
+        private async Task CreateResourcesAsync(CanvasAnimatedControl sender)
         {
             var vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Assets/Vinyl.png", 60);
             if (sender.Name == nameof(LeftCanvasAnimatedControl))
@@ -199,52 +196,6 @@ namespace Yugen.DJ
             LeftCanvasAnimatedControl = null;
             RightCanvasAnimatedControl.RemoveFromVisualTree();
             RightCanvasAnimatedControl = null;
-        }
-    }
-
-    class TouchPointsRenderer
-    {
-        Queue<Vector2> points = new Queue<Vector2>();
-        const int maxPoints = 100;
-
-        public void OnPointerPressed()
-        {
-            points.Clear();
-        }
-
-        public void OnPointerMoved(IList<PointerPoint> intermediatePoints)
-        {
-            foreach (var point in intermediatePoints)
-            {
-                if (point.IsInContact)
-                {
-                    if (points.Count > maxPoints)
-                    {
-                        points.Dequeue();
-                    }
-
-                    points.Enqueue(point.Position.ToVector2());
-                }
-            }
-        }
-
-        public void Draw(CanvasDrawingSession ds)
-        {
-            int pointerPointIndex = 0;
-            Vector2 prev = new Vector2(0, 0);
-            const float penRadius = 10;
-            foreach (Vector2 p in points)
-            {
-                if (pointerPointIndex != 0)
-                {
-                    ds.DrawLine(prev, p, Colors.DarkRed, penRadius * 2);
-                }
-                prev = p;
-                pointerPointIndex++;
-            }
-
-            if (points.Count > 0)
-                points.Dequeue();
         }
     }
 }

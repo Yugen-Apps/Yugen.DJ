@@ -132,6 +132,7 @@
     <Compile Include="DependencyInjection\Ioc.cs" />
     <Compile Include="Interfaces\IAudioService.cs" />
     <Compile Include="Interfaces\IAudioDeviceService.cs" />
+    <Compile Include="Renderer\TouchPointsRenderer.cs" />
     <Compile Include="ViewModels\DeckViewModel.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
