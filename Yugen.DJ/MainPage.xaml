@@ -75,12 +75,12 @@
         <canvas:CanvasAnimatedControl x:Name="LeftCanvasAnimatedControl"
                                       Grid.Row="1"
                                       Grid.Column="0"
-                                      CreateResources="OnCreateResources"
-                                      Draw="OnLeftDraw"
+                                      CreateResources="{x:Bind LeftVinylRenderer.OnCreateResources}"
+                                      Draw="{x:Bind LeftVinylRenderer.OnDraw}"
                                       TargetElapsedTime="{x:Bind ViewModel.VinylLeft.TargetElapsedTime, Mode=OneWay}"
-                                      PointerPressed="OnPointerPressed"
-                                      PointerMoved="OnPointerMoved"
-                                      PointerReleased="OnPointerReleased" />
+                                      PointerPressed="{x:Bind LeftVinylRenderer.OnPointerPressed}"
+                                      PointerMoved="{x:Bind LeftVinylRenderer.OnPointerMoved}"
+                                      PointerReleased="{x:Bind LeftVinylRenderer.OnPointerReleased}" />
 
         <StackPanel Grid.Row="1"
                     Grid.Column="1">
@@ -161,12 +161,12 @@
         <canvas:CanvasAnimatedControl x:Name="RightCanvasAnimatedControl"
                                       Grid.Row="1"
                                       Grid.Column="4"
-                                      CreateResources="OnCreateResources"
-                                      Draw="OnRightDraw"
+                                      CreateResources="{x:Bind RightVinylRenderer.OnCreateResources}"
+                                      Draw="{x:Bind RightVinylRenderer.OnDraw}"
                                       TargetElapsedTime="{x:Bind ViewModel.VinylRight.TargetElapsedTime, Mode=OneWay}"
-                                      PointerPressed="OnPointerPressed"
-                                      PointerMoved="OnPointerMoved"
-                                      PointerReleased="OnPointerReleased" />
+                                      PointerPressed="{x:Bind RightVinylRenderer.OnPointerPressed}"
+                                      PointerMoved="{x:Bind RightVinylRenderer.OnPointerMoved}"
+                                      PointerReleased="{x:Bind RightVinylRenderer.OnPointerReleased}" />
 
 
         <Slider Grid.Row="2"

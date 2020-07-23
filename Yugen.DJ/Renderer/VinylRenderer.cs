@@ -1,26 +1,57 @@
 ﻿using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Effects;
-using Microsoft.Graphics.Canvas.Geometry;
-using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Foundation;
-using Windows.Graphics.Display;
 using Windows.UI;
+using Yugen.DJ.ViewModels;
 
 namespace Yugen.DJ.Renderer
 {
-    internal class VinylRenderer
+    public class VinylRenderer
     {
-        private CanvasBitmap _vinylBitmap;
+        private const float width = 1000;
+        private const float height = 1000;
 
-        public VinylRenderer(CanvasAnimatedControl sender, CanvasBitmap vinylBitmap)
+        private CanvasBitmap _vinylBitmap;
+        private TouchPointsRenderer _touchPointsRenderer = new TouchPointsRenderer();
+
+        public VinylViewModel ViewModel { get; set; }
+
+        public void OnCreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
-            _vinylBitmap = vinylBitmap;
+            args.TrackAsyncAction(CreateResourcesAsync(sender).AsAsyncAction());
+        }
+
+        public async Task CreateResourcesAsync(CanvasAnimatedControl sender)
+        {
+            _vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Assets/Vinyl.png", 60);
+        }
+
+        public void OnDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
+        {
+            var ds = args.DrawingSession;
+            ds.Transform = CalculateLayout(sender.Size, width, height);
+
+            //var time = args.Timing.ElapsedTime;
+
+            if (ViewModel?.IsPaused ?? true)
+            {
+                Draw(ds);
+            }
+            else
+            {
+                Draw(sender, ViewModel.Position, ds);
+            }
+
+            ds.Transform = Matrix3x2.Identity;
+            lock (_touchPointsRenderer)
+            {
+                _touchPointsRenderer.Draw(ds);
+            }
         }
 
         //public void Draw(ICanvasAnimatedControl sender, CanvasTimingInformation timingInformation, CanvasDrawingSession ds)
@@ -97,6 +128,51 @@ namespace Yugen.DJ.Renderer
             catch
             {
             }
+        }
+
+
+        public void OnPointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            //ViewModel.IsTouched = true;
+
+            lock (_touchPointsRenderer)
+            {
+                _touchPointsRenderer.OnPointerPressed();
+            }
+
+        }
+
+        public void OnPointerMoved(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            if (sender is CanvasAnimatedControl canvasAnimatedControl)
+            {
+                lock (_touchPointsRenderer)
+                {
+                    _touchPointsRenderer.OnPointerMoved(e.GetIntermediatePoints(canvasAnimatedControl));
+                }
+            }
+        }
+
+        public void OnPointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            //ViewModel.IsTouched = false;
+        }
+
+
+        private static Matrix3x2 CalculateLayout(Size size, float width, float height)
+        {
+            float targetWidth = (float)size.Width / 2;
+            float targetHeight = (float)size.Height;
+            float scaleFactor = targetWidth / width;
+
+            if ((height * scaleFactor) > targetHeight)
+            {
+                scaleFactor = targetHeight / height;
+            }
+
+            float yoffset = (targetHeight / 2) - (height * scaleFactor) / 2;
+
+            return Matrix3x2.CreateScale(scaleFactor, scaleFactor) * Matrix3x2.CreateTranslation(0, yoffset);
         }
     }
 }
