@@ -15,19 +15,14 @@ namespace Yugen.DJ.ViewModels
     {
         public int[] TargetElapsedTimeList = {
             10000,
-            25000,
             50000,
-            75000,
             100000,
-            250000,
-            500000,
-            750000
+            500000
         };
 
         private readonly IAudioService _audioService;
 
         private bool _isHeadPhones;
-        private bool _isTouched;
         private bool _isPaused = true;
         private double _volume = 100;
         private double _fader;
@@ -67,12 +62,6 @@ namespace Yugen.DJ.ViewModels
 
                 _audioService?.IsHeadphones(_isHeadPhones);
             }
-        }
-
-        public bool IsTouched
-        {
-            get { return _isTouched; }
-            set { Set(ref _isTouched, value); }
         }
 
         public double Volume

@@ -40,11 +40,11 @@ namespace Yugen.DJ.Renderer
 
             if (ViewModel?.IsPaused ?? true)
             {
-                Draw(ds);
+                Draw(ds, new TimeSpan((long)position));
             }
             else
             {
-                Draw(sender, ViewModel.Position, ds);
+                Draw(ds, ViewModel.Position);
             }
 
             ds.Transform = Matrix3x2.Identity;
@@ -54,37 +54,9 @@ namespace Yugen.DJ.Renderer
             }
         }
 
-        //public void Draw(ICanvasAnimatedControl sender, CanvasTimingInformation timingInformation, CanvasDrawingSession ds)
-        //{
-        //    double fractionSecond;
-        //    int seconds;
-
-        //    var updatesPerSecond = 1000.0 / sender.TargetElapsedTime.TotalMilliseconds;
-        //    seconds = (int)(timingInformation.UpdateCount / updatesPerSecond % 10);
-
-        //    var updates = (double)timingInformation.UpdateCount;
-        //    fractionSecond = updates / updatesPerSecond % 1.0;
-
-        //    var Angle = (float)Math.PI * (seconds / 10.0f) * 2.0f;
-
-        //    Rotate(ds, fractionSecond);
-        //}
-
-        public void Draw(ICanvasAnimatedControl sender, TimeSpan timingInformation, CanvasDrawingSession ds)
+        public void Draw(CanvasDrawingSession ds, TimeSpan timingInformation)
         {
-            double fractionSecond;
-            int seconds;
-
-            seconds = timingInformation.Seconds;
-
-            fractionSecond = timingInformation.Milliseconds / 100;
-            fractionSecond /= 10;
-
-            Rotate(ds, fractionSecond);
-        }
-
-        public void Rotate(CanvasDrawingSession ds, double fractionSecond)
-        {
+            double fractionSecond = (double)timingInformation.Milliseconds / 1000;
             var fractionSecondAngle = (float)(2 * Math.PI * fractionSecond);
             var angle = (float)(fractionSecondAngle % (2 * Math.PI));
 
@@ -104,58 +76,57 @@ namespace Yugen.DJ.Renderer
                 var sourceRect = image.GetBounds(ds);
                 ds.DrawImage(image);
             }
-            catch
-            {
-            }
+            catch { }
         }
 
-        public void Draw(CanvasDrawingSession ds)
-        {
-            try
-            {
-                var originalImageRect = _vinylBitmap.GetBounds(ds);
-                var endpoint = new Vector2((float)originalImageRect.Width / 2, (float)originalImageRect.Height / 2);
+        //public void Draw(ICanvasAnimatedControl sender, CanvasTimingInformation timingInformation, CanvasDrawingSession ds)
+        //{
+        //    double fractionSecond;
+        //    int seconds;
 
-                ds.Clear(Colors.Transparent);
+        //    var updatesPerSecond = 1000.0 / sender.TargetElapsedTime.TotalMilliseconds;
+        //    seconds = (int)(timingInformation.UpdateCount / updatesPerSecond % 10);
 
-                ICanvasImage image = new Transform2DEffect
-                {
-                    Source = _vinylBitmap,
-                };
+        //    var updates = (double)timingInformation.UpdateCount;
+        //    fractionSecond = updates / updatesPerSecond % 1.0;
 
-                ds.DrawImage(image);
-            }
-            catch
-            {
-            }
-        }
+        //    var Angle = (float)Math.PI * (seconds / 10.0f) * 2.0f;
 
+        //    Rotate(ds, fractionSecond);
+        //}
+
+        double position;
+        bool isTouched;
 
         public void OnPointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            //ViewModel.IsTouched = true;
+            isTouched = true;
 
-            lock (_touchPointsRenderer)
-            {
-                _touchPointsRenderer.OnPointerPressed();
-            }
-
+            //lock (_touchPointsRenderer)
+            //{
+            //    _touchPointsRenderer.OnPointerPressed();
+            //}
         }
 
         public void OnPointerMoved(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
             if (sender is CanvasAnimatedControl canvasAnimatedControl)
             {
-                lock (_touchPointsRenderer)
+                //lock (_touchPointsRenderer)
+                //{
+                //    _touchPointsRenderer.OnPointerMoved(e.GetIntermediatePoints(canvasAnimatedControl));
+                //}
+
+                if (isTouched)
                 {
-                    _touchPointsRenderer.OnPointerMoved(e.GetIntermediatePoints(canvasAnimatedControl));
+                    position = (e.GetCurrentPoint(canvasAnimatedControl).Position.X) * 10000;
                 }
             }
         }
 
         public void OnPointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            //ViewModel.IsTouched = false;
+            isTouched = false;
         }
 
 
