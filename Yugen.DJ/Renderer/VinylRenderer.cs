@@ -28,33 +28,32 @@ namespace Yugen.DJ.Renderer
 
         public async Task CreateResourcesAsync(CanvasAnimatedControl sender)
         {
-            _vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Assets/Vinyl.png", 60);
+            _vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Assets/Images/Vinyl.png");
         }
 
         public void OnDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
             var ds = args.DrawingSession;
             ds.Transform = CalculateLayout(sender.Size, width, height);
-
             //var time = args.Timing.ElapsedTime;
-
+            
             if (ViewModel?.IsPaused ?? true)
             {
-                Draw(ds, new TimeSpan((long)position));
+                Draw(sender, ds, new TimeSpan((long)position));
             }
             else
             {
-                Draw(ds, ViewModel.Position);
+                Draw(sender, ds, ViewModel.Position);
             }
 
-            ds.Transform = Matrix3x2.Identity;
-            lock (_touchPointsRenderer)
-            {
-                _touchPointsRenderer.Draw(ds);
-            }
+            //ds.Transform = Matrix3x2.Identity;
+            //lock (_touchPointsRenderer)
+            //{
+            //    _touchPointsRenderer.Draw(ds);
+            //}
         }
 
-        public void Draw(CanvasDrawingSession ds, TimeSpan timingInformation)
+        public void Draw(ICanvasAnimatedControl sender, CanvasDrawingSession ds, TimeSpan timingInformation)
         {
             double fractionSecond = (double)timingInformation.Milliseconds / 1000;
             var fractionSecondAngle = (float)(2 * Math.PI * fractionSecond);
@@ -63,7 +62,7 @@ namespace Yugen.DJ.Renderer
             try
             {
                 var originalImageRect = _vinylBitmap.GetBounds(ds);
-                var endpoint = new Vector2((float)originalImageRect.Width / 2, (float)originalImageRect.Height / 2);
+                var endpoint = new Vector2((float)originalImageRect.Width, (float)originalImageRect.Height) / 2;
 
                 ds.Clear(Colors.Transparent);
 
@@ -73,8 +72,8 @@ namespace Yugen.DJ.Renderer
                     TransformMatrix = Matrix3x2.CreateRotation(angle, endpoint)
                 };
 
-                var sourceRect = image.GetBounds(ds);
-                ds.DrawImage(image);
+                var offset = (sender.Size.ToVector2() * ds.Transform.M11) / 2;
+                ds.DrawImage(image, offset);
             }
             catch { }
         }
@@ -132,7 +131,7 @@ namespace Yugen.DJ.Renderer
 
         private static Matrix3x2 CalculateLayout(Size size, float width, float height)
         {
-            float targetWidth = (float)size.Width / 2;
+            float targetWidth = (float)size.Width;
             float targetHeight = (float)size.Height;
             float scaleFactor = targetWidth / width;
 
@@ -141,9 +140,7 @@ namespace Yugen.DJ.Renderer
                 scaleFactor = targetHeight / height;
             }
 
-            float yoffset = (targetHeight / 2) - (height * scaleFactor) / 2;
-
-            return Matrix3x2.CreateScale(scaleFactor, scaleFactor) * Matrix3x2.CreateTranslation(0, yoffset);
+            return Matrix3x2.CreateScale(scaleFactor, scaleFactor);
         }
     }
 }
