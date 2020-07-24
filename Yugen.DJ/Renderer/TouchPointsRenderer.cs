@@ -8,7 +8,7 @@ namespace Yugen.DJ.Renderer
 {
     public class TouchPointsRenderer
     {
-        Queue<Vector2> points = new Queue<Vector2>();
+        readonly Queue<Vector2> points = new Queue<Vector2>();
         const int maxPoints = 100;
 
         public void OnPointerPressed()

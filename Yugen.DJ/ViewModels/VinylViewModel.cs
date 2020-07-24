@@ -35,7 +35,7 @@ namespace Yugen.DJ.ViewModels
         public VinylViewModel(bool isLeft)
         {
             IsLeft = isLeft;
-            IsHeadPhones = isLeft ? true : false;
+            IsHeadPhones = isLeft;
             _audioService = Ioc.Default.GetService<IAudioService>();
             _audioService.PositionChanged += AudioServiceOnPositionChanged;
         }
