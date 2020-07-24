@@ -38,7 +38,7 @@ namespace Yugen.DJ.Renderer
             ds.Transform = CalculateLayout(sender.Size, width, height);
             //var time = args.Timing.ElapsedTime;
             
-            if (ViewModel?.IsPaused ?? true)
+            if (isTouched || ViewModel == null)
             {
                 Draw(sender, ds, angle);
             }
@@ -59,6 +59,9 @@ namespace Yugen.DJ.Renderer
             double fractionSecond = (double)timingInformation.Milliseconds / 1000;
             var fractionSecondAngle = (float)(2 * Math.PI * fractionSecond);
             var angle = (float)(fractionSecondAngle % (2 * Math.PI));
+
+            var pitch = ((float)ViewModel.Pitch + 51) / 10;
+            angle += pitch;
 
             Draw(sender, ds, angle);
         }

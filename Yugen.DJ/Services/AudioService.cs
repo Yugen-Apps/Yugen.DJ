@@ -201,14 +201,14 @@ namespace Yugen.DJ.Services
 
 
         private PlaybackSource _source;
-        private SpectrumVisualizer _spectrumVisualizer;
+        //private SpectrumVisualizer _spectrumVisualizer;
         private DiscreteVUBar _leftVUBarChanel0;
         private DiscreteVUBar _leftVUBarChanel1;
 
-        public void AddAudioVisualizer(SpectrumVisualizer spectrumVisualizer)
-        {
-            _spectrumVisualizer = spectrumVisualizer;
-        }
+        //public void AddAudioVisualizer(SpectrumVisualizer spectrumVisualizer)
+        //{
+        //    _spectrumVisualizer = spectrumVisualizer;
+        //}
 
         public void AddAudioVisualizer(DiscreteVUBar leftVUBarChanel0, DiscreteVUBar leftVUBarChanel1)
         {
@@ -223,7 +223,7 @@ namespace Yugen.DJ.Services
 
             _source = PlaybackSource.CreateFromAudioNode(masterFileInput);
             
-            _spectrumVisualizer.Source = _source.Source;
+            //_spectrumVisualizer.Source = _source.Source;
             _leftVUBarChanel0.Source = _source.Source;
             _leftVUBarChanel1.Source = _source.Source;
         }

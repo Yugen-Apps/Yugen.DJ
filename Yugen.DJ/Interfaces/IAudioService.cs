@@ -17,7 +17,7 @@ namespace Yugen.DJ.Interfaces
         void ChangePitch(double pitch);
         void ChangeVolume(double volume, double fader);
         void IsHeadphones(bool isHeadphone);
-        void AddAudioVisualizer(SpectrumVisualizer spectrumVisualizer);
+        //void AddAudioVisualizer(SpectrumVisualizer spectrumVisualizer);
         void AddAudioVisualizer(DiscreteVUBar leftVUBarChanel0, DiscreteVUBar leftVUBarChanel1);
     }
 }

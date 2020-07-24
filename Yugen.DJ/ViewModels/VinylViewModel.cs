@@ -13,13 +13,6 @@ namespace Yugen.DJ.ViewModels
 {
     public class VinylViewModel : ViewModelBase
     {
-        public int[] TargetElapsedTimeList = {
-            10000,
-            50000,
-            100000,
-            500000
-        };
-
         private readonly IAudioService _audioService;
 
         private bool _isHeadPhones;
@@ -97,18 +90,6 @@ namespace Yugen.DJ.ViewModels
             }
         }
 
-        public TimeSpan TargetElapsedTime
-        {
-            get { return _targetElapsedTime; }
-            set { Set(ref _targetElapsedTime, value); }
-        }
-
-        public int SelectedTargetElapsedTime
-        {
-            get => (int)TargetElapsedTime.Ticks;
-            set => TargetElapsedTime = new TimeSpan(value);
-        }
-
         public TimeSpan NaturalDuration
         {
             get { return _naturalDuration; }
@@ -129,8 +110,8 @@ namespace Yugen.DJ.ViewModels
             await _audioService.Init();
         }
 
-        public void AddAudioVisualizer(SpectrumVisualizer spectrumVisualizer) =>
-            _audioService.AddAudioVisualizer(spectrumVisualizer);
+        //public void AddAudioVisualizer(SpectrumVisualizer spectrumVisualizer) =>
+        //    _audioService.AddAudioVisualizer(spectrumVisualizer);
 
         internal void AddAudioVisualizer(DiscreteVUBar leftVUBarChanel0, DiscreteVUBar leftVUBarChanel1) =>
             _audioService.AddAudioVisualizer(leftVUBarChanel0, leftVUBarChanel1);

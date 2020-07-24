@@ -46,9 +46,9 @@
                            Text="{x:Bind ViewModel.VinylLeft.Position, Mode=OneWay}" />
             </StackPanel>
 
-            <visualizer:SpectrumVisualizer x:Name="LeftSpectrumVisualizer"
+            <!--<visualizer:SpectrumVisualizer x:Name="LeftSpectrumVisualizer"
                                            Height="100"
-                                           Width="600" />
+                                           Width="600" />-->
 
         </StackPanel>
 
@@ -65,9 +65,9 @@
                            Text="{x:Bind ViewModel.VinylRight.Position, Mode=OneWay}" />
             </StackPanel>
 
-            <visualizer:SpectrumVisualizer x:Name="RightSpectrumVisualizer"
+            <!--<visualizer:SpectrumVisualizer x:Name="RightSpectrumVisualizer"
                                            Height="100"
-                                           Width="600" />
+                                           Width="600" />-->
 
         </StackPanel>
 
@@ -77,7 +77,6 @@
                                       Grid.Column="0"
                                       CreateResources="{x:Bind LeftVinylRenderer.OnCreateResources}"
                                       Draw="{x:Bind LeftVinylRenderer.OnDraw}"
-                                      TargetElapsedTime="{x:Bind ViewModel.VinylLeft.TargetElapsedTime, Mode=OneWay}"
                                       PointerPressed="{x:Bind LeftVinylRenderer.OnPointerPressed}"
                                       PointerMoved="{x:Bind LeftVinylRenderer.OnPointerMoved}"
                                       PointerReleased="{x:Bind LeftVinylRenderer.OnPointerReleased}" />
@@ -163,7 +162,6 @@
                                       Grid.Column="4"
                                       CreateResources="{x:Bind RightVinylRenderer.OnCreateResources}"
                                       Draw="{x:Bind RightVinylRenderer.OnDraw}"
-                                      TargetElapsedTime="{x:Bind ViewModel.VinylRight.TargetElapsedTime, Mode=OneWay}"
                                       PointerPressed="{x:Bind RightVinylRenderer.OnPointerPressed}"
                                       PointerMoved="{x:Bind RightVinylRenderer.OnPointerMoved}"
                                       PointerReleased="{x:Bind RightVinylRenderer.OnPointerReleased}" />
@@ -203,11 +201,6 @@
         <StackPanel Grid.Row="3"
                     Orientation="Horizontal">
 
-            <ComboBox Header="TargetElapsedTime:"
-                      ItemsSource="{x:Bind ViewModel.VinylLeft.TargetElapsedTimeList, Mode=OneWay}"
-                      SelectedItem="{x:Bind ViewModel.VinylLeft.SelectedTargetElapsedTime, Mode=TwoWay}"
-                      Margin="5" />
-
             <ToggleButton Content="Pause"
                           Margin="5"
                           IsChecked="{x:Bind ViewModel.VinylLeft.IsPaused, Mode=TwoWay}" />
@@ -220,11 +213,6 @@
         <StackPanel Grid.Row="3"
                     Grid.Column="4"
                     Orientation="Horizontal">
-
-            <ComboBox Header="TargetElapsedTime:"
-                      ItemsSource="{x:Bind ViewModel.VinylRight.TargetElapsedTimeList, Mode=OneWay}"
-                      SelectedItem="{x:Bind ViewModel.VinylRight.SelectedTargetElapsedTime, Mode=TwoWay}"
-                      Margin="5" />
 
             <ToggleButton Content="Pause"
                           Margin="5"
