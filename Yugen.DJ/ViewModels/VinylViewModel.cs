@@ -17,6 +17,7 @@ namespace Yugen.DJ.ViewModels
 
         private bool _isHeadPhones;
         private bool _isPaused = true;
+        private string _playPauseButton = "\uE768";
         private double _volume = 100;
         private double _fader;
         private double _pitch = 0;
@@ -35,17 +36,6 @@ namespace Yugen.DJ.ViewModels
 
         public bool IsLeft { get; }
 
-        public bool IsPaused
-        {
-            get { return _isPaused; }
-            set
-            {
-                Set(ref _isPaused, value);
-
-                _audioService.TogglePlay(_isPaused);
-            }
-        }
-
         public bool IsHeadPhones
         {
             get { return _isHeadPhones; }
@@ -55,6 +45,25 @@ namespace Yugen.DJ.ViewModels
 
                 _audioService?.IsHeadphones(_isHeadPhones);
             }
+        }
+
+        public bool IsPaused
+        {
+            get { return _isPaused; }
+            set
+            {
+                Set(ref _isPaused, value);
+
+                _audioService.TogglePlay(_isPaused);
+
+                PlayPauseButton = _isPaused ? "\uE768" : "\uE769";
+            }
+        }
+
+        public string PlayPauseButton
+        {
+            get { return _playPauseButton; }
+            set { Set(ref _playPauseButton, value); }
         }
 
         public double Volume
