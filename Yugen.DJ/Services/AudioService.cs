@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.Media.Audio;
 using Windows.Media.Render;
@@ -27,12 +26,17 @@ namespace Yugen.DJ.Services
         private AudioDeviceOutputNode headphonesDeviceOutput;
         private AudioFileInputNode headphonesFileInput;
 
+        private PlaybackSource _source;
+        private DiscreteVUBar _leftVUBarChanel0;
+        private DiscreteVUBar _leftVUBarChanel1;
+
         public AudioService()
         {
             _audioDeviceService = Ioc.Default.GetService<IAudioDeviceService>();
         }
 
         public event EventHandler<TimeSpan> PositionChanged;
+        public event EventHandler<StorageFile> FileLoaded;
 
         public TimeSpan NaturalDuration => masterFileInput?.Duration ?? new TimeSpan();
 
@@ -45,21 +49,22 @@ namespace Yugen.DJ.Services
         public async Task OpenFile()
         {
             file = await FilePickerHelper.OpenFile(
-                new List<string> { ".mp3" },
-                Windows.Storage.Pickers.PickerLocationId.MusicLibrary);
+                    new List<string> { ".mp3" },
+                    Windows.Storage.Pickers.PickerLocationId.MusicLibrary
+                );
 
             if (file == null)
                 return;
+
+            FileLoaded?.Invoke(null, file);
             MusicProperties musicProps = await file.Properties.GetMusicPropertiesAsync();
-            
+
             DisposeFileInputs();
 
             await AddFileToMasterDevice();
             await AddFileToHeadsetDevice();
 
             AddFileInputToAudioVisualizer();
-
-            //AddAudioFrameInputNode();
         }
 
         public void TogglePlay(bool isPaused)
@@ -111,6 +116,12 @@ namespace Yugen.DJ.Services
             }
         }
 
+        public void AddAudioVisualizer(DiscreteVUBar leftVUBarChanel0, DiscreteVUBar leftVUBarChanel1)
+        {
+            _leftVUBarChanel0 = leftVUBarChanel0;
+            _leftVUBarChanel1 = leftVUBarChanel1;
+        }
+
         private async Task InitMasterDevice()
         {
             AudioGraphSettings settings = new AudioGraphSettings(AudioRenderCategory.Media)
@@ -157,7 +168,7 @@ namespace Yugen.DJ.Services
 
         private void Graph_QuantumProcessed(AudioGraph sender, object args)
         {
-            var a = _source?.Source?.GetData();
+            var data = _source?.Source?.GetData();
             PositionChanged?.Invoke(sender, masterFileInput?.Position ?? new TimeSpan());
         }
 
@@ -199,31 +210,13 @@ namespace Yugen.DJ.Services
             headphonesFileInput.AddOutgoingConnection(headphonesDeviceOutput);
         }
 
-
-        private PlaybackSource _source;
-        //private SpectrumVisualizer _spectrumVisualizer;
-        private DiscreteVUBar _leftVUBarChanel0;
-        private DiscreteVUBar _leftVUBarChanel1;
-
-        //public void AddAudioVisualizer(SpectrumVisualizer spectrumVisualizer)
-        //{
-        //    _spectrumVisualizer = spectrumVisualizer;
-        //}
-
-        public void AddAudioVisualizer(DiscreteVUBar leftVUBarChanel0, DiscreteVUBar leftVUBarChanel1)
-        {
-            _leftVUBarChanel0 = leftVUBarChanel0;
-            _leftVUBarChanel1 = leftVUBarChanel1;
-        }
-
         private void AddFileInputToAudioVisualizer()
         {
             if (masterFileInput == null)
                 return;
 
             _source = PlaybackSource.CreateFromAudioNode(masterFileInput);
-            
-            //_spectrumVisualizer.Source = _source.Source;
+
             _leftVUBarChanel0.Source = _source.Source;
             _leftVUBarChanel1.Source = _source.Source;
         }
@@ -300,13 +293,5 @@ namespace Yugen.DJ.Services
 
         //    audioFrameInputNode.AddFrame(audioFrame);
         //}
-    }
-
-    [ComImport]
-    [Guid("5B0D3235-4DBA-4D44-865E-8F1D0E4FD04D")]
-    [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    unsafe interface IMemoryBufferByteAccess
-    {
-        void GetBuffer(out byte* buffer, out uint capacity);
     }
 }

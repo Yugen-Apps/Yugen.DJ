@@ -1,11 +1,13 @@
 ﻿using AudioVisualizer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Yugen.DJ.DependencyInjection;
 using Yugen.DJ.Interfaces;
+using Yugen.DJ.WaveForm;
 using Yugen.Toolkit.Standard.Mvvm.ComponentModel;
 using Yugen.Toolkit.Standard.Mvvm.Input;
 
@@ -24,14 +26,26 @@ namespace Yugen.DJ.ViewModels
         private TimeSpan _targetElapsedTime = new TimeSpan(10000);
         private TimeSpan _naturalDuration = new TimeSpan();
         private TimeSpan _position = new TimeSpan();
+        public CanvasControl WaveFormCanvas { get; private set; }
         private ICommand _openButtonCommand;
+
+        public WaveFormRenderer WaveFormRenderer = new WaveFormRenderer();
 
         public VinylViewModel(bool isLeft)
         {
             IsLeft = isLeft;
             IsHeadPhones = isLeft;
+
             _audioService = Ioc.Default.GetService<IAudioService>();
             _audioService.PositionChanged += AudioServiceOnPositionChanged;
+            _audioService.FileLoaded += AudioServiceOnFileLoaded;
+        }
+
+        private async void AudioServiceOnFileLoaded(object sender, Windows.Storage.StorageFile file)
+        {
+            await WaveFormRenderer.Render(file);
+
+            WaveFormCanvas.Invalidate();
         }
 
         public bool IsLeft { get; }
@@ -118,6 +132,8 @@ namespace Yugen.DJ.ViewModels
         {
             await _audioService.Init();
         }
+
+        public void AddWaveForm(CanvasControl waveFormCanvas) => WaveFormCanvas = waveFormCanvas;
 
         //public void AddAudioVisualizer(SpectrumVisualizer spectrumVisualizer) =>
         //    _audioService.AddAudioVisualizer(spectrumVisualizer);

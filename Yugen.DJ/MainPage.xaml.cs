@@ -1,14 +1,6 @@
-﻿using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.UI;
-using Microsoft.Graphics.Canvas.UI.Xaml;
-using System;
-using System.Numerics;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.UI.Xaml;
+﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Yugen.DJ.Renderers;
-using Yugen.DJ.ViewModels;
 
 namespace Yugen.DJ
 {
@@ -27,9 +19,11 @@ namespace Yugen.DJ
             await ViewModel.LoadAudioDevces();
 
             //ViewModel.VinylLeft.AddAudioVisualizer(LeftSpectrumVisualizer);
+            ViewModel.VinylLeft.AddWaveForm(LeftWaveFormCanvas);
             ViewModel.VinylLeft.AddAudioVisualizer(LeftVUBarChanel0, LeftVUBarChanel1);
 
             //ViewModel.VinylRight.AddAudioVisualizer(RightSpectrumVisualizer);
+            ViewModel.VinylRight.AddWaveForm(RightWaveFormCanvas);
             ViewModel.VinylRight.AddAudioVisualizer(RightVUBarChanel0, RightVUBarChanel1);
 
             LeftVinylRenderer.ViewModel = ViewModel.VinylLeft;

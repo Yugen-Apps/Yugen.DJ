@@ -1,4 +1,5 @@
-﻿using Microsoft.Graphics.Canvas;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -8,7 +9,10 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Input;
+using Yugen.DJ.DependencyInjection;
+using Yugen.DJ.Interfaces;
 using Yugen.DJ.ViewModels;
+using Yugen.DJ.WaveForm;
 
 namespace Yugen.DJ.Renderers
 {
@@ -17,7 +21,12 @@ namespace Yugen.DJ.Renderers
         private const float width = 1000;
         private const float height = 1000;
 
+        //private IAudioService _audioService;
         private CanvasBitmap _vinylBitmap;
+        private float angle;
+        private bool isTouched;
+
+        private WaveFormRenderer _waveFormRenderer => ViewModel?.WaveFormRenderer;
         //private readonly TouchPointsRenderer _touchPointsRenderer = new TouchPointsRenderer();
 
         public VinylViewModel ViewModel { get; set; }
@@ -91,20 +100,13 @@ namespace Yugen.DJ.Renderers
         //{
         //    double fractionSecond;
         //    int seconds;
-
         //    var updatesPerSecond = 1000.0 / sender.TargetElapsedTime.TotalMilliseconds;
         //    seconds = (int)(timingInformation.UpdateCount / updatesPerSecond % 10);
-
         //    var updates = (double)timingInformation.UpdateCount;
         //    fractionSecond = updates / updatesPerSecond % 1.0;
-
         //    var Angle = (float)Math.PI * (seconds / 10.0f) * 2.0f;
-
         //    Rotate(ds, fractionSecond);
         //}
-
-        float angle;
-        bool isTouched;
 
         public void OnPointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
@@ -129,8 +131,8 @@ namespace Yugen.DJ.Renderers
                 var radians = Math.Atan((currentLocation.Position.Y - dialCenter.Y) /
                                            (currentLocation.Position.X - dialCenter.X));
 
-                // in order to get these figures to work, I actually had to *add* 90 degrees to it,     
-                // and *subtract* 180 from it if the X coord is negative. 
+                // in order to get these figures to work, I actually had to *add* 90 degrees to it,
+                // and *subtract* 180 from it if the X coord is negative.
                 var x = radians * 180 / Math.PI + 90;
                 if (currentLocation.Position.X - dialCenter.X < 0)
                 {
@@ -151,6 +153,10 @@ namespace Yugen.DJ.Renderers
             isTouched = false;
         }
 
+        public void OnCanvasDraw(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            _waveFormRenderer?.DrawLine(sender, args.DrawingSession);
+        }
 
         private static Matrix3x2 CalculateLayout(Size size, float width, float height)
         {

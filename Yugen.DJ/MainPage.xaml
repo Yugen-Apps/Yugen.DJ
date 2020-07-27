@@ -243,6 +243,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
+        
         <StackPanel Grid.Column="0">
 
             <StackPanel Orientation="Horizontal">
@@ -259,6 +260,11 @@
             <!--<visualizer:SpectrumVisualizer x:Name="LeftSpectrumVisualizer"
                                            Height="100"
                                            Width="600" />-->
+
+            <canvas:CanvasControl x:Name="LeftWaveFormCanvas"
+                                  Draw="{x:Bind LeftVinylRenderer.OnCanvasDraw}"
+                                  Height="200"
+                                  Width="800" />
 
         </StackPanel>
 
@@ -278,6 +284,11 @@
             <!--<visualizer:SpectrumVisualizer x:Name="RightSpectrumVisualizer"
                                            Height="100"
                                            Width="600" />-->
+
+            <canvas:CanvasControl x:Name="RightWaveFormCanvas"
+                                  Draw="{x:Bind RightVinylRenderer.OnCanvasDraw}"
+                                  Height="200"
+                                  Width="800" />
 
         </StackPanel>
 
@@ -435,4 +446,5 @@
         </StackPanel>
 
     </Grid>
+    
 </Page>
