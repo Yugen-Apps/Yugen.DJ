@@ -10,7 +10,7 @@ using Windows.UI;
 using Windows.UI.Input;
 using Yugen.DJ.ViewModels;
 
-namespace Yugen.DJ.Renderer
+namespace Yugen.DJ.Renderers
 {
     public class VinylRenderer
     {
@@ -37,7 +37,7 @@ namespace Yugen.DJ.Renderer
             var ds = args.DrawingSession;
             ds.Transform = CalculateLayout(sender.Size, width, height);
             //var time = args.Timing.ElapsedTime;
-            
+
             if (isTouched || ViewModel == null)
             {
                 Draw(sender, ds, angle);
@@ -56,7 +56,7 @@ namespace Yugen.DJ.Renderer
 
         public void Draw(ICanvasAnimatedControl sender, CanvasDrawingSession ds, TimeSpan timingInformation)
         {
-            double fractionSecond = (double)timingInformation.Milliseconds / 1000;
+            var fractionSecond = (double)timingInformation.Milliseconds / 1000;
             var fractionSecondAngle = (float)(2 * Math.PI * fractionSecond);
             var angle = (float)(fractionSecondAngle % (2 * Math.PI));
 
@@ -81,7 +81,7 @@ namespace Yugen.DJ.Renderer
                     TransformMatrix = Matrix3x2.CreateRotation(angle, endpoint)
                 };
 
-                var offset = (sender.Size.ToVector2() * ds.Transform.M11) / 2;
+                var offset = sender.Size.ToVector2() * ds.Transform.M11 / 2;
                 ds.DrawImage(image, offset);
             }
             catch { }
@@ -118,21 +118,21 @@ namespace Yugen.DJ.Renderer
 
         public void OnPointerMoved(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            if (sender is CanvasAnimatedControl canvasAnimatedControl 
+            if (sender is CanvasAnimatedControl canvasAnimatedControl
                 && isTouched)
             {
                 PointerPoint currentLocation = e.GetCurrentPoint(canvasAnimatedControl);
 
-                Point dialCenter = new Point(canvasAnimatedControl.ActualHeight / 2, canvasAnimatedControl.ActualWidth / 2);
+                var dialCenter = new Point(canvasAnimatedControl.ActualHeight / 2, canvasAnimatedControl.ActualWidth / 2);
 
                 // Calculate an angle
-                double radians = Math.Atan((currentLocation.Position.Y - dialCenter.Y) /
+                var radians = Math.Atan((currentLocation.Position.Y - dialCenter.Y) /
                                            (currentLocation.Position.X - dialCenter.X));
 
                 // in order to get these figures to work, I actually had to *add* 90 degrees to it,     
                 // and *subtract* 180 from it if the X coord is negative. 
-                double x = (radians * 180 / Math.PI) + 90;
-                if ((currentLocation.Position.X - dialCenter.X) < 0)
+                var x = radians * 180 / Math.PI + 90;
+                if (currentLocation.Position.X - dialCenter.X < 0)
                 {
                     x -= 180;
                 }
@@ -154,11 +154,11 @@ namespace Yugen.DJ.Renderer
 
         private static Matrix3x2 CalculateLayout(Size size, float width, float height)
         {
-            float targetWidth = (float)size.Width;
-            float targetHeight = (float)size.Height;
-            float scaleFactor = targetWidth / width;
+            var targetWidth = (float)size.Width;
+            var targetHeight = (float)size.Height;
+            var scaleFactor = targetWidth / width;
 
-            if ((height * scaleFactor) > targetHeight)
+            if (height * scaleFactor > targetHeight)
             {
                 scaleFactor = targetHeight / height;
             }

@@ -132,13 +132,13 @@
     <Compile Include="DependencyInjection\Ioc.cs" />
     <Compile Include="Interfaces\IAudioService.cs" />
     <Compile Include="Interfaces\IAudioDeviceService.cs" />
-    <Compile Include="Renderer\TouchPointsRenderer.cs" />
+    <Compile Include="Renderers\TouchPointsRenderer.cs" />
     <Compile Include="ViewModels\DeckViewModel.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Renderer\VinylRenderer.cs" />
+    <Compile Include="Renderers\VinylRenderer.cs" />
     <Compile Include="ViewModels\VinylViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -190,7 +190,9 @@
       <Version>1.0.37</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Providers\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
