@@ -436,7 +436,8 @@
                     Grid.Column="4"
                     Orientation="Horizontal">
 
-            <ToggleButton Style="{ThemeResource PlayToggleButtonStyle}">
+            <ToggleButton IsChecked="{x:Bind ViewModel.VinylRight.IsPaused, Mode=TwoWay}"
+                          Style="{ThemeResource PlayToggleButtonStyle}">
                 <FontIcon Glyph="{x:Bind ViewModel.VinylRight.PlayPauseButton, Mode=OneWay}" />
             </ToggleButton>
 
