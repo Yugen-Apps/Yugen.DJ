@@ -9,14 +9,15 @@ using Yugen.Toolkit.Standard.Mvvm.ComponentModel;
 
 namespace Yugen.DJ.ViewModels
 {
-    public class DeckViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
         private readonly IAudioDeviceService _audioDeviceService;
+        private double _masterVolume = 0;
         private double _crossFader = 0;
         private DeviceInformation _masterAudioDeviceInformation;
         private DeviceInformation _headphonesAudioDeviceInformation;
 
-        public DeckViewModel()
+        public MainViewModel()
         {
             _audioDeviceService = Ioc.Default.GetService<IAudioDeviceService>();
         }
@@ -31,6 +32,17 @@ namespace Yugen.DJ.ViewModels
                 Set(ref _crossFader, value);
 
                 SetFader();
+            }
+        }
+
+        public double MasterVolume
+        {
+            get { return _masterVolume; }
+            set
+            {
+                Set(ref _masterVolume, value);
+
+                _audioDeviceService?.SetVolume(_masterVolume);
             }
         }
 
@@ -67,6 +79,7 @@ namespace Yugen.DJ.ViewModels
 
             MasterAudioDeviceInformation = _audioDeviceService.MasterAudioDeviceInformation;
             HeadphonesAudioDeviceInformation = _audioDeviceService.HeadphonesAudioDeviceInformation;
+            MasterVolume = _audioDeviceService?.GetMasterVolume() * 100 ?? MasterVolume;
 
             await VinylLeft.Init();
             await VinylRight.Init();

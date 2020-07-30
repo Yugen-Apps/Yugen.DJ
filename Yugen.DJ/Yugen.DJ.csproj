@@ -128,6 +128,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Services\IMemoryBufferByteAccess.cs" />
+    <Compile Include="SystemVolume\Interfaces\IActivateAudioInterfaceCompletionHandler.cs" />
+    <Compile Include="SystemVolume\Models\HResult.cs" />
+    <Compile Include="SystemVolume\Interfaces\IActivateAudioInterfaceAsyncOperation.cs" />
+    <Compile Include="SystemVolume\Interfaces\IAudioEndpointVolume.cs" />
+    <Compile Include="SystemVolume\VolumeControl.cs" />
     <Compile Include="WaveForm\Providers\AveragePeakProvider.cs" />
     <Compile Include="WaveForm\Providers\DecibelPeakProvider.cs" />
     <Compile Include="WaveForm\Interfaces\IPeakProvider.cs" />
@@ -144,7 +149,7 @@
     <Compile Include="Interfaces\IAudioService.cs" />
     <Compile Include="Interfaces\IAudioDeviceService.cs" />
     <Compile Include="Renderers\TouchPointsRenderer.cs" />
-    <Compile Include="ViewModels\DeckViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

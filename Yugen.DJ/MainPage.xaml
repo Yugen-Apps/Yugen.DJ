@@ -14,7 +14,7 @@
       Unloaded="OnUnloaded">
 
     <Page.DataContext>
-        <viewmodels:DeckViewModel x:Name="ViewModel" />
+        <viewmodels:MainViewModel x:Name="ViewModel" />
     </Page.DataContext>
 
     <Page.Resources>
@@ -243,7 +243,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        
+
         <StackPanel Grid.Column="0">
 
             <StackPanel Orientation="Horizontal">
@@ -265,6 +265,21 @@
                                   Draw="{x:Bind LeftVinylRenderer.OnCanvasDraw}"
                                   Height="200"
                                   Width="800" />
+
+        </StackPanel>
+
+        <StackPanel Grid.Column="1"
+                    Grid.ColumnSpan="3">
+
+            <Slider Grid.Row="2"
+                    Grid.Column="4"
+                    Header="Master Volume"
+                    Minimum="0"
+                    Maximum="100"
+                    TickFrequency="10"
+                    TickPlacement="Outside"
+                    Value="{x:Bind ViewModel.MasterVolume, Mode=TwoWay}"
+                    Width="200" />
 
         </StackPanel>
 
@@ -447,5 +462,5 @@
         </StackPanel>
 
     </Grid>
-    
+
 </Page>
