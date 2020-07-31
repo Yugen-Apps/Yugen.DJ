@@ -18,13 +18,11 @@ namespace Yugen.DJ
         {
             await ViewModel.LoadAudioDevces();
 
-            //ViewModel.VinylLeft.AddAudioVisualizer(LeftSpectrumVisualizer);
             ViewModel.VinylLeft.AddWaveForm(LeftWaveFormCanvas);
-            ViewModel.VinylLeft.AddAudioVisualizer(LeftVUBarChanel0, LeftVUBarChanel1);
+            ViewModel.VinylLeft.AddAudioVisualizer(LeftVUBarChannel0, LeftVUBarChannel1);
 
-            //ViewModel.VinylRight.AddAudioVisualizer(RightSpectrumVisualizer);
             ViewModel.VinylRight.AddWaveForm(RightWaveFormCanvas);
-            ViewModel.VinylRight.AddAudioVisualizer(RightVUBarChanel0, RightVUBarChanel1);
+            ViewModel.VinylRight.AddAudioVisualizer(RightVUBarChannel0, RightVUBarChannel1);
 
             LeftVinylRenderer.ViewModel = ViewModel.VinylLeft;
             RightVinylRenderer.ViewModel = ViewModel.VinylRight;

@@ -21,7 +21,6 @@ namespace Yugen.DJ.Renderers
         private const float width = 1000;
         private const float height = 1000;
 
-        //private IAudioService _audioService;
         private CanvasBitmap _vinylBitmap;
         private float angle;
         private bool isTouched;

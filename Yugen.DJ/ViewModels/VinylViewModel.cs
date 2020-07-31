@@ -3,8 +3,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
+using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI;
 using Yugen.DJ.DependencyInjection;
 using Yugen.DJ.Interfaces;
 using Yugen.DJ.WaveForm;
@@ -15,21 +18,20 @@ namespace Yugen.DJ.ViewModels
 {
     public class VinylViewModel : ViewModelBase
     {
+        public WaveFormRenderer WaveFormRenderer = new WaveFormRenderer();
         private readonly IAudioService _audioService;
 
         private bool _isHeadPhones;
         private bool _isPaused = true;
         private string _playPauseButton = "\uE768";
+        private string _artist;
+        private string _title;
         private double _volume = 100;
         private double _fader;
         private double _pitch = 0;
-        private TimeSpan _targetElapsedTime = new TimeSpan(10000);
         private TimeSpan _naturalDuration = new TimeSpan();
         private TimeSpan _position = new TimeSpan();
-        public CanvasControl WaveFormCanvas { get; private set; }
         private ICommand _openButtonCommand;
-
-        public WaveFormRenderer WaveFormRenderer = new WaveFormRenderer();
 
         public VinylViewModel(bool isLeft)
         {
@@ -41,11 +43,30 @@ namespace Yugen.DJ.ViewModels
             _audioService.FileLoaded += AudioServiceOnFileLoaded;
         }
 
-        private async void AudioServiceOnFileLoaded(object sender, Windows.Storage.StorageFile file)
-        {
-            await WaveFormRenderer.Render(file);
+        public CanvasControl WaveFormCanvas { get; private set; }
 
-            WaveFormCanvas.Invalidate();
+        public Vector3 ElementShadowOffset => new Vector3(2, 2, -10);
+        public float ElementShadowBlurRadius => 5;
+        public Color ElementShadowColor => Colors.Red;
+
+        public MeterBarLevel[] Levels
+        {
+            get
+            {
+                // Create bar steps with 1db steps from -86db to +6
+                const int fromDb = -86;
+                const int toDb = 6;
+                MeterBarLevel[] levels = new MeterBarLevel[toDb - fromDb];
+
+                for (int i = 0; i < levels.Count(); i++)
+                {
+                    float ratio = (float)i / (float)levels.Count();
+                    levels[i].Color = WaveFormRenderer.GradientColor(ratio);
+                    levels[i].Level = i + fromDb;
+                }
+
+                return levels;
+            }
         }
 
         public bool IsLeft { get; }
@@ -78,6 +99,18 @@ namespace Yugen.DJ.ViewModels
         {
             get { return _playPauseButton; }
             set { Set(ref _playPauseButton, value); }
+        }
+
+        public string Artist
+        {
+            get { return _artist; }
+            set { Set(ref _artist, value); }
+        }
+
+        public string Title
+        {
+            get { return _title; }
+            set { Set(ref _title, value); }
         }
 
         public double Volume
@@ -135,11 +168,19 @@ namespace Yugen.DJ.ViewModels
 
         public void AddWaveForm(CanvasControl waveFormCanvas) => WaveFormCanvas = waveFormCanvas;
 
-        //public void AddAudioVisualizer(SpectrumVisualizer spectrumVisualizer) =>
-        //    _audioService.AddAudioVisualizer(spectrumVisualizer);
+        internal void AddAudioVisualizer(DiscreteVUBar VUBarChannel0, DiscreteVUBar VUBarChannel1) =>
+            _audioService.AddAudioVisualizer(VUBarChannel0, VUBarChannel1);
 
-        internal void AddAudioVisualizer(DiscreteVUBar leftVUBarChanel0, DiscreteVUBar leftVUBarChanel1) =>
-            _audioService.AddAudioVisualizer(leftVUBarChanel0, leftVUBarChanel1);
+        private async void AudioServiceOnFileLoaded(object sender, Windows.Storage.StorageFile file)
+        {
+            var musicProps = await file.Properties.GetMusicPropertiesAsync();
+            Artist = musicProps.Artist;
+            Title = musicProps.Title;
+
+            await WaveFormRenderer.Render(file);
+
+            WaveFormCanvas.Invalidate();
+        }
 
         private void AudioServiceOnPositionChanged(object sender, TimeSpan position)
         {

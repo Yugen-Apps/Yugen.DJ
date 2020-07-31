@@ -4,6 +4,13 @@ using Yugen.DJ.WaveForm.Models;
 
 namespace Yugen.DJ.WaveForm.Providers
 {
+    /// <summary>
+    /// The peak provider decides how peaks are calculated. There are four built in options you can choose from. 
+    /// MaxPeakProvider simply picks out the maximum sample value in the timeblock that each bar represents. 
+    /// RmsPeakProvider calculates the root mean square of each sample and returns the maximum value found in a specified blcok. 
+    /// SamplingPeakProvider simply samples the samples, and you pass in a sample interval.
+    /// AveragePeakProvider averages the sample values and takes a scale parameter to multiply the average by as it tends to produce lower values.
+    /// </summary>
     public abstract class PeakProvider : IPeakProvider
     {
         protected ISampleProvider Provider { get; private set; }

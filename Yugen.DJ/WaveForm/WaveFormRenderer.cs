@@ -51,6 +51,10 @@ namespace Yugen.DJ.WaveForm
 
         public void DrawRealLine(CanvasControl sender, CanvasDrawingSession ds)
         {
+            // DecibelScale - if true, convert values to decibels for a logarithmic waveform
+            if (_settings.DecibelScale)
+                _peakProvider = new DecibelPeakProvider(_peakProvider, 48);
+
             var midPoint = _settings.TopHeight;
 
             var x = 0;
@@ -121,7 +125,7 @@ namespace Yugen.DJ.WaveForm
             }
         }
 
-        private static Color GradientColor(float mu)
+        public static Color GradientColor(float mu)
         {
             var c = (byte)((Math.Sin(mu * Math.PI * 2) + 1) * 127.5);
 
