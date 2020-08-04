@@ -19,7 +19,7 @@ namespace Yugen.DJ.WaveForm
 
         public async Task Render(IStorageFile file)
         {
-            var tmp = await file.CopyAsync(ApplicationData.Current.TemporaryFolder, file.Name, NameCollisionOption.ReplaceExisting);
+            var tmp = await file.CopyAsync(ApplicationData.Current.TemporaryFolder, file.Name, NameCollisionOption.GenerateUniqueName);
             
             using (var reader = new MediaFoundationReader(tmp.Path))
             {

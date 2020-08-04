@@ -26,6 +26,7 @@ namespace Yugen.DJ.ViewModels
         private string _playPauseButton = "\uE768";
         private string _artist;
         private string _title;
+        private double _bpm;
         private double _volume = 100;
         private double _fader;
         private double _pitch = 0;
@@ -113,6 +114,12 @@ namespace Yugen.DJ.ViewModels
             set { Set(ref _title, value); }
         }
 
+        public double BPM
+        {
+            get { return _bpm; }
+            set { Set(ref _bpm, value);}
+        }
+
         public double Volume
         {
             get { return _volume; }
@@ -178,6 +185,9 @@ namespace Yugen.DJ.ViewModels
             Title = musicProps.Title;
 
             await WaveFormRenderer.Render(file);
+
+            var bpmDetector = new BPMDetector();
+            BPM = await bpmDetector.Detect(file);
 
             WaveFormCanvas.Invalidate();
         }

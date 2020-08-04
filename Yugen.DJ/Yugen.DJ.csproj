@@ -133,6 +133,7 @@
     <Compile Include="SystemVolume\Interfaces\IActivateAudioInterfaceAsyncOperation.cs" />
     <Compile Include="SystemVolume\Interfaces\IAudioEndpointVolume.cs" />
     <Compile Include="SystemVolume\VolumeControl.cs" />
+    <Compile Include="WaveForm\BPMDetector.cs" />
     <Compile Include="WaveForm\Providers\AveragePeakProvider.cs" />
     <Compile Include="WaveForm\Providers\DecibelPeakProvider.cs" />
     <Compile Include="WaveForm\Interfaces\IPeakProvider.cs" />

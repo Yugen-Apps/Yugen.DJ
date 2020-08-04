@@ -43,19 +43,23 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Column="0"
                        Text="{x:Bind ViewModel.VinylLeft.Position, Mode=OneWay}" />
-
+            
             <TextBlock Grid.Column="1"
+                       Text="{x:Bind ViewModel.VinylLeft.BPM, Mode=OneWay}" />
+
+            <TextBlock Grid.Column="2"
                        HorizontalAlignment="Right"
                        Text="{x:Bind ViewModel.VinylLeft.NaturalDuration, Mode=OneWay}" />
 
             <canvas:CanvasControl x:Name="LeftWaveFormCanvas"
                                   Grid.Row="1"
-                                  Grid.ColumnSpan="2"
+                                  Grid.ColumnSpan="3"
                                   Draw="{x:Bind LeftVinylRenderer.OnCanvasDraw}"
                                   Height="100"
                                   Width="500" />
@@ -64,7 +68,7 @@
                        Text="{x:Bind ViewModel.VinylLeft.Artist, Mode=OneWay}" />
 
             <TextBlock Grid.Row="2"
-                       Grid.Column="1"
+                       Grid.Column="2"
                        HorizontalAlignment="Right"
                        Text="{x:Bind ViewModel.VinylLeft.Title, Mode=OneWay}" />
 
@@ -95,6 +99,7 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
@@ -102,12 +107,15 @@
                        Text="{x:Bind ViewModel.VinylRight.Position, Mode=OneWay}" />
 
             <TextBlock Grid.Column="1"
+                       Text="{x:Bind ViewModel.VinylRight.BPM, Mode=OneWay}" />
+
+            <TextBlock Grid.Column="2"
                        HorizontalAlignment="Right"
                        Text="{x:Bind ViewModel.VinylRight.NaturalDuration, Mode=OneWay}" />
 
             <canvas:CanvasControl x:Name="RightWaveFormCanvas"
                                   Grid.Row="1"
-                                  Grid.ColumnSpan="2"
+                                  Grid.ColumnSpan="3"
                                   Draw="{x:Bind RightVinylRenderer.OnCanvasDraw}"
                                   Height="100"
                                   Width="500" />
@@ -116,7 +124,7 @@
                        Text="{x:Bind ViewModel.VinylRight.Artist, Mode=OneWay}" />
 
             <TextBlock Grid.Row="2"
-                       Grid.Column="1"
+                       Grid.Column="2"
                        HorizontalAlignment="Right"
                        Text="{x:Bind ViewModel.VinylRight.Title, Mode=OneWay}" />
 
