@@ -1,6 +1,7 @@
 ﻿using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -40,9 +41,9 @@ namespace Yugen.DJ.WaveForm
 
 
         public async Task<double> Detect(IStorageFile file)
-        {            
-            var tmp = await file.CopyAsync(ApplicationData.Current.TemporaryFolder, file.Name, NameCollisionOption.GenerateUniqueName);
-            MediaFoundationReader reader = new MediaFoundationReader(tmp.Path);
+        {
+            var stream = await file.OpenStreamForReadAsync();
+            MyMediaFoundationReader reader = new MyMediaFoundationReader(stream);
                 
             var isp = reader.ToSampleProvider();
             var buffer = new float[reader.Length / 2];

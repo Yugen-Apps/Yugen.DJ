@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
@@ -12,6 +13,7 @@ namespace Yugen.DJ.ViewModels
     public class MainViewModel : ViewModelBase
     {
         private readonly IAudioDeviceService _audioDeviceService;
+        private readonly ILogger<MainViewModel> _logger;
         private double _masterVolume = 0;
         private double _crossFader = 0;
         private DeviceInformation _masterAudioDeviceInformation;
@@ -20,6 +22,7 @@ namespace Yugen.DJ.ViewModels
         public MainViewModel()
         {
             _audioDeviceService = Ioc.Default.GetService<IAudioDeviceService>();
+            _logger = Ioc.Default.GetService<ILogger<MainViewModel>>();
         }
 
         public ObservableCollection<DeviceInformation> AudioDeviceInformationCollection { get; set; } = new ObservableCollection<DeviceInformation>();
@@ -85,6 +88,9 @@ namespace Yugen.DJ.ViewModels
             await VinylRight.Init();
 
             SetFader();
+
+            _logger.LogDebug("aaa");
+            _logger.LogInformation("bbb");
         }
 
         private void SetFader()

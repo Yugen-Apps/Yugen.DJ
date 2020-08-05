@@ -2,6 +2,7 @@
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using NAudio.Wave;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI;
@@ -19,9 +20,9 @@ namespace Yugen.DJ.WaveForm
 
         public async Task Render(IStorageFile file)
         {
-            var tmp = await file.CopyAsync(ApplicationData.Current.TemporaryFolder, file.Name, NameCollisionOption.GenerateUniqueName);
-            
-            using (var reader = new MediaFoundationReader(tmp.Path))
+            var stream = await file.OpenStreamForReadAsync();
+
+            using (var reader = new MyMediaFoundationReader(stream))
             {
                 ISampleProvider isp = reader.ToSampleProvider();
                 var buffer = new float[reader.Length / 2];
