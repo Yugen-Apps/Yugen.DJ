@@ -6,13 +6,13 @@ namespace Yugen.DJ
 {
     public sealed partial class MainPage : Page
     {
-        public VinylRenderer LeftVinylRenderer { get; set; } = new VinylRenderer();
-        public VinylRenderer RightVinylRenderer { get; set; } = new VinylRenderer();
-
         public MainPage()
         {
             this.InitializeComponent();
         }
+
+        public VinylRenderer LeftVinylRenderer { get; set; } = new VinylRenderer();
+        public VinylRenderer RightVinylRenderer { get; set; } = new VinylRenderer();
 
         private async void OnLoaded(object sender, RoutedEventArgs e)
         {

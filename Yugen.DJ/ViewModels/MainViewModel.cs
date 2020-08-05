@@ -89,8 +89,8 @@ namespace Yugen.DJ.ViewModels
 
             SetFader();
 
-            _logger.LogDebug("aaa");
-            _logger.LogInformation("bbb");
+            //_logger.LogDebug("aaa");
+            //_logger.LogInformation("bbb");
         }
 
         private void SetFader()

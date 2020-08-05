@@ -167,7 +167,6 @@ namespace Yugen.DJ.Services
 
         private void MasterAudioGraphOnQuantumProcessed(AudioGraph sender, object args)
         {
-            
             //var data = _source?.Source?.GetData();
             PositionChanged?.Invoke(sender, masterFileInput?.Position ?? new TimeSpan());
         }
@@ -239,7 +238,6 @@ namespace Yugen.DJ.Services
             //    //MinFrequency = 110.0f;    // Note A2
             //    //MaxFrequency = 3520.0f;  // Note A7
             //    //FrequencyScale = ScaleType.Logarithmic,
-
 
             //    //CacheData = true,
             //    //ChannelCount = 2,

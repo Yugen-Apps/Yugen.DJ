@@ -1,7 +1,4 @@
-﻿using Windows.UI;
-using Windows.UI.Xaml.Controls;
-
-namespace Yugen.DJ.WaveForm.Models
+﻿namespace Yugen.DJ.Audio.WaveForm.Models
 {
     public class WaveFormRendererSettings
     {

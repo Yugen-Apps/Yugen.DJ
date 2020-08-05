@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NLog;
 using NLog.Config;
 using NLog.Extensions.Logging;
 using NLog.Targets;
@@ -17,7 +16,6 @@ using Yugen.DJ.Services;
 
 namespace Yugen.DJ
 {
-
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
@@ -53,7 +51,7 @@ namespace Yugen.DJ
                     var logTrace = new TraceTarget();
                     // var logOutput = new OutputDebugStringTarget();
 
-                    // Rules for mapping loggers to targets            
+                    // Rules for mapping loggers to targets
                     config.AddRule(NLog.LogLevel.Debug, NLog.LogLevel.Fatal, logTrace);
                     config.AddRule(NLog.LogLevel.Info, NLog.LogLevel.Fatal, logFile);
 
@@ -109,7 +107,7 @@ namespace Yugen.DJ
         /// </summary>
         /// <param name="sender">The Frame which failed navigation</param>
         /// <param name="e">Details about the navigation failure</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }

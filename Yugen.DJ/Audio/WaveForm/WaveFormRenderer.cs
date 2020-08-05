@@ -6,17 +6,38 @@ using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI;
-using Yugen.DJ.WaveForm.Interfaces;
-using Yugen.DJ.WaveForm.Models;
-using Yugen.DJ.WaveForm.Providers;
+using Yugen.DJ.Audio.WaveForm.Interfaces;
+using Yugen.DJ.Audio.WaveForm.Models;
+using Yugen.DJ.Audio.WaveForm.Providers;
 
-namespace Yugen.DJ.WaveForm
+namespace Yugen.DJ.Audio.WaveForm
 {
+    /// <summary>
+    /// https://github.com/naudio/NAudio.WaveFormRenderer
+    /// </summary>
     public partial class WaveFormRenderer
     {
+        private readonly WaveFormRendererSettings _settings = new WaveFormRendererSettings();
+
         private bool _isFinished;
-        private WaveFormRendererSettings _settings = new WaveFormRendererSettings();
         private IPeakProvider _peakProvider = new MaxPeakProvider();
+
+        public WaveFormRenderer()
+        {
+        }
+
+        public WaveFormRenderer(WaveFormRendererSettings settings, IPeakProvider peakProvider)
+        {
+            _settings = settings;
+            _peakProvider = peakProvider;
+        }
+
+        public static Color GradientColor(float mu)
+        {
+            var c = (byte)((Math.Sin(mu * Math.PI * 2) + 1) * 127.5);
+
+            return Color.FromArgb(255, (byte)(255 - c), c, 220);
+        }
 
         public async Task Render(IStorageFile file)
         {
@@ -83,7 +104,7 @@ namespace Yugen.DJ.WaveForm
 
                 for (var n = 0; n < _settings.SpacerPixels; n++)
                 {
-                    // spacer bars are always the lower of the 
+                    // spacer bars are always the lower of the
                     var max = Math.Min(currentPeak.Max, nextPeak.Max);
                     var min = Math.Max(currentPeak.Min, nextPeak.Min);
 
@@ -124,13 +145,6 @@ namespace Yugen.DJ.WaveForm
                 ds.DrawLine(x, 0, x, y, color, strokeWidth);
                 ds.DrawLine(x, height, x, y, color, 10 - strokeWidth);
             }
-        }
-
-        public static Color GradientColor(float mu)
-        {
-            var c = (byte)((Math.Sin(mu * Math.PI * 2) + 1) * 127.5);
-
-            return Color.FromArgb(255, (byte)(255 - c), c, 220);
         }
     }
 }

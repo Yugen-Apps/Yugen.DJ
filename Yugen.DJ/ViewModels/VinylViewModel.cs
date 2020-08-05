@@ -8,9 +8,10 @@ using System.Numerics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI;
+using Yugen.DJ.Audio.BPM;
+using Yugen.DJ.Audio.WaveForm;
 using Yugen.DJ.DependencyInjection;
 using Yugen.DJ.Interfaces;
-using Yugen.DJ.WaveForm;
 using Yugen.Toolkit.Standard.Mvvm.ComponentModel;
 using Yugen.Toolkit.Standard.Mvvm.Input;
 
@@ -117,7 +118,7 @@ namespace Yugen.DJ.ViewModels
         public double BPM
         {
             get { return _bpm; }
-            set { Set(ref _bpm, value);}
+            set { Set(ref _bpm, value); }
         }
 
         public double Volume

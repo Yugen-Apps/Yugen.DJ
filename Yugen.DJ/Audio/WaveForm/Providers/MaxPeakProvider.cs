@@ -1,8 +1,8 @@
 ﻿using NAudio.Wave;
 using System.Linq;
-using Yugen.DJ.WaveForm.Models;
+using Yugen.DJ.Audio.WaveForm.Models;
 
-namespace Yugen.DJ.WaveForm.Providers
+namespace Yugen.DJ.Audio.WaveForm.Providers
 {
     public class MaxPeakProvider : PeakProvider
     {

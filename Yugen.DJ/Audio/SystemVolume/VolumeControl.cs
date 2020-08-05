@@ -4,10 +4,10 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
 using Windows.Media.Devices;
-using Yugen.DJ.SystemVolume.Interfaces;
-using Yugen.DJ.SystemVolume.Models;
+using Yugen.DJ.Audio.SystemVolume.Interfaces;
+using Yugen.DJ.Audio.SystemVolume.Models;
 
-namespace Yugen.DJ.SystemVolume
+namespace Yugen.DJ.Audio.SystemVolume
 {
     /// <summary>
     /// Control the system volume from UWP, using the IAudioEndpointVolume interface
@@ -43,7 +43,7 @@ namespace Yugen.DJ.SystemVolume
                 // Only adapt volume if the current level is below the specified minimum level
                 return masterVol.GetMasterVolumeLevelScalar();
             }
-            catch 
+            catch
             {
                 return -1;
             }
@@ -63,7 +63,7 @@ namespace Yugen.DJ.SystemVolume
                 // Make sure that the audio is not muted
                 masterVol.SetMute(false, Guid.Empty);
                 var newAudioValue = Convert.ToSingle(level);
-                
+
                 masterVol.SetMasterVolumeLevelScalar(newAudioValue, Guid.Empty);
             }
             catch { }

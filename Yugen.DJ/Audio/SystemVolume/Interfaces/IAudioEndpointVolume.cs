@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace Yugen.DJ.SystemVolume.Interfaces
+namespace Yugen.DJ.Audio.SystemVolume.Interfaces
 {
     [ComImport]
     [Guid("5CDF2C82-841E-4546-9722-0CF74078229A"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]

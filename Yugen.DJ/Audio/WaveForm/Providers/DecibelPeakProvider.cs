@@ -1,9 +1,9 @@
 ﻿using NAudio.Wave;
 using System;
-using Yugen.DJ.WaveForm.Interfaces;
-using Yugen.DJ.WaveForm.Models;
+using Yugen.DJ.Audio.WaveForm.Interfaces;
+using Yugen.DJ.Audio.WaveForm.Models;
 
-namespace Yugen.DJ.WaveForm.Providers
+namespace Yugen.DJ.Audio.WaveForm.Providers
 {
     public class DecibelPeakProvider : IPeakProvider
     {

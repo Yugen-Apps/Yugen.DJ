@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Graphics.Canvas;
+﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -9,10 +8,8 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Input;
-using Yugen.DJ.DependencyInjection;
-using Yugen.DJ.Interfaces;
+using Yugen.DJ.Audio.WaveForm;
 using Yugen.DJ.ViewModels;
-using Yugen.DJ.WaveForm;
 
 namespace Yugen.DJ.Renderers
 {
@@ -25,11 +22,10 @@ namespace Yugen.DJ.Renderers
         private float angle;
         private bool isTouched;
 
-        private WaveFormRenderer _waveFormRenderer => ViewModel?.WaveFormRenderer;
-        //private readonly TouchPointsRenderer _touchPointsRenderer = new TouchPointsRenderer();
-
         public VinylViewModel ViewModel { get; set; }
+        private WaveFormRenderer _waveFormRenderer => ViewModel?.WaveFormRenderer;
 
+        //private readonly TouchPointsRenderer _touchPointsRenderer = new TouchPointsRenderer();
         public void OnCreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
             args.TrackAsyncAction(CreateResourcesAsync(sender).AsAsyncAction());
