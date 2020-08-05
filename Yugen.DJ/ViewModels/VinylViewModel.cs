@@ -2,7 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Uwp.Helpers;
+using NAudio.Wave;
 using System;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
@@ -185,11 +187,36 @@ namespace Yugen.DJ.ViewModels
             Artist = musicProps.Artist;
             Title = musicProps.Title;
 
-            await WaveFormRenderer.Render(file);
+            var stream = await file.OpenStreamForReadAsync();
+            ISampleProvider isp;
+            var samples = 0L;
+            var buffer = new float[0];
+            var sampleRate = 0;
+            var totalMinutes = 0d;
 
-            var bpmDetector = new BPMDetector();
-            BPM = await bpmDetector.Detect(file);
+            double bpm = 0;
+            await Task.Run(() =>
+            {
+                using (var reader = new StreamMediaFoundationReader(stream))
+                {
+                    isp = reader.ToSampleProvider();
+                    buffer = new float[reader.Length / 2];
+                    isp.Read(buffer, 0, buffer.Length);
 
+                    var bytesPerSample = reader.WaveFormat.BitsPerSample / 8;
+                    samples = reader.Length / bytesPerSample;
+
+                    sampleRate = isp.WaveFormat.SampleRate;
+                    totalMinutes = reader.TotalTime.TotalMinutes;
+                }
+
+                WaveFormRenderer.Render(isp, samples);
+
+                var bpmDetector = new BPMDetector();
+                bpm = bpmDetector.Detect(buffer, sampleRate, totalMinutes);
+            });
+
+            BPM = bpm;
             WaveFormCanvas.Invalidate();
         }
 

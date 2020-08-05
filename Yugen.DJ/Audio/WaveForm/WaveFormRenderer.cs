@@ -42,21 +42,33 @@ namespace Yugen.DJ.Audio.WaveForm
         public async Task Render(IStorageFile file)
         {
             var stream = await file.OpenStreamForReadAsync();
+            Render(stream);
+        }
 
-            using (var reader = new MyMediaFoundationReader(stream))
+        public void Render(Stream stream)
+        {
+            ISampleProvider isp;
+            var samples = 0L;
+
+            using (var reader = new StreamMediaFoundationReader(stream))
             {
-                ISampleProvider isp = reader.ToSampleProvider();
+                isp = reader.ToSampleProvider();
                 var buffer = new float[reader.Length / 2];
                 isp.Read(buffer, 0, buffer.Length);
 
                 var bytesPerSample = reader.WaveFormat.BitsPerSample / 8;
-                var samples = reader.Length / bytesPerSample;
-                var samplesPerPixel = (int)(samples / _settings.Width);
-                var stepSize = _settings.PixelsPerPeak + _settings.SpacerPixels;
-                _peakProvider.Init(isp, samplesPerPixel * stepSize);
-
-                _isFinished = true;
+                samples = reader.Length / bytesPerSample;
             }
+            
+            Render(isp, samples);
+        }
+
+        public void Render(ISampleProvider isp, long samples)
+        {
+            var samplesPerPixel = (int)(samples / _settings.Width);
+            var stepSize = _settings.PixelsPerPeak + _settings.SpacerPixels;
+            _peakProvider.Init(isp, samplesPerPixel * stepSize);
+            _isFinished = true;
         }
 
         public void DrawLine(CanvasControl sender, CanvasDrawingSession ds)

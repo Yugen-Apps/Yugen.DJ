@@ -136,7 +136,6 @@
     <Compile Include="Audio\SystemVolume\VolumeControl.cs" />
     <Compile Include="Audio\BPM\BPMDetector.cs" />
     <Compile Include="Audio\BPM\BpmExtensions.cs" />
-    <Compile Include="Audio\WaveForm\MyMediaFoundationReader.cs" />
     <Compile Include="Audio\WaveForm\Providers\AveragePeakProvider.cs" />
     <Compile Include="Audio\WaveForm\Providers\DecibelPeakProvider.cs" />
     <Compile Include="Audio\WaveForm\Interfaces\IPeakProvider.cs" />

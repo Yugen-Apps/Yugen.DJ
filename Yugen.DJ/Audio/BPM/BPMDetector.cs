@@ -14,56 +14,48 @@ namespace Yugen.DJ.Audio.BPM
     /// </summary>
     public class BPMDetector
     {
-        //private string filename = null;
-        //private float[] leftChn;
-        //private float[] rightChn;
-        private double BPM;
-
-        //private double sampleRate = 44100;
-        //private double trackLength = 0;
-        //private IStorageFile file;
-
-        public double GetBPM() => BPM;
-
-        //public BPMDetector(string filename)
-        //{
-        //    this.filename = filename;
-        //    Detect();
-        //}
-
-        //public BPMDetector(short[] leftChn, short[] rightChn)
-        //{
-        //    this.leftChn = leftChn;
-        //    this.rightChn = rightChn;
-        //    Detect();
-        //}
+        public double BPM { get; private set; }
 
         public async Task<double> Detect(IStorageFile file)
         {
             var stream = await file.OpenStreamForReadAsync();
-            var reader = new MyMediaFoundationReader(stream);
+            return Detect(stream);
+        }
 
-            var isp = reader.ToSampleProvider();
-            var buffer = new float[reader.Length / 2];
-            isp.Read(buffer, 0, buffer.Length);
+        public double Detect(Stream stream)
+        {
+            var buffer = new float[0];
+            var sampleRate = 0;
+            var totalMinutes = 0d;
 
-            //List<float> chan1 = new List<float>();
-            //List<float> chan2 = new List<float>();
+            using (var reader = new StreamMediaFoundationReader(stream))
+            {
+                ISampleProvider isp = reader.ToSampleProvider();
+                buffer = new float[reader.Length / 2];
+                isp.Read(buffer, 0, buffer.Length);
 
-            //for (int i = 0; i < buffer.Length; i += 2)
-            //{
-            //    chan1.Add(buffer[i]);
-            //    chan2.Add(buffer[i + 1]);
-            //}
+                sampleRate = isp.WaveFormat.SampleRate;
+                totalMinutes = reader.TotalTime.TotalMinutes;
+            }
 
-            //leftChn = chan1.ToArray();
-            //rightChn = chan2.ToArray();
+            return Detect(buffer, sampleRate, totalMinutes);
+        }
 
-            //trackLength = (float)leftChn.Length / sampleRate;
+        //var chan1 = new float[buffer.Length / 2];
+        //var chan2 = new float[buffer.Length / 2];
+        //for (int i = 0; i < buffer.Length; i += 2)
+        //{
+        //    chan1[i] = buffer[i];
+        //    chan2[i] = buffer[i + 1];
+        //}
+        //trackLength = (float)leftChn.Length / isp.WaveFormat.SampleRate;
+        // 0.1s window ... 0.1*44100 = 4410 samples (lets adjust this to 3600)
+        //var sampleStep = 3600;
 
-            // 0.1s window ... 0.1*44100 = 4410 samples, lets adjust this to 3600
-            //int sampleStep = 3600;
-            var sampleStep = (int)(0.1 * isp.WaveFormat.SampleRate);
+        public double Detect(float[] buffer, int sampleRate, double totalMinutes)
+        {
+            // 0.1s window EG: 0.1*44100 = 4410 samples
+            var sampleStep = (int)(0.1 * sampleRate);
 
             // calculate energy over windows of size sampleSetep
             var energies = new List<double>();
@@ -86,13 +78,17 @@ namespace Yugen.DJ.Audio.BPM
             {
                 // calculate local energy average
                 var currentEnergy = energies[i];
-                var qwe = RangeSum(energies.ToArray(), i - offset, i - 1) + currentEnergy + RangeSum(energies.ToArray(), i + 1, i + offset);
+                var qwe = RangeSum(energies.ToArray(), i - offset, i - 1)
+                    + currentEnergy
+                    + RangeSum(energies.ToArray(), i + 1, i + offset);
                 qwe /= offset * 2 + 1;
 
                 // calculate energy variance of nearby energies
-                var nearbyEnergies = energies.Skip(i - 5).Take(5).Concat(energies.Skip(i + 1).Take(5)).ToList();
+                var nearbyEnergies = energies.Skip(i - 5).Take(5)
+                    .Concat(energies.Skip(i + 1).Take(5)).ToList();
                 average = nearbyEnergies.Average();
-                sumOfSquaresOfDifferences = nearbyEnergies.Select(val => (val - average) * (val - average)).Sum();
+                sumOfSquaresOfDifferences = nearbyEnergies
+                    .Select(val => (val - average) * (val - average)).Sum();
                 variance = sumOfSquaresOfDifferences / nearbyEnergies.Count / Math.Pow(10, 22);
 
                 // experimental linear regression - constant calculated according to local energy variance
@@ -101,7 +97,7 @@ namespace Yugen.DJ.Audio.BPM
                     beats++;
             }
 
-            BPM = beats / reader.TotalTime.TotalMinutes / 2;
+            BPM = beats / totalMinutes / 2;
             return BPM;
         }
 
@@ -112,7 +108,6 @@ namespace Yugen.DJ.Audio.BPM
             {
                 tmp += Math.Pow(samples[i], 2);
             }
-
             return tmp;
         }
 
@@ -123,7 +118,6 @@ namespace Yugen.DJ.Audio.BPM
             {
                 tmp += data[i];
             }
-
             return tmp;
         }
     }
