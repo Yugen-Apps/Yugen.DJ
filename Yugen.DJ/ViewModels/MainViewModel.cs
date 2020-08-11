@@ -3,10 +3,10 @@ using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
-using Yugen.DJ.DependencyInjection;
 using Yugen.DJ.Interfaces;
 using Yugen.Toolkit.Standard.Extensions;
 using Yugen.Toolkit.Standard.Mvvm.ComponentModel;
+using Yugen.Toolkit.Standard.Mvvm.DependencyInjection;
 
 namespace Yugen.DJ.ViewModels
 {

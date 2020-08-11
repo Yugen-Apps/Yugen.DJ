@@ -10,9 +10,9 @@ using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Yugen.DJ.DependencyInjection;
 using Yugen.DJ.Interfaces;
 using Yugen.DJ.Services;
+using Yugen.Toolkit.Standard.Mvvm.DependencyInjection;
 
 namespace Yugen.DJ
 {

@@ -3,11 +3,13 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Windows.Media;
 using Windows.Media.Audio;
+using Windows.Media.MediaProperties;
 using Windows.Media.Render;
 using Windows.Storage;
-using Yugen.DJ.DependencyInjection;
 using Yugen.DJ.Interfaces;
+using Yugen.Toolkit.Standard.Mvvm.DependencyInjection;
 using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.DJ.Services
@@ -60,10 +62,39 @@ namespace Yugen.DJ.Services
 
             DisposeFileInputs();
 
+            //await Analyze(file);
+
             await AddFileToMasterDevice();
             await AddFileToHeadsetDevice();
 
             AddFileInputToAudioVisualizer();
+        }
+
+        private async Task Analyze(StorageFile file)
+        {
+            // Create analyzer for 10ms frames, 25% overlap
+            var analyzer = new AudioAnalyzer(100000, 2, 48000, 480, 120, 1024, false);
+
+            var stream = await file.OpenAsync(FileAccessMode.Read);
+            var reader = new AudioSourceReader(stream);
+
+            // Set output format to same as analyzer, 48k, 2 channels. Analyzer needs 32bit float samples
+            var format = AudioEncodingProperties.CreatePcm(48000, 2, 32);
+            format.Subtype = "Float";
+            reader.Format = format;
+
+            AudioFrame frame = null;
+
+            do
+            {
+                frame = reader.Read();
+                if (frame == null)
+                {
+                    break;
+                }
+                analyzer.ProcessInput(frame);
+
+            } while (frame != null);
         }
 
         public void TogglePlay(bool isPaused)
