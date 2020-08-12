@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Serilog;
 using Serilog.Events;
 using System;
@@ -8,11 +9,9 @@ using Windows.ApplicationModel.Activation;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Navigation;
 using Yugen.DJ.Interfaces;
 using Yugen.DJ.Services;
-using Yugen.Toolkit.Standard.Mvvm.DependencyInjection;
 
 namespace Yugen.DJ
 {

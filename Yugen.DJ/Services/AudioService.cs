@@ -1,5 +1,6 @@
 ﻿using AudioVisualizer;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,7 +10,6 @@ using Windows.Media.MediaProperties;
 using Windows.Media.Render;
 using Windows.Storage;
 using Yugen.DJ.Interfaces;
-using Yugen.Toolkit.Standard.Mvvm.DependencyInjection;
 using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.DJ.Services

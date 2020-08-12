@@ -1,6 +1,9 @@
 ﻿using AudioVisualizer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Uwp.Helpers;
 using NAudio.Wave;
 using System;
@@ -13,13 +16,10 @@ using Windows.UI;
 using Yugen.DJ.Audio.BPM;
 using Yugen.DJ.Audio.WaveForm;
 using Yugen.DJ.Interfaces;
-using Yugen.Toolkit.Standard.Mvvm.ComponentModel;
-using Yugen.Toolkit.Standard.Mvvm.DependencyInjection;
-using Yugen.Toolkit.Standard.Mvvm.Input;
 
 namespace Yugen.DJ.ViewModels
 {
-    public class VinylViewModel : ViewModelBase
+    public class VinylViewModel : ObservableObject
     {
         public WaveFormRenderer WaveFormRenderer = new WaveFormRenderer();
         private readonly IAudioService _audioService;
@@ -80,7 +80,7 @@ namespace Yugen.DJ.ViewModels
             get { return _isHeadPhones; }
             set
             {
-                Set(ref _isHeadPhones, value);
+                SetProperty(ref _isHeadPhones, value);
 
                 _audioService?.IsHeadphones(_isHeadPhones);
             }
@@ -91,7 +91,7 @@ namespace Yugen.DJ.ViewModels
             get { return _isPaused; }
             set
             {
-                Set(ref _isPaused, value);
+                SetProperty(ref _isPaused, value);
 
                 _audioService.TogglePlay(_isPaused);
 
@@ -102,25 +102,25 @@ namespace Yugen.DJ.ViewModels
         public string PlayPauseButton
         {
             get { return _playPauseButton; }
-            set { Set(ref _playPauseButton, value); }
+            set { SetProperty(ref _playPauseButton, value); }
         }
 
         public string Artist
         {
             get { return _artist; }
-            set { Set(ref _artist, value); }
+            set { SetProperty(ref _artist, value); }
         }
 
         public string Title
         {
             get { return _title; }
-            set { Set(ref _title, value); }
+            set { SetProperty(ref _title, value); }
         }
 
         public double BPM
         {
             get { return _bpm; }
-            set { Set(ref _bpm, value); }
+            set { SetProperty(ref _bpm, value); }
         }
 
         public double Volume
@@ -128,7 +128,7 @@ namespace Yugen.DJ.ViewModels
             get { return _volume; }
             set
             {
-                Set(ref _volume, value);
+                SetProperty(ref _volume, value);
 
                 _audioService.ChangeVolume(_volume, _fader);
             }
@@ -139,7 +139,7 @@ namespace Yugen.DJ.ViewModels
             get { return _fader; }
             set
             {
-                Set(ref _fader, value);
+                SetProperty(ref _fader, value);
 
                 _audioService.ChangeVolume(_volume, _fader);
             }
@@ -150,7 +150,7 @@ namespace Yugen.DJ.ViewModels
             get { return _pitch; }
             set
             {
-                Set(ref _pitch, value);
+                SetProperty(ref _pitch, value);
 
                 _audioService.ChangePitch(_pitch);
             }
@@ -159,13 +159,13 @@ namespace Yugen.DJ.ViewModels
         public TimeSpan NaturalDuration
         {
             get { return _naturalDuration; }
-            set { Set(ref _naturalDuration, value); }
+            set { SetProperty(ref _naturalDuration, value); }
         }
 
         public TimeSpan Position
         {
             get { return _position; }
-            set { Set(ref _position, value); }
+            set { SetProperty(ref _position, value); }
         }
 
         public ICommand OpenButtonCommand => _openButtonCommand

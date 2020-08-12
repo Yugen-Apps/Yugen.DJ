@@ -1,16 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Yugen.DJ.Interfaces;
 using Yugen.Toolkit.Standard.Extensions;
-using Yugen.Toolkit.Standard.Mvvm.ComponentModel;
-using Yugen.Toolkit.Standard.Mvvm.DependencyInjection;
 
 namespace Yugen.DJ.ViewModels
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : ObservableObject
     {
         private readonly IAudioDeviceService _audioDeviceService;
         private readonly ILogger<MainViewModel> _logger;
@@ -32,7 +32,7 @@ namespace Yugen.DJ.ViewModels
             get { return _crossFader; }
             set
             {
-                Set(ref _crossFader, value);
+                SetProperty(ref _crossFader, value);
 
                 SetFader();
             }
@@ -43,7 +43,7 @@ namespace Yugen.DJ.ViewModels
             get { return _masterVolume; }
             set
             {
-                Set(ref _masterVolume, value);
+                SetProperty(ref _masterVolume, value);
 
                 _audioDeviceService?.SetVolume(_masterVolume);
             }
@@ -54,7 +54,7 @@ namespace Yugen.DJ.ViewModels
             get { return _masterAudioDeviceInformation; }
             set
             {
-                Set(ref _masterAudioDeviceInformation, value);
+                SetProperty(ref _masterAudioDeviceInformation, value);
 
                 _audioDeviceService.MasterAudioDeviceInformation = _masterAudioDeviceInformation;
             }
@@ -65,7 +65,7 @@ namespace Yugen.DJ.ViewModels
             get { return _headphonesAudioDeviceInformation; }
             set
             {
-                Set(ref _headphonesAudioDeviceInformation, value);
+                SetProperty(ref _headphonesAudioDeviceInformation, value);
 
                 _audioDeviceService.HeadphonesAudioDeviceInformation = _headphonesAudioDeviceInformation;
             }
