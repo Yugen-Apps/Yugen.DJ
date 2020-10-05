@@ -5,17 +5,11 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
-      xmlns:System="using:System"
-      xmlns:viewmodels="using:Yugen.DJ.ViewModels"
       xmlns:visualizer="using:AudioVisualizer"
       mc:Ignorable="d"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
       Loaded="OnLoaded"
       Unloaded="OnUnloaded">
-
-    <Page.DataContext>
-        <viewmodels:MainViewModel x:Name="ViewModel" />
-    </Page.DataContext>
 
     <Grid>
         <Grid.RowDefinitions>

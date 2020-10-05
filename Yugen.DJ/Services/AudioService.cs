@@ -1,6 +1,4 @@
 ﻿using AudioVisualizer;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -31,9 +29,9 @@ namespace Yugen.DJ.Services
         private DiscreteVUBar VUBarChannel0;
         private DiscreteVUBar VUBarChannel1;
 
-        public AudioService()
+        public AudioService(IAudioDeviceService audioDeviceService)
         {
-            _audioDeviceService = Ioc.Default.GetService<IAudioDeviceService>();
+            _audioDeviceService = audioDeviceService;
         }
 
         public event EventHandler<TimeSpan> PositionChanged;

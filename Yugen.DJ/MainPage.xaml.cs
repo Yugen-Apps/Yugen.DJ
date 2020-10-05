@@ -1,6 +1,8 @@
-﻿using Windows.UI.Xaml;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Yugen.DJ.Renderers;
+using Yugen.DJ.ViewModels;
 
 namespace Yugen.DJ
 {
@@ -9,7 +11,11 @@ namespace Yugen.DJ
         public MainPage()
         {
             this.InitializeComponent();
+
+            DataContext = AppContainer.Services.GetService<MainViewModel>();
         }
+
+        private MainViewModel ViewModel => (MainViewModel)DataContext;
 
         public VinylRenderer LeftVinylRenderer { get; set; } = new VinylRenderer();
         public VinylRenderer RightVinylRenderer { get; set; } = new VinylRenderer();

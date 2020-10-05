@@ -127,6 +127,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AppContainer.cs" />
     <Compile Include="Audio\AudioFrameInput\AudioFrameService.cs" />
     <Compile Include="Audio\AudioFrameInput\IMemoryBufferByteAccess.cs" />
     <Compile Include="Audio\SystemVolume\Interfaces\IActivateAudioInterfaceCompletionHandler.cs" />
@@ -193,7 +194,7 @@
       <Version>7.0.0-preview2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp">
-      <Version>6.1.0</Version>
+      <Version>6.1.1</Version>
     </PackageReference>
     <PackageReference Include="NAudio">
       <Version>1.10.0</Version>
@@ -215,6 +216,9 @@
     </PackageReference>
     <PackageReference Include="Yugen.Toolkit.Uwp">
       <Version>1.0.38</Version>
+    </PackageReference>
+    <PackageReference Include="System.IO.FileSystem">
+      <Version>4.3.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

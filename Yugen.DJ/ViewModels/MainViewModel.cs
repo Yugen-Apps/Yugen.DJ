@@ -1,7 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
@@ -19,10 +17,15 @@ namespace Yugen.DJ.ViewModels
         private DeviceInformation _masterAudioDeviceInformation;
         private DeviceInformation _headphonesAudioDeviceInformation;
 
-        public MainViewModel()
+        public MainViewModel(IAudioDeviceService audioDeviceService, ILogger<MainViewModel> logger, VinylViewModel vinylLeft, VinylViewModel vinylRight)
         {
-            _audioDeviceService = Ioc.Default.GetService<IAudioDeviceService>();
-            _logger = Ioc.Default.GetService<ILogger<MainViewModel>>();
+            _audioDeviceService = audioDeviceService;
+            _logger = logger;
+
+            VinylLeft = vinylLeft;
+            VinylRight = vinylRight;
+
+            VinylLeft.Init(true);
         }
 
         public ObservableCollection<DeviceInformation> AudioDeviceInformationCollection { get; set; } = new ObservableCollection<DeviceInformation>();
@@ -71,9 +74,9 @@ namespace Yugen.DJ.ViewModels
             }
         }
 
-        public VinylViewModel VinylLeft { get; set; } = new VinylViewModel(true);
+        public VinylViewModel VinylLeft { get; set; }
 
-        public VinylViewModel VinylRight { get; set; } = new VinylViewModel(false);
+        public VinylViewModel VinylRight { get; set; }
 
         public async Task LoadAudioDevces()
         {
@@ -89,8 +92,9 @@ namespace Yugen.DJ.ViewModels
 
             SetFader();
 
-            //_logger.LogDebug("aaa");
-            //_logger.LogInformation("bbb");
+            _logger.LogDebug("aaa");
+            _logger.LogInformation("bbb");
+            _logger.LogWarning("ccc");
         }
 
         private void SetFader()

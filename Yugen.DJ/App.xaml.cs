@@ -1,17 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
-using Serilog;
-using Serilog.Events;
-using System;
-using System.IO;
+﻿using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Yugen.DJ.Interfaces;
-using Yugen.DJ.Services;
 
 namespace Yugen.DJ
 {
@@ -29,33 +21,8 @@ namespace Yugen.DJ
             this.InitializeComponent();
             this.Suspending += OnSuspending;
 
-            Ioc.Default.ConfigureServices(collection =>
-            {
-                collection.AddSingleton<IAudioDeviceService, AudioDeviceService>();
-                collection.AddTransient<IAudioService, AudioService>();
-                collection.AddLogging(loggingBuilder =>
-                {
-                    string logFilePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Logs\\Yugen.Dj.Log.");
-
-                    Log.Logger = new LoggerConfiguration()
-                        .MinimumLevel.Debug()
-                        .WriteTo.Debug()
-                         .WriteTo.Logger(l => l.Filter
-                             .ByIncludingOnly(e => e.Level == LogEventLevel.Information)
-                                 .WriteTo.File($"{logFilePath}.Info", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: LogEventLevel.Information))
-                         .WriteTo.Logger(l => l.Filter
-                             .ByIncludingOnly(e => e.Level == LogEventLevel.Warning)
-                                 .WriteTo.File($"{logFilePath}.Warning", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: LogEventLevel.Information))
-                         //.WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: LogEventLevel.Information)
-                         //.WriteTo.File(path: $"{logFilePath}.info.log", restrictedToMinimumLevel: LogEventLevel.Information, rollingInterval: RollingInterval.Day)
-                         //.WriteTo.File(path: $"{logFilePath}.error.log", restrictedToMinimumLevel: LogEventLevel.Warning, rollingInterval: RollingInterval.Day)
-                         .CreateLogger();
-
-                    Log.Debug("Serilog started!");
-                    Log.Information("Serilog started!");
-                    Log.Warning("Serilog started!");
-                });
-            });
+            // Register services
+            AppContainer.ConfigureServices();
         }
 
         /// <summary>

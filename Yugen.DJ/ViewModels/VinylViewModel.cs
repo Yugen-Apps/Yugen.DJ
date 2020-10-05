@@ -1,8 +1,6 @@
 ﻿using AudioVisualizer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Uwp.Helpers;
 using NAudio.Wave;
@@ -37,14 +35,17 @@ namespace Yugen.DJ.ViewModels
         private TimeSpan _position = new TimeSpan();
         private ICommand _openButtonCommand;
 
-        public VinylViewModel(bool isLeft)
+        public VinylViewModel(IAudioService audioService)
+        {
+            _audioService = audioService;
+            _audioService.PositionChanged += AudioServiceOnPositionChanged;
+            _audioService.FileLoaded += AudioServiceOnFileLoaded;
+        }
+
+        public void Init(bool isLeft)
         {
             IsLeft = isLeft;
             IsHeadPhones = isLeft;
-
-            _audioService = Ioc.Default.GetService<IAudioService>();
-            _audioService.PositionChanged += AudioServiceOnPositionChanged;
-            _audioService.FileLoaded += AudioServiceOnFileLoaded;
         }
 
         public CanvasControl WaveFormCanvas { get; private set; }
@@ -73,7 +74,7 @@ namespace Yugen.DJ.ViewModels
             }
         }
 
-        public bool IsLeft { get; }
+        public bool IsLeft { get; set; }
 
         public bool IsHeadPhones
         {
