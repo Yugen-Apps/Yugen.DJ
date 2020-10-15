@@ -12,7 +12,7 @@ namespace Yugen.DJ
         {
             this.InitializeComponent();
 
-            DataContext = AppContainer.Services.GetService<MainViewModel>();
+            DataContext = App.Current.Services.GetService<MainViewModel>();
         }
 
         private MainViewModel ViewModel => (MainViewModel)DataContext;

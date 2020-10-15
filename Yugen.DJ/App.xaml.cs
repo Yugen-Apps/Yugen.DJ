@@ -1,9 +1,17 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Serilog.Events;
+using System;
+using System.IO;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Yugen.DJ.Interfaces;
+using Yugen.DJ.Services;
+using Yugen.DJ.ViewModels;
 
 namespace Yugen.DJ
 {
@@ -18,12 +26,15 @@ namespace Yugen.DJ
         /// </summary>
         public App()
         {
+            Services = ConfigureServices();
+
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-
-            // Register services
-            AppContainer.ConfigureServices();
         }
+
+        public new static App Current => (App)Application.Current;
+
+        public IServiceProvider Services { get; }
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
@@ -86,6 +97,32 @@ namespace Yugen.DJ
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        private IServiceProvider ConfigureServices()
+        {
+            string logFilePath = Path.Combine(ApplicationData.Current.LocalFolder.Path, "Logs\\Yugen.Dj.Log.");
+
+            Log.Logger = new LoggerConfiguration()
+                   .MinimumLevel.Debug()
+                   .WriteTo.Debug()
+                   .WriteTo.File(logFilePath, restrictedToMinimumLevel: LogEventLevel.Information)
+                   .CreateLogger();
+
+            //Log.Debug("Serilog started Debug!");
+            //Log.Information("Serilog started Information!");
+            //Log.Warning("Serilog started Warning!");
+
+            return new ServiceCollection()
+                .AddSingleton<IAudioDeviceService, AudioDeviceService>()
+                .AddTransient<IAudioService, AudioService>()
+                .AddSingleton<MainViewModel>()
+                .AddTransient<VinylViewModel>()
+                .AddLogging(loggingBuilder =>
+                {
+                    loggingBuilder.AddSerilog(dispose: true);
+                })
+                .BuildServiceProvider();
         }
     }
 }
