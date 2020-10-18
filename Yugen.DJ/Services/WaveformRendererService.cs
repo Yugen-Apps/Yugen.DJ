@@ -2,66 +2,57 @@
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using NAudio.Wave;
 using System;
-using System.IO;
-using System.Threading.Tasks;
-using Windows.Storage;
-using Windows.UI;
-using Yugen.DJ.Audio.WaveForm.Interfaces;
-using Yugen.DJ.Audio.WaveForm.Models;
-using Yugen.DJ.Audio.WaveForm.Providers;
+using Yugen.DJ.Audio.Waveform.Interfaces;
+using Yugen.DJ.Audio.Waveform.Models;
+using Yugen.DJ.Audio.Waveform.Providers;
+using Yugen.DJ.Helpers;
+using Yugen.DJ.Interfaces;
 
-namespace Yugen.DJ.Audio.WaveForm
+namespace Yugen.DJ.Services
 {
     /// <summary>
-    /// https://github.com/naudio/NAudio.WaveFormRenderer
+    /// https://github.com/naudio/NAudio.WaveformRenderer
     /// </summary>
-    public partial class WaveFormRenderer
+    public class WaveformRendererService : IWaveformRendererService
     {
-        private readonly WaveFormRendererSettings _settings = new WaveFormRendererSettings();
+        private readonly WaveformRendererSettings _settings = new WaveformRendererSettings();
 
         private bool _isFinished;
         private IPeakProvider _peakProvider = new MaxPeakProvider();
 
-        public WaveFormRenderer()
+        public WaveformRendererService()
         {
         }
 
-        public WaveFormRenderer(WaveFormRendererSettings settings, IPeakProvider peakProvider)
+        public WaveformRendererService(WaveformRendererSettings settings, IPeakProvider peakProvider)
         {
             _settings = settings;
             _peakProvider = peakProvider;
         }
 
-        public static Color GradientColor(float mu)
-        {
-            var c = (byte)((Math.Sin(mu * Math.PI * 2) + 1) * 127.5);
+        //public async Task Render(IStorageFile file)
+        //{
+        //    var stream = await file.OpenStreamForReadAsync();
+        //    Render(stream);
+        //}
 
-            return Color.FromArgb(255, (byte)(255 - c), c, 220);
-        }
+        //public void Render(Stream stream)
+        //{
+        //    ISampleProvider isp;
+        //    var samples = 0L;
 
-        public async Task Render(IStorageFile file)
-        {
-            var stream = await file.OpenStreamForReadAsync();
-            Render(stream);
-        }
+        //    using (var reader = new StreamMediaFoundationReader(stream))
+        //    {
+        //        isp = reader.ToSampleProvider();
+        //        var buffer = new float[reader.Length / 2];
+        //        isp.Read(buffer, 0, buffer.Length);
 
-        public void Render(Stream stream)
-        {
-            ISampleProvider isp;
-            var samples = 0L;
+        //        var bytesPerSample = reader.Waveformat.BitsPerSample / 8;
+        //        samples = reader.Length / bytesPerSample;
+        //    }
 
-            using (var reader = new StreamMediaFoundationReader(stream))
-            {
-                isp = reader.ToSampleProvider();
-                var buffer = new float[reader.Length / 2];
-                isp.Read(buffer, 0, buffer.Length);
-
-                var bytesPerSample = reader.WaveFormat.BitsPerSample / 8;
-                samples = reader.Length / bytesPerSample;
-            }
-            
-            Render(isp, samples);
-        }
+        //    Render(isp, samples);
+        //}
 
         public void Render(ISampleProvider isp, long samples)
         {
@@ -99,7 +90,7 @@ namespace Yugen.DJ.Audio.WaveForm
             while (x < _settings.Width)
             {
                 var mu = (float)x / _settings.Width;
-                var color = GradientColor(mu);
+                var color = ColorHelper.GradientColor(mu);
 
                 var nextPeak = _peakProvider.GetNextPeak();
 
@@ -138,7 +129,7 @@ namespace Yugen.DJ.Audio.WaveForm
             var width = (float)sender.ActualWidth;
             var height = (float)sender.ActualHeight;
 
-            var middle = height / 2;
+            //var middle = height / 2;
 
             var steps = _isFinished ? 100 : 50; // Math.Min((int)(width / 10), 30);
 
@@ -147,10 +138,11 @@ namespace Yugen.DJ.Audio.WaveForm
                 var mu = (float)i / steps;
                 var a = (float)(mu * Math.PI * 2);
 
-                var color = GradientColor(mu);
+                var color = ColorHelper.GradientColor(mu);
 
                 var x = width * mu;
-                var y = (float)(middle + Math.Sin(a) * (middle * 0.3));
+                var rnd = new Random();
+                var y = rnd.Next(1, 100); //(float)(middle + Math.Sin(a) * (middle * 0.3));
 
                 var strokeWidth = 1; // (float)(Math.Cos(a) + 1) * 5;
 

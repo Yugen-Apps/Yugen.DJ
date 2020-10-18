@@ -1,111 +1,25 @@
-﻿using Microsoft.Extensions.Logging;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using System.Collections.ObjectModel;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+using System;
 using System.Threading.Tasks;
-using Windows.Devices.Enumeration;
-using Yugen.DJ.Interfaces;
-using Yugen.Toolkit.Standard.Extensions;
+using System.Windows.Input;
+using Yugen.DJ.Views;
 
 namespace Yugen.DJ.ViewModels
 {
     public class MainViewModel : ObservableObject
     {
-        private readonly IAudioDeviceService _audioDeviceService;
-        private readonly ILogger<MainViewModel> _logger;
-        private double _masterVolume = 0;
-        private double _crossFader = 0;
-        private DeviceInformation _masterAudioDeviceInformation;
-        private DeviceInformation _headphonesAudioDeviceInformation;
-
-        public MainViewModel(IAudioDeviceService audioDeviceService, ILogger<MainViewModel> logger, VinylViewModel vinylLeft, VinylViewModel vinylRight)
+        public MainViewModel()
         {
-            _audioDeviceService = audioDeviceService;
-            _logger = logger;
-
-            VinylLeft = vinylLeft;
-            VinylRight = vinylRight;
-
-            VinylLeft.Init(true);
+            SettingsCommand = new AsyncRelayCommand(SettingsCommandBehavior);
         }
 
-        public ObservableCollection<DeviceInformation> AudioDeviceInformationCollection { get; set; } = new ObservableCollection<DeviceInformation>();
+        public ICommand SettingsCommand { get; }
 
-        public double CrossFader
+        private async Task SettingsCommandBehavior()
         {
-            get { return _crossFader; }
-            set
-            {
-                SetProperty(ref _crossFader, value);
-
-                SetFader();
-            }
-        }
-
-        public double MasterVolume
-        {
-            get { return _masterVolume; }
-            set
-            {
-                SetProperty(ref _masterVolume, value);
-
-                _audioDeviceService?.SetVolume(_masterVolume);
-            }
-        }
-
-        public DeviceInformation MasterAudioDeviceInformation
-        {
-            get { return _masterAudioDeviceInformation; }
-            set
-            {
-                SetProperty(ref _masterAudioDeviceInformation, value);
-
-                _audioDeviceService.MasterAudioDeviceInformation = _masterAudioDeviceInformation;
-            }
-        }
-
-        public DeviceInformation HeadphonesAudioDeviceInformation
-        {
-            get { return _headphonesAudioDeviceInformation; }
-            set
-            {
-                SetProperty(ref _headphonesAudioDeviceInformation, value);
-
-                _audioDeviceService.HeadphonesAudioDeviceInformation = _headphonesAudioDeviceInformation;
-            }
-        }
-
-        public VinylViewModel VinylLeft { get; set; }
-
-        public VinylViewModel VinylRight { get; set; }
-
-        public async Task LoadAudioDevces()
-        {
-            await _audioDeviceService.Init();
-            AudioDeviceInformationCollection.AddRange(_audioDeviceService.DeviceInfoCollection);
-
-            MasterAudioDeviceInformation = _audioDeviceService.MasterAudioDeviceInformation;
-            HeadphonesAudioDeviceInformation = _audioDeviceService.HeadphonesAudioDeviceInformation;
-            MasterVolume = _audioDeviceService?.GetMasterVolume() * 100 ?? MasterVolume;
-
-            await VinylLeft.Init();
-            await VinylRight.Init();
-
-            SetFader();
-
-            _logger.LogDebug("aaa");
-            _logger.LogInformation("bbb");
-            _logger.LogWarning("ccc");
-        }
-
-        private void SetFader()
-        {
-            var absoluteValue = 20 - (_crossFader + 10);
-            var percentace = 100 * absoluteValue / 20;
-            VinylLeft.Fader = percentace / 100;
-
-            absoluteValue = _crossFader + 10;
-            percentace = 100 * absoluteValue / 20;
-            VinylRight.Fader = percentace / 100;
+            var settingsDialog = new SettingsDialog();
+            await settingsDialog.ShowAsync();
         }
     }
 }
