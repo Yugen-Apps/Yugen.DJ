@@ -1,6 +1,6 @@
-﻿namespace Yugen.DJ.Audio.WaveForm.Models
+﻿namespace Yugen.DJ.Audio.Waveform.Models
 {
-    public class WaveFormRendererSettings
+    public class WaveformRendererSettings
     {
         public int Width { get; set; } = 500;
         public int TopHeight { get; set; } = 50;

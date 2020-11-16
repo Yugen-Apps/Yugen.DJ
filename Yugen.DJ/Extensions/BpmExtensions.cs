@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Yugen.DJ.Audio.BPM
+namespace Yugen.DJ.Extensions
 {
     public static class BpmExtensions
     {

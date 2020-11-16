@@ -27,7 +27,7 @@ namespace Yugen.DJ.Audio.SystemVolume
     ///
     /// This code is also available from: https://gist.github.com/wbokkers/74e05ccc1ee2371ec55c4a7daf551a26
     /// </summary>
-    public static class VolumeControl
+    public static class SystemVolumeHelper
     {
         public static double GetVolume()
         {

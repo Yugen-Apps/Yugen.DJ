@@ -5,14 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Yugen.DJ.Audio.WaveForm;
+using Yugen.DJ.Interfaces;
 
 namespace Yugen.DJ.Audio.BPM
 {
     /// <summary>
     /// https://github.com/matixmatix/bpmdetector/blob/master/BPMDetector.cs
     /// </summary>
-    public class BPMDetector
+    public class BPMService : IBPMService
     {
         public double BPM { get; private set; }
 
@@ -48,7 +48,7 @@ namespace Yugen.DJ.Audio.BPM
         //    chan1[i] = buffer[i];
         //    chan2[i] = buffer[i + 1];
         //}
-        //trackLength = (float)leftChn.Length / isp.WaveFormat.SampleRate;
+        //trackLength = (float)leftChn.Length / isp.Waveformat.SampleRate;
         // 0.1s window ... 0.1*44100 = 4410 samples (lets adjust this to 3600)
         //var sampleStep = 3600;
 
@@ -97,8 +97,7 @@ namespace Yugen.DJ.Audio.BPM
                     beats++;
             }
 
-            BPM = beats / totalMinutes / 2;
-            return BPM;
+            return BPM = beats / totalMinutes / 2;
         }
 
         private static double RangeQuadSum(float[] samples, int start, int stop)

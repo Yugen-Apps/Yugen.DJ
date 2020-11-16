@@ -1,21 +1,20 @@
-﻿using AudioVisualizer;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+using Windows.Media.Audio;
 using Windows.Storage;
 
 namespace Yugen.DJ.Interfaces
 {
-    public interface IAudioService
+    public interface IAudioPlaybackService
     {
         event EventHandler<TimeSpan> PositionChanged;
 
-        event EventHandler<StorageFile> FileLoaded;
-
         TimeSpan NaturalDuration { get; }
+        AudioFileInputNode MasterFileInput { get; }
 
         Task Init();
 
-        Task OpenFile();
+        Task LoadSong(StorageFile audioFile);
 
         void TogglePlay(bool isPaused);
 
@@ -24,7 +23,5 @@ namespace Yugen.DJ.Interfaces
         void ChangeVolume(double volume, double fader);
 
         void IsHeadphones(bool isHeadphone);
-
-        void AddAudioVisualizer(DiscreteVUBar leftVUBarChanel0, DiscreteVUBar leftVUBarChanel1);
     }
 }

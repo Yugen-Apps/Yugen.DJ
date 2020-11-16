@@ -8,6 +8,7 @@
 
         <x:String x:Key="HeadPhonesIcon">&#xE7F6;</x:String>
         <x:String x:Key="EjectIcon">&#xF847;</x:String>
+        <x:String x:Key="SettingsIcon">&#xE713;</x:String>
         
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 

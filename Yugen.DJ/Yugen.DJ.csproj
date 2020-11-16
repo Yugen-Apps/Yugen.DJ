@@ -127,37 +127,74 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Factories\AudioPlaybackFactory.cs" />
     <Compile Include="Audio\AudioFrameInput\AudioFrameService.cs" />
     <Compile Include="Audio\AudioFrameInput\IMemoryBufferByteAccess.cs" />
     <Compile Include="Audio\SystemVolume\Interfaces\IActivateAudioInterfaceCompletionHandler.cs" />
     <Compile Include="Audio\SystemVolume\Models\HResult.cs" />
     <Compile Include="Audio\SystemVolume\Interfaces\IActivateAudioInterfaceAsyncOperation.cs" />
     <Compile Include="Audio\SystemVolume\Interfaces\IAudioEndpointVolume.cs" />
-    <Compile Include="Audio\SystemVolume\VolumeControl.cs" />
-    <Compile Include="Audio\BPM\BPMDetector.cs" />
-    <Compile Include="Audio\BPM\BpmExtensions.cs" />
-    <Compile Include="Audio\WaveForm\Providers\AveragePeakProvider.cs" />
-    <Compile Include="Audio\WaveForm\Providers\DecibelPeakProvider.cs" />
-    <Compile Include="Audio\WaveForm\Interfaces\IPeakProvider.cs" />
-    <Compile Include="Audio\WaveForm\Models\PeakInfo.cs" />
-    <Compile Include="Audio\WaveForm\Providers\MaxPeakProvider.cs" />
-    <Compile Include="Audio\WaveForm\Providers\PeakProvider.cs" />
-    <Compile Include="Audio\WaveForm\Providers\RmsPeakProvider.cs" />
-    <Compile Include="Audio\WaveForm\Providers\SamplingPeakProvider.cs" />
-    <Compile Include="Audio\WaveForm\WaveFormRenderer.cs" />
-    <Compile Include="Audio\WaveForm\Models\WaveFormRendererSettings.cs" />
+    <Compile Include="Audio\SystemVolume\SystemVolumeHelper.cs" />
+    <Compile Include="Interfaces\IAudioPlaybackFactory.cs" />
+    <Compile Include="Extensions\ServiceCollectionExtensions.cs" />
+    <Compile Include="Services\AppService.cs" />
+    <Compile Include="Services\AudioGraphService.cs" />
+    <Compile Include="Services\AudioVisualizerService.cs" />
+    <Compile Include="Services\BPMService.cs" />
+    <Compile Include="Extensions\BpmExtensions.cs" />
+    <Compile Include="Audio\Waveform\Providers\AveragePeakProvider.cs" />
+    <Compile Include="Audio\Waveform\Providers\DecibelPeakProvider.cs" />
+    <Compile Include="Audio\Waveform\Interfaces\IPeakProvider.cs" />
+    <Compile Include="Audio\Waveform\Models\PeakInfo.cs" />
+    <Compile Include="Audio\Waveform\Providers\MaxPeakProvider.cs" />
+    <Compile Include="Audio\Waveform\Providers\PeakProvider.cs" />
+    <Compile Include="Audio\Waveform\Providers\RmsPeakProvider.cs" />
+    <Compile Include="Audio\Waveform\Providers\SamplingPeakProvider.cs" />
+    <Compile Include="Audio\Waveform\Models\WaveFormRendererSettings.cs" />
+    <Compile Include="Interfaces\IDockService.cs" />
+    <Compile Include="Interfaces\IWaveformService.cs" />
+    <Compile Include="Services\DockService.cs" />
+    <Compile Include="Interfaces\ISongService.cs" />
+    <Compile Include="Interfaces\IBPMService.cs" />
+    <Compile Include="Interfaces\IAudioVisualizerService.cs" />
+    <Compile Include="Interfaces\IAudioGraphService.cs" />
+    <Compile Include="Interfaces\IMixerService.cs" />
+    <Compile Include="Interfaces\IAppService.cs" />
+    <Compile Include="Services\LeftAudioPlaybackService.cs" />
+    <Compile Include="Services\RightAudioPlaybackService.cs" />
+    <Compile Include="Services\SongService.cs" />
+    <Compile Include="Services\WaveformRendererService.cs" />
+    <Compile Include="Models\Side.cs" />
+    <Compile Include="ViewModels\DeckViewModel.cs" />
+    <Compile Include="Services\MixerService.cs" />
+    <Compile Include="ViewModels\MixerViewModel.cs" />
+    <Compile Include="ViewModels\VolumeViewModel.cs" />
+    <Compile Include="ViewModels\VUBarVieModel.cs" />
+    <Compile Include="Views\Controls\Deck.xaml.cs">
+      <DependentUpon>Deck.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Services\AudioDeviceService.cs" />
-    <Compile Include="Services\AudioService.cs" />
-    <Compile Include="Interfaces\IAudioService.cs" />
+    <Compile Include="Services\AudioPlaybackService.cs" />
+    <Compile Include="Interfaces\IAudioPlaybackService.cs" />
     <Compile Include="Interfaces\IAudioDeviceService.cs" />
-    <Compile Include="Renderers\TouchPointsRenderer.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Views\Controls\Mixer.xaml.cs">
+      <DependentUpon>Mixer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\RendererHelper.cs" />
+    <Compile Include="Renderers\VinylRenderer.cs" />
+    <Compile Include="Views\Controls\Volume.xaml.cs">
+      <DependentUpon>Volume.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Renderers\VinylRenderer.cs" />
-    <Compile Include="ViewModels\VinylViewModel.cs" />
+    <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="Views\SettingsDialog.xaml.cs">
+      <DependentUpon>SettingsDialog.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -165,6 +202,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Images\Turntable.jpg" />
     <Content Include="Assets\Images\Vinyl.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -180,9 +218,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
+    <Page Include="Views\Controls\Deck.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Mixer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Controls\Volume.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\SettingsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -226,6 +280,7 @@
       <Name>AudioVisualizer</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
