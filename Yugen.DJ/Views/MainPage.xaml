@@ -5,7 +5,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:controls="using:Yugen.DJ.Views.Controls"
       mc:Ignorable="d"
-      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+      Background="{ThemeResource SystemControlAcrylicElementBrush}">
 
     <Grid>
 
@@ -19,6 +19,15 @@
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+
+        <Border Grid.ColumnSpan="3"
+                Grid.Row="1"
+                BorderThickness="0,4,0,0"
+                BorderBrush="{ThemeResource CustomAcrylicBrush}"
+                VerticalAlignment="Bottom">
+            <Rectangle Fill="{ThemeResource SystemControlAcrylicWindowBrush}"
+                       Height="148"/>
+        </Border>
 
         <!-- Column 0 -->
         <controls:Deck Grid.Column="0"
