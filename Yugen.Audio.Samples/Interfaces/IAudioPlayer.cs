@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Windows.Storage;
 using Yugen.Audio.Samples.Models;
 
@@ -14,7 +15,7 @@ namespace Yugen.Audio.Samples.Interfaces
         float Volume { get; set; }
 
         void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100);
-        void LoadFile(StorageFile tmpAudioFile);
+        Task LoadFile(StorageFile tmpAudioFile);
         void LoadStream(Stream audioStream);
         void Close();
 

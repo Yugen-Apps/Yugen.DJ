@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Vortice.Multimedia;
 using Vortice.XAudio2;
 using Windows.Storage;
@@ -32,7 +33,7 @@ namespace Yugen.Audio.Samples.Services
             _masteringVoice = _xaudio2.CreateMasteringVoice(inputChannels, inputSampleRate);
         }
 
-        public void LoadFile(StorageFile tmpAudioFile)
+        public async Task LoadFile(StorageFile tmpAudioFile)
         {
             WaveFormat waveFormat = new WaveFormat();
             _xaudio2.CreateSourceVoice(waveFormat);

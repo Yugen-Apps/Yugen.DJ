@@ -3,6 +3,7 @@ using CSCore.Codecs;
 using CSCore.XAudio2;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using WASAPI.NET;
 using Windows.Storage;
 using Yugen.Audio.Samples.Interfaces;
@@ -32,7 +33,7 @@ namespace Yugen.Audio.Samples.Services
             _masteringVoice = _xaudio2.CreateMasteringVoice(inputChannels, inputSampleRate, deviceId);
         }
 
-        public void LoadFile(StorageFile tmpAudioFile)
+        public async Task LoadFile(StorageFile tmpAudioFile)
         {
             _waveSource = CodecFactory.Instance.GetCodec(tmpAudioFile.Path);
 

@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Controls;
 using Yugen.Audio.Samples.ViewModels;
 
-namespace Yugen.Audio.Samples
+namespace Yugen.Audio.Samples.Views
 {
     /// <summary>
     /// AudioFrameInputNodeDemo

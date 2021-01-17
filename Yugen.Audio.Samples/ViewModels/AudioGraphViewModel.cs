@@ -6,7 +6,7 @@ using System.Windows.Input;
 using Windows.Storage;
 using Yugen.Audio.Samples.Helpers;
 using Yugen.Audio.Samples.Interfaces;
-using Yugen.Audio.Samples.Services;
+using Yugen.Audio.Samples.ViewModels.Controls;
 using Yugen.Toolkit.Standard.Mvvm;
 using Yugen.Toolkit.Uwp.Helpers;
 
@@ -14,10 +14,14 @@ namespace Yugen.Audio.Samples.ViewModels
 {
     public class AudioGraphViewModel : ViewModelBase
     {
-        private readonly IAudioPlayer _audioPlayer = new AudioGraphAudioPlayer();
+        private readonly IAudioGraphAudioPlayer _audioPlayer;
+        private readonly VuBarsVieModel _vuBarsVieModel;
 
-        public AudioGraphViewModel()
+        public AudioGraphViewModel(IAudioGraphAudioPlayer audioPlayer, VuBarsVieModel vuBarsVieModel)
         {
+            _audioPlayer = audioPlayer;
+            _vuBarsVieModel = vuBarsVieModel;
+
             OnLoadCommand = new RelayCommand(OnLoadCommandBehavior);
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
             PlayCommand = new RelayCommand(PlayCommandBehavior);
@@ -31,6 +35,7 @@ namespace Yugen.Audio.Samples.ViewModels
         public ICommand PlayCommand { get; }
         //public ICommand PlayWithoutStreamingCommand { get; }
         public ICommand StopCommand { get; }
+
         //public ICommand RecordCommand { get; }
 
         public void OnLoadCommandBehavior()
@@ -50,8 +55,10 @@ namespace Yugen.Audio.Samples.ViewModels
             {
                 var tmpAudioFile = await audioFile.CopyAsync(ApplicationData.Current.TemporaryFolder, audioFile.Name, NameCollisionOption.ReplaceExisting);
 
-                _audioPlayer.LoadFile(tmpAudioFile);
+                await _audioPlayer.LoadFile(tmpAudioFile);
             }
+
+            _vuBarsVieModel.SetSource(_audioPlayer.FileInputNode);
         }
 
         private void PlayCommandBehavior() => _audioPlayer.Play();

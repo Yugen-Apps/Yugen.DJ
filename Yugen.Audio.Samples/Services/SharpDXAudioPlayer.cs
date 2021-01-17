@@ -107,7 +107,7 @@ namespace Yugen.Audio.Samples.Services
             _masteringVoice = new MasteringVoice(_xaudio2, inputChannels, inputSampleRate, deviceId);
         }
 
-        public void LoadFile(StorageFile tmpAudioFile)
+        public async Task LoadFile(StorageFile tmpAudioFile)
         {
             var fileStream = new NativeFileStream(tmpAudioFile.Path, NativeFileMode.Open, NativeFileAccess.Read);
 

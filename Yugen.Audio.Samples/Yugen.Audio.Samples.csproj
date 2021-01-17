@@ -132,6 +132,8 @@
     </Compile>
     <Compile Include="Constants\Menu.cs" />
     <Compile Include="Helpers\AudioDevicesHelper.cs" />
+    <Compile Include="Helpers\ColorHelper.cs" />
+    <Compile Include="Interfaces\IAudioGraphAudioPlayer.cs" />
     <Compile Include="Services\AudioGraphAudioPlayer.cs" />
     <Compile Include="Models\AudioPlayerState.cs" />
     <Compile Include="Services\AudioPlayer.cs" />
@@ -144,10 +146,14 @@
     <Compile Include="ViewModels\AudioFrameInputNodeViewModel.cs" />
     <Compile Include="ViewModels\AudioGraphViewModel.cs" />
     <Compile Include="ViewModels\AppShellViewModel.cs" />
+    <Compile Include="ViewModels\Controls\VuBarsVieModel.cs" />
     <Compile Include="ViewModels\CsCoreViewModel.cs" />
     <Compile Include="ViewModels\SharpDXViewModel.cs" />
     <Compile Include="Views\AudioFrameInputNodePage.xaml.cs">
       <DependentUpon>AudioFrameInputNodePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\VuBars.xaml.cs">
+      <DependentUpon>VuBars.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CsCorePage.xaml.cs">
       <DependentUpon>CsCorePage.xaml</DependentUpon>
@@ -212,6 +218,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Views\Controls\VuBars.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Views\CsCorePage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -250,6 +260,12 @@
     <PackageReference Include="Yugen.Toolkit.Uwp">
       <Version>1.0.40</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AudioVisualizer\AudioVisualizer.vcxproj">
+      <Project>{da1a2266-1149-4a19-8a3a-3f1ca7717a6f}</Project>
+      <Name>AudioVisualizer</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

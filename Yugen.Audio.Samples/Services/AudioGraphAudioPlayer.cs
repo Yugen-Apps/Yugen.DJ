@@ -13,11 +13,11 @@ using Yugen.Audio.Samples.Models;
 
 namespace Yugen.Audio.Samples.Services
 {
-    public class AudioGraphAudioPlayer : IAudioPlayer
+    public class AudioGraphAudioPlayer : IAudioGraphAudioPlayer
     {
         private AudioGraph _audioGraph;
         private AudioDeviceOutputNode _deviceOutputNode;
-        private AudioFileInputNode _fileInputNode;
+        public AudioFileInputNode FileInputNode { get; private set; }
 
         private double _theta = 0;
         private AudioFrameInputNode _frameInputNode;
@@ -115,15 +115,15 @@ namespace Yugen.Audio.Samples.Services
             _frameOutputNode.Start();
         }
 
-        public async void LoadFile(StorageFile tmpAudioFile)
+        public async Task LoadFile(StorageFile tmpAudioFile)
         {
             CreateAudioFileInputNodeResult result = await _audioGraph.CreateFileInputNodeAsync(tmpAudioFile);
             if (result.Status == AudioFileNodeCreationStatus.Success)
             {
-                _fileInputNode = result.FileInputNode;
-                _fileInputNode.AddOutgoingConnection(_deviceOutputNode);
-                _fileInputNode.AddOutgoingConnection(_frameOutputNode);
-                _fileInputNode.Stop();
+                FileInputNode = result.FileInputNode;
+                FileInputNode.AddOutgoingConnection(_deviceOutputNode);
+                FileInputNode.AddOutgoingConnection(_frameOutputNode);
+                FileInputNode.Stop();
 
                 var ras = await tmpAudioFile.OpenReadAsync();
                 fileStream = ras.AsStreamForRead();
@@ -142,7 +142,7 @@ namespace Yugen.Audio.Samples.Services
 
         public void Play()
         {
-            _fileInputNode.Start();
+            FileInputNode.Start();
             _frameInputNode.Start();
         }
 
@@ -158,7 +158,7 @@ namespace Yugen.Audio.Samples.Services
         public void Stop()
         {
             //_audioGraph.Stop();
-            _fileInputNode.Stop();
+            FileInputNode.Stop();
             _frameInputNode.Stop();
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Windows.Storage;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Models;
@@ -18,7 +19,7 @@ namespace Yugen.Audio.Samples.Services
         {
         }
 
-        public void LoadFile(StorageFile tmpAudioFile)
+        public async Task LoadFile(StorageFile tmpAudioFile)
         {
         }
 

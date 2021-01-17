@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using System.Collections.Generic;
+using Yugen.Audio.Samples.Views;
 
 namespace Yugen.Audio.Samples.Constants
 {
