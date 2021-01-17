@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using Yugen.Audio.Samples.Helpers;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.ViewModels.Controls;
@@ -48,7 +49,7 @@ namespace Yugen.Audio.Samples.ViewModels
         {
             var audioFile = await FilePickerHelper.OpenFile(
                     new List<string> { ".mp3" },
-                    Windows.Storage.Pickers.PickerLocationId.MusicLibrary
+                    PickerLocationId.MusicLibrary
                 );
 
             if (audioFile != null)

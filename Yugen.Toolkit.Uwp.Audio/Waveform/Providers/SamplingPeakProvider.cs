@@ -1,7 +1,7 @@
 ﻿using System;
-using Yugen.DJ.Audio.Waveform.Models;
+using Yugen.Toolkit.Uwp.Audio.Waveform.Models;
 
-namespace Yugen.DJ.Audio.Waveform.Providers
+namespace Yugen.Toolkit.Uwp.Audio.Waveform.Providers
 {
     public class SamplingPeakProvider : PeakProvider
     {

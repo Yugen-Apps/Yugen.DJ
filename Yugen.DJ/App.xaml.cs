@@ -17,6 +17,7 @@ using Yugen.DJ.Services;
 using Yugen.DJ.ViewModels;
 using Yugen.DJ.Views;
 using Yugen.Toolkit.Standard.Extensions;
+using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
 
 namespace Yugen.DJ
 {

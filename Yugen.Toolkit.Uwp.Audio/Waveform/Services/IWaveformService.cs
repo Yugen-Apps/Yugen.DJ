@@ -2,7 +2,7 @@
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using NAudio.Wave;
 
-namespace Yugen.DJ.Interfaces
+namespace Yugen.Toolkit.Uwp.Audio.Waveform.Services
 {
     public interface IWaveformRendererService
     {

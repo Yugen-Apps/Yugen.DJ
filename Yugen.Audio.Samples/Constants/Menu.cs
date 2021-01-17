@@ -11,7 +11,8 @@ namespace Yugen.Audio.Samples.Constants
             NewNavigationViewItem(nameof(AudioGraphPage), nameof(AudioGraphPage)),
             NewNavigationViewItem(nameof(CsCorePage), nameof(CsCorePage)),
             NewNavigationViewItem(nameof(SharpDXPage), nameof(SharpDXPage)),
-            NewNavigationViewItem(nameof(AudioFrameInputNodePage), nameof(AudioFrameInputNodePage))
+            NewNavigationViewItem(nameof(AudioFrameInputNodePage), nameof(AudioFrameInputNodePage)),
+            NewNavigationViewItem(nameof(WaveformPage), nameof(WaveformPage))
         };
 
         public static NavigationViewItem NewNavigationViewItem(string content, string tag) =>

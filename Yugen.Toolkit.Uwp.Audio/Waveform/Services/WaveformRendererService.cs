@@ -2,13 +2,12 @@
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using NAudio.Wave;
 using System;
-using Yugen.DJ.Audio.Waveform.Interfaces;
-using Yugen.DJ.Audio.Waveform.Models;
-using Yugen.DJ.Audio.Waveform.Providers;
-using Yugen.DJ.Helpers;
-using Yugen.DJ.Interfaces;
+using Yugen.Toolkit.Uwp.Audio.Helpers;
+using Yugen.Toolkit.Uwp.Audio.Waveform.Interfaces;
+using Yugen.Toolkit.Uwp.Audio.Waveform.Models;
+using Yugen.Toolkit.Uwp.Audio.Waveform.Providers;
 
-namespace Yugen.DJ.Services
+namespace Yugen.Toolkit.Uwp.Audio.Waveform.Services
 {
     /// <summary>
     /// https://github.com/naudio/NAudio.WaveformRenderer

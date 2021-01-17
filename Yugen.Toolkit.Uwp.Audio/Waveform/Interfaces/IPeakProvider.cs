@@ -1,7 +1,7 @@
 ﻿using NAudio.Wave;
-using Yugen.DJ.Audio.Waveform.Models;
+using Yugen.Toolkit.Uwp.Audio.Waveform.Models;
 
-namespace Yugen.DJ.Audio.Waveform.Interfaces
+namespace Yugen.Toolkit.Uwp.Audio.Waveform.Interfaces
 {
     public interface IPeakProvider
     {

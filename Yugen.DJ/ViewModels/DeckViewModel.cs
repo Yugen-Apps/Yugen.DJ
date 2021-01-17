@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Yugen.DJ.Interfaces;
 using Yugen.DJ.Models;
+using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
 
 namespace Yugen.DJ.ViewModels
 {

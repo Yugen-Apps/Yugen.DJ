@@ -141,17 +141,7 @@
     <Compile Include="Services\AudioVisualizerService.cs" />
     <Compile Include="Services\BPMService.cs" />
     <Compile Include="Extensions\BpmExtensions.cs" />
-    <Compile Include="Audio\Waveform\Providers\AveragePeakProvider.cs" />
-    <Compile Include="Audio\Waveform\Providers\DecibelPeakProvider.cs" />
-    <Compile Include="Audio\Waveform\Interfaces\IPeakProvider.cs" />
-    <Compile Include="Audio\Waveform\Models\PeakInfo.cs" />
-    <Compile Include="Audio\Waveform\Providers\MaxPeakProvider.cs" />
-    <Compile Include="Audio\Waveform\Providers\PeakProvider.cs" />
-    <Compile Include="Audio\Waveform\Providers\RmsPeakProvider.cs" />
-    <Compile Include="Audio\Waveform\Providers\SamplingPeakProvider.cs" />
-    <Compile Include="Audio\Waveform\Models\WaveFormRendererSettings.cs" />
     <Compile Include="Interfaces\IDockService.cs" />
-    <Compile Include="Interfaces\IWaveformService.cs" />
     <Compile Include="Services\DockService.cs" />
     <Compile Include="Interfaces\ISongService.cs" />
     <Compile Include="Interfaces\IBPMService.cs" />
@@ -162,7 +152,6 @@
     <Compile Include="Services\LeftAudioPlaybackService.cs" />
     <Compile Include="Services\RightAudioPlaybackService.cs" />
     <Compile Include="Services\SongService.cs" />
-    <Compile Include="Services\WaveformRendererService.cs" />
     <Compile Include="Models\Side.cs" />
     <Compile Include="ViewModels\DeckViewModel.cs" />
     <Compile Include="Services\MixerService.cs" />
@@ -172,7 +161,6 @@
     <Compile Include="Views\Controls\Deck.xaml.cs">
       <DependentUpon>Deck.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\ColorHelper.cs" />
     <Compile Include="Services\AudioDeviceService.cs" />
     <Compile Include="Services\AudioPlaybackService.cs" />
     <Compile Include="Interfaces\IAudioPlaybackService.cs" />
@@ -274,6 +262,10 @@
     <ProjectReference Include="..\AudioVisualizer\AudioVisualizer.vcxproj">
       <Project>{3688db1f-c316-4cb8-b78d-600bc326f30c}</Project>
       <Name>AudioVisualizer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yugen.Toolkit.Uwp.Audio\Yugen.Toolkit.Uwp.Audio.csproj">
+      <Project>{d76f470b-0b55-4669-b878-1c8c8b207f54}</Project>
+      <Name>Yugen.Toolkit.Uwp.Audio</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

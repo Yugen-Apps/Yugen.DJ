@@ -1,15 +1,16 @@
 ﻿using Microsoft.Toolkit.Mvvm.Input;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Media;
 using Windows.Media.Audio;
 using Windows.Media.MediaProperties;
-using Windows.Storage;
 using Windows.Storage.Pickers;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Toolkit.Standard.Mvvm;
+using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.Audio.Samples.ViewModels
 {
@@ -61,21 +62,16 @@ namespace Yugen.Audio.Samples.ViewModels
 
         private async Task GetFileStream()
         {
-            FileOpenPicker filePicker = new FileOpenPicker
-            {
-                SuggestedStartLocation = PickerLocationId.MusicLibrary
-            };
-            filePicker.FileTypeFilter.Add(".mp3");
-            filePicker.ViewMode = PickerViewMode.Thumbnail;
-            IStorageFile file = await filePicker.PickSingleFileAsync();
+            var audioFile = await FilePickerHelper.OpenFile(
+                     new List<string> { ".mp3" },
+                     PickerLocationId.MusicLibrary
+                 );
 
-            // File can be null if cancel is hit in the file picker
-            if (file == null)
+            if (audioFile != null)
             {
-                return;
+                var ras = await audioFile.OpenReadAsync();
+                _fileStream = ras.AsStreamForRead();
             }
-            var ras = await file.OpenReadAsync();
-            _fileStream = ras.AsStreamForRead();
         }
 
         private unsafe void OnFrameInputNodeQuantumStarted(AudioFrameInputNode sender, FrameInputNodeQuantumStartedEventArgs args)

@@ -1,7 +1,7 @@
 ﻿using System;
 using Windows.UI;
 
-namespace Yugen.Audio.Samples.Helpers
+namespace Yugen.Toolkit.Uwp.Audio.Helpers
 {
     public static class ColorHelper
     {

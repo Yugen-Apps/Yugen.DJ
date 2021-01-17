@@ -1,4 +1,4 @@
-﻿namespace Yugen.DJ.Audio.Waveform.Models
+﻿namespace Yugen.Toolkit.Uwp.Audio.Waveform.Models
 {
     public class PeakInfo
     {

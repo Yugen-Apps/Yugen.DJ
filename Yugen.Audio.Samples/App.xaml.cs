@@ -12,6 +12,7 @@ using Yugen.Audio.Samples.Services;
 using Yugen.Audio.Samples.ViewModels;
 using Yugen.Audio.Samples.ViewModels.Controls;
 using Yugen.Audio.Samples.Views;
+using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
 using Yugen.Toolkit.Uwp.Services;
 
 namespace Yugen.Audio.Samples
@@ -106,12 +107,14 @@ namespace Yugen.Audio.Samples
         {
             return new ServiceCollection()
                 .AddSingleton<IAudioGraphAudioPlayer, AudioGraphAudioPlayer>()
+                .AddTransient<IWaveformRendererService, WaveformRendererService>()
                 .AddSingleton<AppShellViewModel>()
                 .AddSingleton<AudioFrameInputNodeViewModel>()
                 .AddSingleton<AudioGraphViewModel>()
                 .AddSingleton<CsCoreViewModel>()
                 .AddSingleton<SharpDXViewModel>()
                 .AddSingleton<VuBarsVieModel>()
+                .AddSingleton<WaveformViewModel>()
                 .BuildServiceProvider();
         }
 
