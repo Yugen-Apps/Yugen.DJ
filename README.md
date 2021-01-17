@@ -1,8 +1,5 @@
 # Yugen.DJ
 
-## Getting Sarted
+This repo include `https://github.com/clarkezone/audiovisualizer.git` because the nuge is not up to date and cannot use all the latest features without
 
-1. Clone `https://github.com/clarkezone/audiovisualizer.git` dev branch in the same path of this repo, EG:
-	- C:\Dev\audiovisualizer
-	- C:\Dev\Yugen.DJ
-2. Open and Build the Yugen.DJ.sln
+## Getting Sarted

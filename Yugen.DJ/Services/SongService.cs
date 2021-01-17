@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
+using Windows.Storage.Pickers;
 using Yugen.DJ.Interfaces;
 using Yugen.Toolkit.Uwp.Helpers;
 
@@ -20,7 +21,7 @@ namespace Yugen.DJ.Services
         {
             AudioFile = await FilePickerHelper.OpenFile(
                     new List<string> { ".mp3" },
-                    Windows.Storage.Pickers.PickerLocationId.MusicLibrary
+                    PickerLocationId.MusicLibrary
                 );
 
             if (AudioFile != null)
