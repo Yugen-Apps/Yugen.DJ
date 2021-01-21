@@ -1,5 +1,4 @@
-﻿using NAudio.Wave;
-using System;
+﻿using System;
 using System.Linq;
 using Yugen.Toolkit.Uwp.Audio.Waveform.Models;
 

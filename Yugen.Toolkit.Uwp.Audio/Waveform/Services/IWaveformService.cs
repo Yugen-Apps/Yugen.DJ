@@ -1,6 +1,6 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using NAudio.Wave;
+using Yugen.Toolkit.Uwp.Audio.NAudio.Interfaces;
 
 namespace Yugen.Toolkit.Uwp.Audio.Waveform.Services
 {

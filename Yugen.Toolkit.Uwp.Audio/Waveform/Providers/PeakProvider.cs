@@ -1,4 +1,4 @@
-﻿using NAudio.Wave;
+﻿using Yugen.Toolkit.Uwp.Audio.NAudio.Interfaces;
 using Yugen.Toolkit.Uwp.Audio.Waveform.Interfaces;
 using Yugen.Toolkit.Uwp.Audio.Waveform.Models;
 
