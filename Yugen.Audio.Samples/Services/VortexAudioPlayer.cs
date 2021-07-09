@@ -24,7 +24,7 @@ namespace Yugen.Audio.Samples.Services
 
         public VortexAudioPlayer()
         {
-            _xaudio2 = new IXAudio2();
+            _xaudio2 = new IXAudio2(IntPtr.Zero);
             _xaudio2.StartEngine();
         }
 
