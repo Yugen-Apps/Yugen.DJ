@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Yugen.Audio.Samples.Helpers;
 using Yugen.Audio.Samples.Interfaces;
+using Yugen.Audio.Samples.Renderers;
 using Yugen.Audio.Samples.Services;
 using Yugen.Audio.Samples.ViewModels;
 using Yugen.Audio.Samples.ViewModels.Controls;
@@ -63,7 +64,7 @@ namespace Yugen.Audio.Samples
             }
 
             // adds callbacks for Back requests and changes
-            NavigationService.Initialize(typeof(App), shell.MainFrame, typeof(AudioGraphPage));
+            NavigationService.Initialize(typeof(App), shell.MainFrame, typeof(HomePage));
 
             // Place our app shell in the current Window
             Window.Current.Content = shell;
@@ -72,7 +73,7 @@ namespace Yugen.Audio.Samples
             {
                 // When the navigation stack isn't restored, navigate to the first page
                 // suppressing the initial entrance animation.
-                NavigationService.NavigateToPage(typeof(AudioGraphPage), e.Arguments, new SuppressNavigationTransitionInfo());
+                NavigationService.NavigateToPage(typeof(HomePage), e.Arguments, new SuppressNavigationTransitionInfo());
             }
 
             // Ensure the current window is active
@@ -114,7 +115,9 @@ namespace Yugen.Audio.Samples
                 .AddSingleton<CsCoreViewModel>()
                 .AddSingleton<SharpDXViewModel>()
                 .AddSingleton<VuBarsVieModel>()
+                .AddSingleton<VinylViewModel>()
                 .AddSingleton<WaveformViewModel>()
+                .AddSingleton<VinylRenderer>()
                 .BuildServiceProvider();
         }
 

@@ -8,18 +8,20 @@ namespace Yugen.Audio.Samples.Constants
     {
         public static List<NavigationViewItemBase> MenuList = new List<NavigationViewItemBase>
         {
-            NewNavigationViewItem(nameof(AudioGraphPage), nameof(AudioGraphPage)),
-            NewNavigationViewItem(nameof(CsCorePage), nameof(CsCorePage)),
-            NewNavigationViewItem(nameof(SharpDXPage), nameof(SharpDXPage)),
-            NewNavigationViewItem(nameof(AudioFrameInputNodePage), nameof(AudioFrameInputNodePage)),
-            NewNavigationViewItem(nameof(WaveformPage), nameof(WaveformPage))
+            NewNavigationViewItem(nameof(HomePage)),
+            NewNavigationViewItem(nameof(AudioGraphPage)),
+            NewNavigationViewItem(nameof(CsCorePage)),
+            NewNavigationViewItem(nameof(SharpDXPage)),
+            NewNavigationViewItem(nameof(AudioFrameInputNodePage)),
+            NewNavigationViewItem(nameof(WaveformPage)),
+            NewNavigationViewItem(nameof(VinylPage))
         };
 
-        public static NavigationViewItem NewNavigationViewItem(string content, string tag) =>
+        public static NavigationViewItem NewNavigationViewItem(string key) =>
             new NavigationViewItem
             {
-                Content = content,
-                Tag = tag,
+                Content = key,
+                Tag = key,
                 Icon = new Windows.UI.Xaml.Controls.FontIcon { Glyph = "\uE80F" },
                 IsExpanded = true,
                 SelectsOnInvoked = true

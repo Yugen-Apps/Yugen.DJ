@@ -32,15 +32,6 @@ namespace Yugen.DJ.Views.Controls
 
         private DeckViewModel ViewModel => (DeckViewModel)DataContext;
 
-        //private void OnUnloaded(object sender, RoutedEventArgs e)
-        //{
-        //    // Explicitly remove references to allow the Win2D controls to get garbage collected
-        //    LeftCanvasAnimatedControl.RemoveFromVisualTree();
-        //    LeftCanvasAnimatedControl = null;
-        //    RightCanvasAnimatedControl.RemoveFromVisualTree();
-        //    RightCanvasAnimatedControl = null;
-        //}
-
         //VinylRenderer
         private void OnVinylCanvasCreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args) =>
                     args.TrackAsyncAction(_vinylRenderer.CreateResourcesAsync(sender).AsAsyncAction());
@@ -69,32 +60,13 @@ namespace Yugen.DJ.Views.Controls
         private void OnWaveformCanvasDraw(CanvasControl sender, CanvasDrawEventArgs args) =>
             ViewModel.WaveformRendererService.DrawLine(sender, args.DrawingSession);
 
-        // TouchPointsRenderer
-        //private readonly TouchPointsRenderer _touchPointsRenderer = new TouchPointsRenderer();
-
-        //public void OnVinylCanvasDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
-        //{
-        //    ds.Transform = Matrix3x2.Identity;
-        //    lock (_touchPointsRenderer)
-        //    {
-        //        _touchPointsRenderer.Draw(ds);
-        //    }
-        //}
-
-        //public void OnVinylPointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        //{
-        //    lock (_touchPointsRenderer)
-        //    {
-        //        _touchPointsRenderer.OnPointerPressed();
-        //    }
-        //}
-
-        //public void OnVinylPointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        //{
-        //    lock (_touchPointsRenderer)
-        //    {
-        //        _touchPointsRenderer.OnPointerMoved(e.GetIntermediatePoints(canvasAnimatedControl));
-        //    }
-        //}
+        private void OnUnloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            // Explicitly remove references to allow the Win2D controls to get garbage collected
+            VinylCanvasAnimated.RemoveFromVisualTree();
+            VinylCanvasAnimated = null;
+            WaveformCanvas.RemoveFromVisualTree();
+            WaveformCanvas = null;
+        }
     }
 }

@@ -7,7 +7,8 @@
              xmlns:visualizer="using:AudioVisualizer"
              mc:Ignorable="d"
              d:DesignHeight="300"
-             d:DesignWidth="400">
+             d:DesignWidth="400"
+             Unloaded="OnUnloaded">
 
     <Grid>
 
@@ -53,7 +54,8 @@
 
             <Image Source="ms-appx:///Assets/Images/Turntable.jpg" />
 
-            <canvas:CanvasAnimatedControl CreateResources="OnVinylCanvasCreateResources"
+            <canvas:CanvasAnimatedControl x:Name="VinylCanvasAnimated" 
+                                          CreateResources="OnVinylCanvasCreateResources"
                                           Draw="OnVinylCanvasDraw"
                                           PointerPressed="OnVinylPointerPressed"
                                           PointerMoved="OnVinylPointerMoved"
@@ -104,9 +106,9 @@
         </TextBlock>
 
         <!-- Row 5 -->
-        <canvas:CanvasControl Grid.ColumnSpan="2"
+        <canvas:CanvasControl x:Name="WaveformCanvas"
+                              Grid.ColumnSpan="2"
                               Grid.Row="5"
-                              x:Name="WaveformCanvas"
                               Draw="OnWaveformCanvasDraw"
                               Margin="4,2"
                               Height="100"
