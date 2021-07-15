@@ -1,8 +1,8 @@
-﻿using System;
+﻿using NAudio.Wave;
+using System;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
-using Yugen.Toolkit.Uwp.Audio.NAudio.Interfaces;
 
 namespace Yugen.DJ.Interfaces
 {

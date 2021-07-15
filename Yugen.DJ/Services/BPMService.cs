@@ -1,13 +1,11 @@
-﻿using System;
+﻿using NAudio.Wave;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Yugen.DJ.Interfaces;
-using Yugen.Toolkit.Uwp.Audio.NAudio;
-using Yugen.Toolkit.Uwp.Audio.NAudio.Extensions;
-using Yugen.Toolkit.Uwp.Audio.NAudio.Interfaces;
 
 namespace Yugen.DJ.Audio.BPM
 {

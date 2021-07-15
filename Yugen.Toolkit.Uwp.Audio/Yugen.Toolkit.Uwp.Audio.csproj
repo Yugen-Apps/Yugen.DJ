@@ -131,52 +131,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Helpers\ColorHelper.cs" />
-    <Compile Include="NAudio\AdpcmWaveFormat.cs" />
-    <Compile Include="NAudio\Models\AudioMediaSubtypes.cs" />
-    <Compile Include="NAudio\Models\AudioSubtypes.cs" />
-    <Compile Include="NAudio\Models\Blob.cs" />
-    <Compile Include="NAudio\Helpers\BufferHelpers.cs" />
-    <Compile Include="NAudio\ComStream.cs" />
-    <Compile Include="NAudio\Models\FieldDescriptionAttribute.cs" />
-    <Compile Include="NAudio\Helpers\FieldDescriptionHelper.cs" />
-    <Compile Include="NAudio\Gsm610WaveFormat.cs" />
-    <Compile Include="NAudio\Extensions\COMExceptionExtension.cs" />
-    <Compile Include="NAudio\Interfaces\IMFAttributes.cs" />
-    <Compile Include="NAudio\Interfaces\IMFByteStream.cs" />
-    <Compile Include="NAudio\Interfaces\IMFMediaBuffer.cs" />
-    <Compile Include="NAudio\Interfaces\IMFMediaType.cs" />
-    <Compile Include="NAudio\Interfaces\IMFSample.cs" />
-    <Compile Include="NAudio\Interfaces\IMFSinkWriter.cs" />
-    <Compile Include="NAudio\Interfaces\IMFSourceReader.cs" />
-    <Compile Include="NAudio\Interfaces\ISampleProvider.cs" />
-    <Compile Include="NAudio\Interfaces\IWaveProvider.cs" />
-    <Compile Include="NAudio\MediaFoundationReader.cs" />
-    <Compile Include="NAudio\Helpers\MarshalHelpers.cs" />
-    <Compile Include="NAudio\MediaFoundationApi.cs" />
-    <Compile Include="NAudio\Models\MediaFoundationAttributes.cs" />
-    <Compile Include="NAudio\Models\MediaFoundationErrors.cs" />
-    <Compile Include="NAudio\Models\MediaFoundationInterop.cs" />
-    <Compile Include="NAudio\MediaType.cs" />
-    <Compile Include="NAudio\Models\MediaTypes.cs" />
-    <Compile Include="NAudio\Models\MF_SINK_WRITER_STATISTICS.cs" />
-    <Compile Include="NAudio\Models\MF_SOURCE_READER_FLAG.cs" />
-    <Compile Include="NAudio\Providers\Pcm16BitToSampleProvider.cs" />
-    <Compile Include="NAudio\Providers\Pcm24BitToSampleProvider.cs" />
-    <Compile Include="NAudio\Providers\Pcm32BitToSampleProvider.cs" />
-    <Compile Include="NAudio\Providers\Pcm8BitToSampleProvider.cs" />
-    <Compile Include="NAudio\Models\PropVariant.cs" />
-    <Compile Include="NAudio\Models\PropVariantNative.cs" />
-    <Compile Include="NAudio\Providers\SampleProviderConverterBase.cs" />
-    <Compile Include="NAudio\Providers\SampleProviderConverters.cs" />
-    <Compile Include="NAudio\StreamMediaFoundationReader.cs" />
-    <Compile Include="NAudio\Extensions\WaveExtension.cs" />
-    <Compile Include="NAudio\Wave\WaveFormat.cs" />
-    <Compile Include="NAudio\Wave\WaveFormatEncoding.cs" />
-    <Compile Include="NAudio\Wave\WaveFormatExtensible.cs" />
-    <Compile Include="NAudio\Wave\WaveFormatExtraData.cs" />
-    <Compile Include="NAudio\Wave\WaveStream.cs" />
-    <Compile Include="NAudio\Wave\WaveToSampleProvider.cs" />
-    <Compile Include="NAudio\Wave\WaveToSampleProvider64.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Waveform\Interfaces\IPeakProvider.cs" />
     <Compile Include="Waveform\Models\PeakInfo.cs" />
@@ -194,6 +148,9 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.12</Version>
+    </PackageReference>
+    <PackageReference Include="NAudio.Wasapi">
+      <Version>2.0.0</Version>
     </PackageReference>
     <PackageReference Include="Win2D.uwp">
       <Version>1.26.0</Version>

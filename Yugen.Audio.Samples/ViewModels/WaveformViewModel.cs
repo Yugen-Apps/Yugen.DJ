@@ -1,6 +1,7 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Toolkit.Mvvm.Input;
+using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,9 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage.Pickers;
 using Yugen.Toolkit.Standard.Mvvm;
-using Yugen.Toolkit.Uwp.Audio.NAudio;
-using Yugen.Toolkit.Uwp.Audio.NAudio.Extensions;
-using Yugen.Toolkit.Uwp.Audio.NAudio.Interfaces;
 using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
 using Yugen.Toolkit.Uwp.Helpers;
 
