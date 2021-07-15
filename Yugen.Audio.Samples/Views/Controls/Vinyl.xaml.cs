@@ -90,7 +90,7 @@ namespace Yugen.Audio.Samples.Views.Controls
             //animatedControl.Invalidate();
         }
 
-        public void PauseToggled(bool isChecked) => this.animatedControl.Paused = isChecked;
+        public void PauseToggled(bool isChecked) => _vinylRenderer.PauseToggled(isChecked);
 
         public void StepClicked() => _vinylRenderer.StepClicked();
 

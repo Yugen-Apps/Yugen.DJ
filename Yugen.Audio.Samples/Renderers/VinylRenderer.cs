@@ -5,9 +5,6 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Numerics;
 using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.UI.Input;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using Yugen.Audio.Samples.Helpers;
 
@@ -23,9 +20,11 @@ namespace Yugen.Audio.Samples.Renderers
         private float _angle;
         private float _radians;
         private bool _isTouched;
+        private bool _isPaused;
 
         private Transform2DEffect _canvasImage;
         private Vector2 _currentCanvasImageSize;
+        private Vector2 _previousPosition;
 
         public static async Task<VinylRenderer> Create(CanvasAnimatedControl sender)
         {
@@ -54,16 +53,18 @@ namespace Yugen.Audio.Samples.Renderers
 
         public void Draw(ICanvasAnimatedControl sender, CanvasTimingInformation timingInformation, CanvasDrawingSession ds)
         {
-            if (!_isTouched)
+            if (!_isTouched &&
+                !_isPaused)
             {
-                double updatesPerSecond = 1000.0 / sender.TargetElapsedTime.TotalMilliseconds;
-                int seconds = (int)(timingInformation.UpdateCount / updatesPerSecond % 10);
+                //double updatesPerSecond = 1000.0 / sender.TargetElapsedTime.TotalMilliseconds;
+                //int seconds = (int)(timingInformation.UpdateCount / updatesPerSecond % 10);
+                //double updates = timingInformation.UpdateCount;
+                //double fractionSecond = updates / updatesPerSecond % 1.0;
+                //double fractionSecondAngle = 2 * Math.PI * fractionSecond;
+                //_radians = (float)(fractionSecondAngle % (2 * Math.PI));
 
-                double updates = timingInformation.UpdateCount;
-                double fractionSecond = updates / updatesPerSecond % 1.0;
-
-                double fractionSecondAngle = 2 * Math.PI * fractionSecond;
-                _radians = (float)(fractionSecondAngle % (2 * Math.PI));
+                float updatesPerSecond = (float)(sender.TargetElapsedTime.TotalSeconds * 5);
+                _radians += updatesPerSecond;
             }
 
             _canvasImage.TransformMatrix = Matrix3x2.CreateRotation(_radians, _currentCanvasImageSize / 2);
@@ -74,6 +75,11 @@ namespace Yugen.Audio.Samples.Renderers
         public void PointerPressed(object sender, PointerRoutedEventArgs e)
         {
             _isTouched = true;
+
+            if (sender is CanvasAnimatedControl canvasAnimatedControl)
+            {
+                _previousPosition = e.GetCurrentPoint(canvasAnimatedControl).Position.ToVector2();
+            }
         }
 
         public void PointerMoved(object sender, PointerRoutedEventArgs e)
@@ -81,30 +87,24 @@ namespace Yugen.Audio.Samples.Renderers
             if (sender is CanvasAnimatedControl canvasAnimatedControl &&
                 _isTouched)
             {
-                PointerPoint currentLocation = e.GetCurrentPoint(canvasAnimatedControl);
+                Vector2 currentPosition = e.GetCurrentPoint(canvasAnimatedControl).Position.ToVector2();
+                Vector2 centerPosition = canvasAnimatedControl.ActualSize / 2;
 
-                var dialCenter = new Point(canvasAnimatedControl.ActualHeight / 2, canvasAnimatedControl.ActualWidth / 2);
+                double previousRadians = Math.Atan2(_previousPosition.Y - centerPosition.Y,
+                                                    _previousPosition.X - centerPosition.X);
 
-                // Calculate an angle
-                var radians = Math.Atan((currentLocation.Position.Y - dialCenter.Y) /
-                                        (currentLocation.Position.X - dialCenter.X));
+                double currentRadians = Math.Atan2(currentPosition.Y - centerPosition.Y,
+                                                   currentPosition.X - centerPosition.X);
 
-                // in order to get these figures to work, I actually had to *add* 90 degrees to it,
-                // and *subtract* 180 from it if the X coord is negative.
-                var x = radians * 180 / Math.PI + 90;
-                if (currentLocation.Position.X - dialCenter.X < 0)
-                {
-                    x -= 180;
-                }
+                _radians += (float)(currentRadians - previousRadians);
 
-                _angle = (float)x / 100;
+                _previousPosition = e.GetCurrentPoint(canvasAnimatedControl).Position.ToVector2();
             }
         }
 
-        public void PointerReleased(object sender, PointerRoutedEventArgs e)
-        {
-            _isTouched = false;
-        }
+        public void PauseToggled(bool isChecked) => _isPaused = isChecked;
+
+        public void PointerReleased(object sender, PointerRoutedEventArgs e) => _isTouched = false;
 
         public void StepClicked()
         {
