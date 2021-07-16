@@ -9,7 +9,7 @@ namespace Yugen.DJ.Interfaces
 {
     public interface IDockService
     {
-        IWaveformRendererService WaveformRendererService { get; }
+        IWaveformService WaveformRendererService { get; }
 
         TimeSpan NaturalDuration { get; }
         MusicProperties MusicProperties { get; }

@@ -5,9 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Yugen.DJ.Interfaces;
 
-namespace Yugen.DJ.Audio.BPM
+namespace Yugen.Toolkit.Uwp.Audio.Bpm
 {
     /// <summary>
     /// https://github.com/matixmatix/bpmdetector/blob/master/BPMDetector.cs

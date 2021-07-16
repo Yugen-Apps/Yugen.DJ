@@ -35,7 +35,7 @@ namespace Yugen.DJ.ViewModels
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
         }
 
-        public IWaveformRendererService WaveformRendererService => _dockService?.WaveformRendererService;
+        public IWaveformService WaveformRendererService => _dockService?.WaveformRendererService;
 
         public event EventHandler WaveformGenerated;
 

@@ -57,8 +57,8 @@ namespace Yugen.DJ.Views.Controls
         private void OnWaveformCanvasGenerated(object sender, EventArgs e) =>
             WaveformCanvas.Invalidate();
 
-        private void OnWaveformCanvasDraw(CanvasControl sender, CanvasDrawEventArgs args) =>
-            ViewModel.WaveformRendererService.DrawLine(sender, args.DrawingSession);
+        private void OnWaveformCanvasDraw(CanvasControl sender, CanvasDrawEventArgs args) { }
+            //ViewModel.WaveformRendererService.DrawLine(sender, args.DrawingSession);
 
         private void OnUnloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {

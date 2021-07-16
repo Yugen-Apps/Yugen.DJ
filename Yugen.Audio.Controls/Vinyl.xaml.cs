@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Yugen.Audio.Samples.Renderers;
 
-namespace Yugen.Audio.Samples.Views.Controls
+namespace Yugen.Audio.Controls
 {
     public sealed partial class Vinyl : UserControl
     {
@@ -23,6 +22,10 @@ namespace Yugen.Audio.Samples.Views.Controls
         {
             this.InitializeComponent();
         }
+
+        public void PauseToggled(bool isChecked) => _vinylRenderer.PauseToggled(isChecked);
+
+        public void StepClicked() => _vinylRenderer.StepClicked();
 
         private void OnCreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
@@ -68,7 +71,7 @@ namespace Yugen.Audio.Samples.Views.Controls
                 _touchPointsRenderer.OnPointerPressed();
             }
 
-            animatedControl.Invalidate();
+            VinylCanvasAnimated.Invalidate();
         }
 
         private void OnPointerMoved(object sender, PointerRoutedEventArgs e)
@@ -77,28 +80,24 @@ namespace Yugen.Audio.Samples.Views.Controls
 
             lock (_touchPointsRenderer)
             {
-                _touchPointsRenderer.OnPointerMoved(e.GetIntermediatePoints(animatedControl));
+                _touchPointsRenderer.OnPointerMoved(e.GetIntermediatePoints(VinylCanvasAnimated));
             }
 
-            animatedControl.Invalidate();
+            VinylCanvasAnimated.Invalidate();
         }
 
         private void OnPointerReleased(object sender, PointerRoutedEventArgs e)
         {
             _vinylRenderer.PointerReleased(sender, e);
 
-            //animatedControl.Invalidate();
+            //VinylCanvasAnimated.Invalidate();
         }
-
-        public void PauseToggled(bool isChecked) => _vinylRenderer.PauseToggled(isChecked);
-
-        public void StepClicked() => _vinylRenderer.StepClicked();
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
             // Explicitly remove references to allow the Win2D controls to get garbage collected
-            animatedControl.RemoveFromVisualTree();
-            animatedControl = null;
+            VinylCanvasAnimated.RemoveFromVisualTree();
+            VinylCanvasAnimated = null;
         }
     }
 }

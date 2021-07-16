@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using Windows.Storage.FileProperties;
 using Yugen.DJ.Interfaces;
 using Yugen.DJ.Models;
+using Yugen.Toolkit.Uwp.Audio.Bpm;
 using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
 
 namespace Yugen.DJ.Services
 {
     public class DockService : IDockService
     {
-        public IWaveformRendererService WaveformRendererService { get; private set; }
+        public IWaveformService WaveformRendererService { get; private set; }
 
         private IAudioPlaybackService _audioPlaybackService;
         private readonly IAppService _appService;
@@ -21,7 +22,7 @@ namespace Yugen.DJ.Services
         private Side _side;
 
         public DockService(IAppService appService, IBPMService bpmService, ISongService songService,
-            IWaveformRendererService waveformRendererService, IAudioVisualizerService audioVisualizerService)
+            IWaveformService waveformRendererService, IAudioVisualizerService audioVisualizerService)
         {
             _appService = appService;
             _audioVisualizerService = audioVisualizerService;

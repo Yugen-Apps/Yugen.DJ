@@ -9,7 +9,6 @@ using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Yugen.DJ.Audio.BPM;
 using Yugen.DJ.Factories;
 using Yugen.DJ.Interfaces;
 using Yugen.DJ.Renderers;
@@ -17,6 +16,7 @@ using Yugen.DJ.Services;
 using Yugen.DJ.ViewModels;
 using Yugen.DJ.Views;
 using Yugen.Toolkit.Standard.Extensions;
+using Yugen.Toolkit.Uwp.Audio.Bpm;
 using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
 
 namespace Yugen.DJ
@@ -135,7 +135,7 @@ namespace Yugen.DJ
                 .AddTransient<IAudioVisualizerService, AudioVisualizerService>()
                 .AddTransient<IBPMService, BPMService>()
                 .AddTransient<ISongService, SongService>()
-                .AddTransient<IWaveformRendererService, WaveformRendererService>()
+                .AddTransient<IWaveformService, WaveformService>()
 
                 .AddTransient<DeckViewModel>()
                 .AddSingleton<MainViewModel>()

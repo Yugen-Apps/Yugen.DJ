@@ -4,7 +4,7 @@ using System.Numerics;
 using Windows.UI;
 using Windows.UI.Input;
 
-namespace Yugen.Audio.Samples.Renderers
+namespace Yugen.Audio.Controls
 {
     public class TouchPointsRenderer
     {

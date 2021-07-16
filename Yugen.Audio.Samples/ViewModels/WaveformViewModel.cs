@@ -1,49 +1,47 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.Toolkit.Mvvm.Input;
 using NAudio.Wave;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Windows.Input;
-using Windows.Storage.Pickers;
 using Yugen.Toolkit.Standard.Mvvm;
 using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
-using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.Audio.Samples.ViewModels
 {
     public class WaveformViewModel : ViewModelBase
     {
-        private readonly IWaveformRendererService _waveformRendererService;
+        private readonly IWaveformService _waveformRendererService;
+        private WaveformRenderer _waveformRenderer = new WaveformRenderer();
+        private bool _isGenerated;
+        private CanvasControl _sender;
 
-        private Stream _fileStream;
-
-        public WaveformViewModel(IWaveformRendererService waveformRendererService)
+        public WaveformViewModel(IWaveformService waveformRendererService)
         {
             _waveformRendererService = waveformRendererService;
-
-            OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
         }
 
-        public event EventHandler WaveformGenerated;
-
-        public ICommand OpenCommand { get; }
-
-        public void WaveformRendererServiceDrawLine(CanvasControl sender, CanvasDrawingSession drawingSession)
+        public void OnDraw(CanvasControl sender, CanvasDrawingSession ds)
         {
-            _waveformRendererService.DrawLine(sender, drawingSession);
+            _sender = sender;
+            if (_isGenerated)
+            {
+                _waveformRenderer.DrawRealLine(sender, ds, _waveformRendererService.Settings, _waveformRendererService.PeakProvider);
+            }
+            else
+            {
+                _waveformRenderer.DrawFakeLine(sender, ds);
+            }
         }
 
-        public async Task GenerateAudioData()
+        public async Task GenerateAudioData(Stream stream)
         {
             ISampleProvider isp;
             long samples;
 
             await Task.Run(() =>
             {
-                using (var reader = new StreamMediaFoundationReader(_fileStream))
+                using (var reader = new StreamMediaFoundationReader(stream))
                 {
                     isp = reader.ToSampleProvider();
                     var Buffer = new float[reader.Length / 2];
@@ -57,29 +55,9 @@ namespace Yugen.Audio.Samples.ViewModels
                 }
 
                 _waveformRendererService.Render(isp, samples);
-                WaveformGenerated?.Invoke(this, EventArgs.Empty);
+                _isGenerated = true;
+                _sender.Invalidate();
             });
-        }
-
-        private async Task GetFileStream()
-        {
-            var audioFile = await FilePickerHelper.OpenFile(
-                     new List<string> { ".mp3" },
-                     PickerLocationId.MusicLibrary
-                 );
-
-            if (audioFile != null)
-            {
-                var ras = await audioFile.OpenReadAsync();
-                _fileStream = ras.AsStreamForRead();
-            }
-        }
-
-        private async Task OpenCommandBehavior()
-        {
-            await GetFileStream();
-
-            await GenerateAudioData();
         }
     }
 }

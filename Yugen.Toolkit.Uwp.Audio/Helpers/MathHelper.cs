@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Yugen.Audio.Samples.Helpers
+namespace Yugen.Toolkit.Uwp.Audio.Helpers
 {
     public static class MathHelper
     {

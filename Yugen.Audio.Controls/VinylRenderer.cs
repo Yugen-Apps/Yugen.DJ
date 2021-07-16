@@ -6,9 +6,9 @@ using System;
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Input;
-using Yugen.Audio.Samples.Helpers;
+using Yugen.Toolkit.Uwp.Audio.Helpers;
 
-namespace Yugen.Audio.Samples.Renderers
+namespace Yugen.Audio.Controls
 {
     public class VinylRenderer
     {
@@ -28,7 +28,7 @@ namespace Yugen.Audio.Samples.Renderers
 
         public static async Task<VinylRenderer> Create(CanvasAnimatedControl sender)
         {
-            var bitmapTiger = await CanvasBitmap.LoadAsync(sender, "Assets/Images/Circle.png");
+            var bitmapTiger = await CanvasBitmap.LoadAsync(sender, "Yugen.Audio.Controls/Images/Circle.png");
 
             return new VinylRenderer(sender, bitmapTiger);
         }
