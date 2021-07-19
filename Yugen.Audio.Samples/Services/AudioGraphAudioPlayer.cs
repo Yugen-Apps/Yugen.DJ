@@ -115,7 +115,7 @@ namespace Yugen.Audio.Samples.Services
             _frameOutputNode.Start();
         }
 
-        public async Task LoadFile(StorageFile tmpAudioFile)
+        public async Task Load(StorageFile tmpAudioFile)
         {
             CreateAudioFileInputNodeResult result = await _audioGraph.CreateFileInputNodeAsync(tmpAudioFile);
             if (result.Status == AudioFileNodeCreationStatus.Success)
@@ -130,7 +130,12 @@ namespace Yugen.Audio.Samples.Services
             }
         }
 
-        public Task LoadStream(Stream audioStream)
+        public Task Load(Stream audioStream)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Load(byte[] bytes)
         {
             throw new NotImplementedException();
         }

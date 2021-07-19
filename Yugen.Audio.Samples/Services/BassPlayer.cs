@@ -1,5 +1,4 @@
-﻿using NAudio.CoreAudioApi;
-using NAudio.Wave;
+﻿using ManagedBass;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -9,10 +8,9 @@ using Yugen.Audio.Samples.Models;
 
 namespace Yugen.Audio.Samples.Services
 {
-    public class NAudioPlayerRT : IAudioPlayer
+    public class BassPlayer : IAudioPlayer
     {
-        private WasapiOutRT player;
-        private WaveStream reader;
+        private int _handle;
 
         public TimeSpan Duration => throw new NotImplementedException();
         public bool IsRepeating { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -22,13 +20,8 @@ namespace Yugen.Audio.Samples.Services
 
         public void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100)
         {
-            if (player == null)
-            {
-                // Exclusive mode - fails with a weird buffer alignment error
-                player = new WasapiOutRT(AudioClientShareMode.Shared, 200);
-
-                //player.PlaybackStopped += PlayerOnPlaybackStopped;
-            }
+            Bass.Init();
+            //Bass.ChannelSetDevice(_handle, i);
         }
 
         public Task Load(StorageFile tmpAudioFile)
@@ -38,22 +31,14 @@ namespace Yugen.Audio.Samples.Services
 
         public Task Load(Stream audioStream)
         {
-            if (reader is RawSourceWaveStream)
-            {
-                reader.Position = 0;
-            }
-
-            //reader = new MediaFoundationReaderUniversal(selectedStream);
-            reader = new StreamMediaFoundationReader(audioStream);
-
-            player.Init(() => reader);
-
-            return Task.CompletedTask;
+            throw new NotImplementedException();
         }
 
         public Task Load(byte[] bytes)
         {
-            throw new NotImplementedException();
+            _handle = Bass.CreateStream(bytes, 0, bytes.Length, BassFlags.Float);
+
+            return Task.CompletedTask;
         }
 
         public void Close()
@@ -63,7 +48,9 @@ namespace Yugen.Audio.Samples.Services
 
         public void Play()
         {
-            player.Play();
+            //Bass.ChannelSetAttribute(_handle, ChannelAttribute.Volume, 0f);
+
+            Bass.ChannelPlay(_handle);
         }
 
         public void PlayWithoutStreaming()
@@ -88,5 +75,6 @@ namespace Yugen.Audio.Samples.Services
         {
             throw new NotImplementedException();
         }
+
     }
 }

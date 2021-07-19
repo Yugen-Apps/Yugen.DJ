@@ -33,14 +33,19 @@ namespace Yugen.Audio.Samples.Services
             _masteringVoice = _xaudio2.CreateMasteringVoice(inputChannels, inputSampleRate);
         }
 
-        public Task LoadFile(StorageFile tmpAudioFile)
+        public Task Load(StorageFile tmpAudioFile)
         {
             WaveFormat waveFormat = new WaveFormat();
             _xaudio2.CreateSourceVoice(waveFormat);
             return Task.CompletedTask;
         }
 
-        public Task LoadStream(Stream audioStream)
+        public Task Load(Stream audioStream)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Load(byte[] bytes)
         {
             throw new NotImplementedException();
         }

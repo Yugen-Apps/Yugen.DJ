@@ -107,14 +107,14 @@ namespace Yugen.Audio.Samples.Services
             _masteringVoice = new MasteringVoice(_xaudio2, inputChannels, inputSampleRate, deviceId);
         }
 
-        public Task LoadFile(StorageFile tmpAudioFile)
+        public Task Load(StorageFile tmpAudioFile)
         {
             var fileStream = new NativeFileStream(tmpAudioFile.Path, NativeFileMode.Open, NativeFileAccess.Read);
 
-            return LoadStream(fileStream);
+            return Load(fileStream);
         }
 
-        public Task LoadStream(Stream audioStream)
+        public Task Load(Stream audioStream)
         {
             _audioDecoder = new AudioDecoder(audioStream);
             _sourceVoice = new SourceVoice(_xaudio2, _audioDecoder.WaveFormat);
@@ -146,6 +146,11 @@ namespace Yugen.Audio.Samples.Services
             _playingTask = Task.Factory.StartNew(PlayAsync, TaskCreationOptions.LongRunning);
 
             return Task.CompletedTask;
+        }
+
+        public Task Load(byte[] bytes)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

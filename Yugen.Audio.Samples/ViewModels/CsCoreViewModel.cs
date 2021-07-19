@@ -51,7 +51,7 @@ namespace Yugen.Audio.Samples.ViewModels
             {
                 var tmpAudioFile = await audioFile.CopyAsync(ApplicationData.Current.TemporaryFolder, audioFile.Name, NameCollisionOption.ReplaceExisting);
 
-                _audioPlayer.LoadFile(tmpAudioFile);
+                await _audioPlayer.Load(tmpAudioFile);
             }
         }
 

@@ -28,11 +28,12 @@ namespace Yugen.Audio.Samples.Services
             }
         }
 
-        public async Task LoadFile(StorageFile tmpAudioFile)
+        public Task Load(StorageFile tmpAudioFile)
         {
+            throw new NotImplementedException();
         }
 
-        public Task LoadStream(Stream audioStream)
+        public Task Load(Stream audioStream)
         {
             using (var mf = new StreamMediaFoundationReader(audioStream))
             {
@@ -40,6 +41,11 @@ namespace Yugen.Audio.Samples.Services
             }
 
             return Task.CompletedTask;
+        }
+
+        public Task Load(byte[] bytes)
+        {
+            throw new NotImplementedException();
         }
 
 

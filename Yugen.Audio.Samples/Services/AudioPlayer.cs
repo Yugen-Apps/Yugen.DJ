@@ -19,12 +19,17 @@ namespace Yugen.Audio.Samples.Services
         {
         }
 
-        public Task LoadFile(StorageFile tmpAudioFile)
+        public Task Load(StorageFile tmpAudioFile)
         {
             throw new NotImplementedException();
         }
 
-        public Task LoadStream(Stream audioStream)
+        public Task Load(Stream audioStream)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Load(byte[] bytes)
         {
             throw new NotImplementedException();
         }

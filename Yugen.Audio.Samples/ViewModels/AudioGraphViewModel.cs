@@ -56,7 +56,7 @@ namespace Yugen.Audio.Samples.ViewModels
             {
                 var tmpAudioFile = await audioFile.CopyAsync(ApplicationData.Current.TemporaryFolder, audioFile.Name, NameCollisionOption.ReplaceExisting);
 
-                await _audioPlayer.LoadFile(tmpAudioFile);
+                await _audioPlayer.Load(tmpAudioFile);
             }
 
             _vuBarsVieModel.SetSource(_audioPlayer.FileInputNode);

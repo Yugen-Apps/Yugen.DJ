@@ -1,6 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Uwp;
-using System;
+using Microsoft.Toolkit.Uwp.Helpers;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -17,7 +17,7 @@ namespace Yugen.Audio.Samples.ViewModels
 {
     public class DeckViewModel : ViewModelBase
     {
-        private readonly IAudioPlayer _audioPlayer = new NAudioPlayer();
+        private readonly IAudioPlayer _audioPlayer = new BassPlayer();
 
         private IBPMService _bpmService;
         private WaveformViewModel _waveformViewModel;
@@ -55,25 +55,25 @@ namespace Yugen.Audio.Samples.ViewModels
 
             if (audioFile != null)
             {
+                var bytes = await audioFile.ReadBytesAsync();
+                await _audioPlayer.Load(bytes);
+
+
                 var stream = await audioFile.OpenStreamForReadAsync();
 
-                MemoryStream fileStream = new MemoryStream();
-                await stream.CopyToAsync(fileStream);
+                //MemoryStream fileStream = new MemoryStream();
+                //await stream.CopyToAsync(fileStream);
+                //await _audioPlayer.LoadStream(fileStream);
+                //stream.Position = 0;
 
-                await _audioPlayer.LoadStream(fileStream);
-
-                stream.Position = 0;
-                MemoryStream bpmStream = new MemoryStream();
-                await stream.CopyToAsync(bpmStream);
-
-                stream.Position = 0;
                 MemoryStream waveformStream = new MemoryStream();
                 await stream.CopyToAsync(waveformStream);
-
                 await _waveformViewModel.GenerateAudioData(waveformStream);
+                stream.Position = 0;
 
+                MemoryStream bpmStream = new MemoryStream();
+                await stream.CopyToAsync(bpmStream);
                 var dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-
                 await Task.Run(() =>
                 {
                     dispatcherQueue.EnqueueAsync(() =>

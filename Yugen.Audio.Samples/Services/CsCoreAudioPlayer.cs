@@ -33,7 +33,7 @@ namespace Yugen.Audio.Samples.Services
             _masteringVoice = _xaudio2.CreateMasteringVoice(inputChannels, inputSampleRate, deviceId);
         }
 
-        public Task LoadFile(StorageFile tmpAudioFile)
+        public Task Load(StorageFile tmpAudioFile)
         {
             _waveSource = CodecFactory.Instance.GetCodec(tmpAudioFile.Path);
 
@@ -105,7 +105,12 @@ namespace Yugen.Audio.Samples.Services
         //    _source = notificationSource.ToWaveSource(16);
         //}
 
-        public Task LoadStream(Stream audioStream)
+        public Task Load(Stream audioStream)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Load(byte[] bytes)
         {
             throw new NotImplementedException();
         }

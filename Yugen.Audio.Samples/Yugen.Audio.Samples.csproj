@@ -136,6 +136,7 @@
     <Compile Include="Interfaces\IAudioGraphAudioPlayer.cs" />
     <Compile Include="Services\AudioGraphAudioPlayer.cs" />
     <Compile Include="Models\AudioPlayerState.cs" />
+    <Compile Include="Services\BassPlayer.cs" />
     <Compile Include="Services\NAudioPlayerRT.cs" />
     <Compile Include="Services\NAudioPlayer.cs" />
     <Compile Include="Services\AudioPlayer.cs" />
@@ -216,6 +217,9 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="bass.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Images\Circle.png" />
     <Content Include="Assets\Images\Vinyl.png" />
     <Content Include="Properties\Default.rd.xml" />
@@ -278,6 +282,12 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="BassSharp">
+      <Version>4.0.9-pre</Version>
+    </PackageReference>
+    <PackageReference Include="BassSharp.Fx">
+      <Version>4.0.9-pre</Version>
+    </PackageReference>
     <PackageReference Include="CSCore">
       <Version>1.2.1.2</Version>
     </PackageReference>
@@ -339,6 +349,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Assets\bass24-uwp\x64\" />
     <Folder Include="Renderers\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
