@@ -25,6 +25,9 @@
                     Command="{x:Bind ViewModel.OpenCommand}" />
 
             <TextBlock Text="{x:Bind ViewModel.Bpm, Mode=OneWay}" />
+            
+            <Button Content="Play"
+                    Command="{x:Bind ViewModel.PlayCommand}" />
         </StackPanel>
 
         <controls:Waveform Grid.Column="1" />

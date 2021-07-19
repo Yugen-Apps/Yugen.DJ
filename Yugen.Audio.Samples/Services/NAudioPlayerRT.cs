@@ -1,20 +1,18 @@
-﻿using System;
+﻿using NAudio.CoreAudioApi;
+using NAudio.Wave;
+using System;
 using System.IO;
 using System.Threading.Tasks;
-using Vortice.Multimedia;
-using Vortice.XAudio2;
 using Windows.Storage;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Models;
 
 namespace Yugen.Audio.Samples.Services
 {
-    public class VortexAudioPlayer : IAudioPlayer
+    public class NAudioPlayerRT : IAudioPlayer
     {
-        private readonly IXAudio2 _xaudio2;
-        private IXAudio2MasteringVoice _masteringVoice;
-        //private AudioDecoder _audioDecoder;
-        //private readonly IXAudio2SourceVoice _sourceVoice;
+        private WasapiOutRT player;
+        private WaveStream reader;
 
         public TimeSpan Duration => throw new NotImplementedException();
         public bool IsRepeating { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
@@ -22,28 +20,36 @@ namespace Yugen.Audio.Samples.Services
         public AudioPlayerState State => throw new NotImplementedException();
         public float Volume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
-        public VortexAudioPlayer()
-        {
-            _xaudio2 = new IXAudio2(IntPtr.Zero);
-            _xaudio2.StartEngine();
-        }
-
         public void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100)
         {
-            _masteringVoice = _xaudio2.CreateMasteringVoice(inputChannels, inputSampleRate);
+            if (player == null)
+            {
+                // Exclusive mode - fails with a weird buffer alignment error
+                player = new WasapiOutRT(AudioClientShareMode.Shared, 200);
+
+                //player.PlaybackStopped += PlayerOnPlaybackStopped;
+            }
         }
 
-        public Task LoadFile(StorageFile tmpAudioFile)
+        public async Task LoadFile(StorageFile tmpAudioFile)
         {
-            WaveFormat waveFormat = new WaveFormat();
-            _xaudio2.CreateSourceVoice(waveFormat);
-            return Task.CompletedTask;
         }
 
         public Task LoadStream(Stream audioStream)
         {
-            throw new NotImplementedException();
+            if (reader is RawSourceWaveStream)
+            {
+                reader.Position = 0;
+            }
+
+            //reader = new MediaFoundationReaderUniversal(selectedStream);
+            reader = new StreamMediaFoundationReader(audioStream);
+
+            player.Init(() => reader);
+
+            return Task.CompletedTask;
         }
+
 
         public void Close()
         {
@@ -52,6 +58,7 @@ namespace Yugen.Audio.Samples.Services
 
         public void Play()
         {
+            player.Play();
         }
 
         public void PlayWithoutStreaming()

@@ -130,7 +130,7 @@ namespace Yugen.Audio.Samples.Services
             }
         }
 
-        public void LoadStream(Stream audioStream)
+        public Task LoadStream(Stream audioStream)
         {
             throw new NotImplementedException();
         }

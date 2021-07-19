@@ -136,6 +136,8 @@
     <Compile Include="Interfaces\IAudioGraphAudioPlayer.cs" />
     <Compile Include="Services\AudioGraphAudioPlayer.cs" />
     <Compile Include="Models\AudioPlayerState.cs" />
+    <Compile Include="Services\NAudioPlayerRT.cs" />
+    <Compile Include="Services\NAudioPlayer.cs" />
     <Compile Include="Services\AudioPlayer.cs" />
     <Compile Include="Interfaces\IMemoryBufferByteAccess.cs" />
     <Compile Include="Services\VortexAudioPlayer.cs" />
@@ -291,8 +293,17 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
       <Version>2.0.1</Version>
     </PackageReference>
+    <PackageReference Include="NAudio.Core">
+      <Version>2.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="NAudio.Uap">
+      <Version>2.0.0</Version>
+    </PackageReference>
     <PackageReference Include="NAudio.Wasapi">
       <Version>2.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="NAudio.WinMM">
+      <Version>2.0.1</Version>
     </PackageReference>
     <PackageReference Include="SharpDX.MediaFoundation">
       <Version>4.2.0</Version>

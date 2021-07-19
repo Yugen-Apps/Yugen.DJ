@@ -16,7 +16,7 @@ namespace Yugen.Audio.Samples.Interfaces
 
         void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100);
         Task LoadFile(StorageFile tmpAudioFile);
-        void LoadStream(Stream audioStream);
+        Task LoadStream(Stream audioStream);
         void Close();
 
         void Play();
