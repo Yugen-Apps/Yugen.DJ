@@ -25,14 +25,18 @@
         <Button Content="Play"
                 Command="{x:Bind ViewModel.PlayCommand}" />
 
-        <!--<Button Content="PlayWithoutStreaming"
-                Command="{x:Bind ViewModel.PlayWithoutStreamingCommand}" />-->
-
-        <!--<Button Content="Record"
-                Command="{x:Bind ViewModel.RecordCommand}" />-->
-
         <Button Content="Stop"
                 Command="{x:Bind ViewModel.StopCommand}" />
+
+        <TextBlock Text="{x:Bind ViewModel.Position, Mode=OneWay}"/>
+        
+        <Slider Header="Pitch"
+                Minimum="-50"
+                Maximum="+50"
+                TickFrequency="10"
+                TickPlacement="Outside"
+                Value="{x:Bind ViewModel.Pitch, Mode=TwoWay}"
+                Width="400" />
 
     </StackPanel>
 </Page>
