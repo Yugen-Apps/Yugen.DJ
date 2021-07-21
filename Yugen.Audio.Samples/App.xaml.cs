@@ -113,6 +113,7 @@ namespace Yugen.Audio.Samples
                 .AddSingleton<AppShellViewModel>()
                 .AddSingleton<AudioFrameInputNodeViewModel>()
                 .AddSingleton<AudioGraphViewModel>()
+                .AddSingleton<BassViewModel>()
                 .AddSingleton<CsCoreViewModel>()
                 .AddSingleton<SharpDXViewModel>()
                 .AddSingleton<VuBarsVieModel>()

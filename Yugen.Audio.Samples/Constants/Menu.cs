@@ -10,6 +10,7 @@ namespace Yugen.Audio.Samples.Constants
         {
             NewNavigationViewItem(nameof(HomePage)),
             NewNavigationViewItem(nameof(AudioGraphPage)),
+            NewNavigationViewItem(nameof(BassPage)),
             NewNavigationViewItem(nameof(CsCorePage)),
             NewNavigationViewItem(nameof(SharpDXPage)),
             NewNavigationViewItem(nameof(AudioFrameInputNodePage)),

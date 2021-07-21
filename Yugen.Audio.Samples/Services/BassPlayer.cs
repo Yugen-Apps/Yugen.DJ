@@ -37,7 +37,7 @@ namespace Yugen.Audio.Samples.Services
         public Task Load(byte[] bytes)
         {
             _handle = Bass.CreateStream(bytes, 0, bytes.Length, BassFlags.Float);
-
+            
             return Task.CompletedTask;
         }
 
@@ -57,14 +57,9 @@ namespace Yugen.Audio.Samples.Services
         {
         }
 
-        public void Pause()
-        {
-            throw new NotImplementedException();
-        }
+        public void Pause() => Bass.ChannelPause(_handle);
 
-        public void Stop()
-        {
-        }
+        public void Stop() => Bass.ChannelStop(_handle);
 
         public void Wait()
         {
