@@ -20,7 +20,7 @@ namespace Yugen.Audio.Samples.Services
         public bool IsRepeating { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public TimeSpan Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public AudioPlayerState State => throw new NotImplementedException();
-        public float Volume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public double Volume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public VortexAudioPlayer()
         {

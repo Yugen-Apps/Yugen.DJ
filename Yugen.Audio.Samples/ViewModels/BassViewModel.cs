@@ -6,11 +6,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
-using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.System;
 using Yugen.Audio.Samples.Helpers;
-using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Services;
 using Yugen.Toolkit.Standard.Mvvm;
 using Yugen.Toolkit.Uwp.Helpers;
@@ -22,6 +20,10 @@ namespace Yugen.Audio.Samples.ViewModels
         private BassPlayer _audioPlayer = new BassPlayer();
         private Timer _progressBarTimer;
         private double _position;
+
+        private double _volume;
+        private double _pitch;
+        private double _tempo;
 
         public BassViewModel()
         {
@@ -53,7 +55,21 @@ namespace Yugen.Audio.Samples.ViewModels
                 }
             }
         }
-        double _pitch;
+
+        /// <summary>
+        /// Gets or Sets the Volume (0 ... 1.0).
+        /// </summary>
+        public double Volume
+        {
+            get => _volume;
+            set
+            {
+                if (SetProperty(ref _volume, value))
+                {
+                    _audioPlayer.Volume = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or Sets the Pitch in Semitones (-60 ... 0 ... 60).
@@ -69,7 +85,6 @@ namespace Yugen.Audio.Samples.ViewModels
                 }
             }
         }
-        double _tempo;
 
         /// <summary>
         /// Gets or Sets the Tempo in Percentage (-95% ... 0 ... 5000%)

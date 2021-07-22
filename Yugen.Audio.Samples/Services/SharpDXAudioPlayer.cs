@@ -33,7 +33,7 @@ namespace Yugen.Audio.Samples.Services
         private TimeSpan _playPositionStart;
         private Task _playingTask;
         private int _playCounter;
-        private float _localVolume;
+        private double _localVolume;
         private bool _isDisposed;
 
         /// <summary>
@@ -91,13 +91,13 @@ namespace Yugen.Audio.Samples.Services
         /// Gets or sets the volume.
         /// </summary>
         /// <value>The volume.</value>
-        public float Volume
+        public double Volume
         {
             get { return _localVolume; }
             set
             {
                 _localVolume = value;
-                _sourceVoice.SetVolume(value);
+                _sourceVoice.SetVolume((float)value);
             }
         }
 

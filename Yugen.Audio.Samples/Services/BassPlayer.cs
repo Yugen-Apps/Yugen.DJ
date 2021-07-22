@@ -3,7 +3,6 @@ using ManagedBass.Fx;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Timers;
 using Windows.Storage;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Models;
@@ -14,13 +13,23 @@ namespace Yugen.Audio.Samples.Services
     {
         private int _handle;
         private ChannelInfo _channelInfo;
+
         private long _length;
         private double _secondsDuration;
+
+        private int _bpmchan;
+        //private BPMProgressProcedure _progressProcedure;
+        //private BPMBeatProcedure _beatProcedure;
+        //private BPMProcedure _bpmProcedure;
 
         public void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100)
         {
             Bass.Init();
             //Bass.ChannelSetDevice(_handle, i);
+
+            //_progressProcedure = GetBPM_ProgressCallback;
+            //_beatProcedure = GetBeatPos_Callback;
+            //_bpmProcedure = GetBPM_Callback;
         }
 
         public TimeSpan Duration { get; private set; }
@@ -31,12 +40,21 @@ namespace Yugen.Audio.Samples.Services
             set => Bass.ChannelSetPosition(_handle, Bass.ChannelSeconds2Bytes(_handle, value.TotalSeconds));
         }
 
+        public int BpmPeriod { get; set; } = 30;
+
         public bool IsRepeating { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public AudioPlayerState State => throw new NotImplementedException();
 
-        public float Volume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        
+        /// <summary>
+        /// Gets or Sets the Volume (0 ... 1.0).
+        /// </summary>
+        public double Volume
+        {
+            get => Bass.ChannelGetAttribute(_handle, ChannelAttribute.Volume);
+            set => Bass.ChannelSetAttribute(_handle, ChannelAttribute.Volume, value);
+        }
+
         /// <summary>
         /// Gets or Sets the Pitch in Semitones (-60 ... 0 ... 60).
         /// </summary>
@@ -55,60 +73,112 @@ namespace Yugen.Audio.Samples.Services
             set => Bass.ChannelSetAttribute(_handle, ChannelAttribute.Tempo, value);
         }
 
-        public Task Load(StorageFile tmpAudioFile)
-        {
-            throw new NotImplementedException();
-        }
+        public Task Load(StorageFile tmpAudioFile) => throw new NotImplementedException();
 
-        public Task Load(Stream audioStream)
-        {
-            throw new NotImplementedException();
-        }
+        public Task Load(Stream audioStream) => throw new NotImplementedException();
 
         public Task Load(byte[] bytes)
         {
-            _handle = Bass.CreateStream(bytes, 0, bytes.Length, BassFlags.Float);
-
+            // Create stream and get channel info
+            //_handle = Bass.CreateStream(bytes, 0, bytes.Length, BassFlags.Float);
+            _handle = Bass.CreateStream(bytes, 0, bytes.Length, BassFlags.Decode);
             Bass.ChannelGetInfo(_handle, out _channelInfo);
+            //var sampleRate = _channelInfo.Frequency;
+
+            // Get duration
             _length = Bass.ChannelGetLength(_handle);
             _secondsDuration = Bass.ChannelBytes2Seconds(_handle, _length);
             Duration = TimeSpan.FromSeconds(_secondsDuration);
 
-            var handle = BassFx.TempoCreate(_handle, BassFlags.Loop | BassFlags.FxFreeSource);
+            if (_handle == 0)
+            {
+                //  Loads a MOD music file - MO3 / IT / XM / S3M / MTM / MOD / UMX formats from memory.
+                _handle = Bass.MusicLoad(bytes, 0, bytes.Length, BassFlags.MusicRamp | BassFlags.Prescan | BassFlags.Decode, 0);
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Selected file couldn't be loaded!");
+            }
 
+            // create a new stream - decoded & resampled
+            _handle = BassFx.TempoCreate(_handle, BassFlags.Loop | BassFlags.FxFreeSource);
+            if (_handle == 0)
+            {
+                System.Diagnostics.Debug.WriteLine("Couldn't create a resampled stream!");
+                Bass.StreamFree(_handle);
+                Bass.MusicFree(_handle);
+                return Task.CompletedTask;
+            }
+
+            // set the callback bpm and beat
+            BassFx.BPMCallbackSet(_handle, GetBPM_Callback, BpmPeriod, 0, BassFlags.FXBpmMult2);
+            BassFx.BPMBeatCallbackSet(_handle, GetBeatPos_Callback);
+
+            // play new created stream
+            Bass.ChannelPlay(_handle);
+
+            // create bpmChan stream and get bpm value for BpmPeriod seconds from current position
+            var pos = Bass.ChannelBytes2Seconds(_handle, Bass.ChannelGetPosition(_handle));
+            var maxpos = Bass.ChannelBytes2Seconds(_handle, Bass.ChannelGetLength(_handle));
+            DecodingBPM(true, pos, pos + BpmPeriod >= maxpos ? maxpos - 1 : pos + BpmPeriod, bytes);
 
             return Task.CompletedTask;
         }
 
-        public void Close()
-        {
-            throw new NotImplementedException();
-        }
+        public void Close() => throw new NotImplementedException();
 
-        public void Play()
-        {
-            //Bass.ChannelSetAttribute(_handle, ChannelAttribute.Volume, 0f);
+        public void Play() => Bass.ChannelPlay(_handle);
 
-            Bass.ChannelPlay(_handle);
-        }
-
-        public void PlayWithoutStreaming()
-        {
-        }
+        public void PlayWithoutStreaming() => throw new NotImplementedException();
 
         public void Pause() => Bass.ChannelPause(_handle);
 
         public void Stop() => Bass.ChannelStop(_handle);
 
-        public void Wait()
+        public void Wait() => throw new NotImplementedException();
+
+        public void Record(StorageFile audioFile) => throw new NotImplementedException();
+
+        private void DecodingBPM(bool newStream, double startSec, double endSec, byte[] bytes)
         {
-            throw new NotImplementedException();
+            if (newStream)
+            {
+                // open the same file as played but for bpm decoding detection
+                _bpmchan = Bass.CreateStream(bytes, 0, bytes.Length, BassFlags.Decode);
+
+                if (_bpmchan == 0)
+                {
+                    _bpmchan = Bass.MusicLoad(bytes, 0, bytes.Length, BassFlags.Decode | BassFlags.Prescan, 0);
+                }
+            }
+
+            // detect bpm in background and return progress in GetBPM_ProgressCallback function
+            if (_bpmchan != 0)
+            {
+                var bpm = BassFx.BPMDecodeGet(_bpmchan, startSec, endSec, 0,
+                                              BassFlags.FxBpmBackground | BassFlags.FXBpmMult2 | BassFlags.FxFreeSource, 
+                                              GetBPM_ProgressCallback);
+            }
         }
 
-        public void Record(StorageFile audioFile)
+        private void GetBPM_ProgressCallback(int Channel, float Percent, IntPtr User)
         {
-            throw new NotImplementedException();
+            var bpmProgress = (int)Percent;
         }
 
+        private void GetBPM_Callback(int Channel, float BPM, IntPtr User)
+        {
+            // update the bpm view
+            var bpm = BPM;
+        }
+
+        private async void GetBeatPos_Callback(int Channel, double beatPosition, IntPtr User)
+        {
+            var curpos = Bass.ChannelBytes2Seconds(Channel, Bass.ChannelGetPosition(Channel));
+
+            await Task.Delay(TimeSpan.FromSeconds(beatPosition - curpos));
+
+            var beatPosition2 = Bass.ChannelBytes2Seconds(Channel, Bass.ChannelGetPosition(Channel)) / BassFx.TempoGetRateRatio(Channel);
+        }
     }
 }

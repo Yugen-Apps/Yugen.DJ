@@ -12,7 +12,7 @@ namespace Yugen.Audio.Samples.Interfaces
         bool IsRepeating { get; set; }
         TimeSpan Position { get; set; }
         AudioPlayerState State { get; }
-        float Volume { get; set; }
+        double Volume { get; set; }
 
         void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100);
         Task Load(StorageFile tmpAudioFile);

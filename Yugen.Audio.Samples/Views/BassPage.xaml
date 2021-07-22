@@ -29,13 +29,29 @@
                 Command="{x:Bind ViewModel.StopCommand}" />
 
         <TextBlock Text="{x:Bind ViewModel.Position, Mode=OneWay}"/>
-        
+
+        <Slider Header="Volume"
+                Minimum="0"
+                Maximum="1"
+                TickFrequency="0.1"
+                TickPlacement="Outside"
+                Value="{x:Bind ViewModel.Volume, Mode=TwoWay}"
+                Width="400" />
+
         <Slider Header="Pitch"
                 Minimum="-50"
                 Maximum="+50"
                 TickFrequency="10"
                 TickPlacement="Outside"
                 Value="{x:Bind ViewModel.Pitch, Mode=TwoWay}"
+                Width="400" />
+
+        <Slider Header="Tempo"
+                Minimum="-95"
+                Maximum="+95"
+                TickFrequency="10"
+                TickPlacement="Outside"
+                Value="{x:Bind ViewModel.Tempo, Mode=TwoWay}"
                 Width="400" />
 
     </StackPanel>
