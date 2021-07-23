@@ -11,6 +11,7 @@ namespace Yugen.Audio.Samples.Services
 {
     public class BassPlayer : IAudioPlayer
     {
+        private byte[] _audioBytes;
         private int _handle;
         private ChannelInfo _channelInfo;
 
@@ -18,6 +19,10 @@ namespace Yugen.Audio.Samples.Services
         private double _secondsDuration;
 
         private int _bpmchan;
+        private double _beatPosition;
+        private int _bpmProgress;
+        private bool _isFirstPlay;
+
         //private BPMProgressProcedure _progressProcedure;
         //private BPMBeatProcedure _beatProcedure;
         //private BPMProcedure _bpmProcedure;
@@ -41,6 +46,8 @@ namespace Yugen.Audio.Samples.Services
         }
 
         public int BpmPeriod { get; set; } = 30;
+
+        public float Bpm { get; private set; }
 
         public bool IsRepeating { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
@@ -77,11 +84,13 @@ namespace Yugen.Audio.Samples.Services
 
         public Task Load(Stream audioStream) => throw new NotImplementedException();
 
-        public Task Load(byte[] bytes)
+        public Task Load(byte[] audioBytes)
         {
+            _audioBytes = audioBytes;
+
             // Create stream and get channel info
             //_handle = Bass.CreateStream(bytes, 0, bytes.Length, BassFlags.Float);
-            _handle = Bass.CreateStream(bytes, 0, bytes.Length, BassFlags.Decode);
+            _handle = Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode);
             Bass.ChannelGetInfo(_handle, out _channelInfo);
             //var sampleRate = _channelInfo.Frequency;
 
@@ -93,7 +102,7 @@ namespace Yugen.Audio.Samples.Services
             if (_handle == 0)
             {
                 //  Loads a MOD music file - MO3 / IT / XM / S3M / MTM / MOD / UMX formats from memory.
-                _handle = Bass.MusicLoad(bytes, 0, bytes.Length, BassFlags.MusicRamp | BassFlags.Prescan | BassFlags.Decode, 0);
+                _handle = Bass.MusicLoad(audioBytes, 0, audioBytes.Length, BassFlags.MusicRamp | BassFlags.Prescan | BassFlags.Decode, 0);
             }
             else
             {
@@ -114,20 +123,27 @@ namespace Yugen.Audio.Samples.Services
             BassFx.BPMCallbackSet(_handle, GetBPM_Callback, BpmPeriod, 0, BassFlags.FXBpmMult2);
             BassFx.BPMBeatCallbackSet(_handle, GetBeatPos_Callback);
 
-            // play new created stream
-            Bass.ChannelPlay(_handle);
-
-            // create bpmChan stream and get bpm value for BpmPeriod seconds from current position
-            var pos = Bass.ChannelBytes2Seconds(_handle, Bass.ChannelGetPosition(_handle));
-            var maxpos = Bass.ChannelBytes2Seconds(_handle, Bass.ChannelGetLength(_handle));
-            DecodingBPM(true, pos, pos + BpmPeriod >= maxpos ? maxpos - 1 : pos + BpmPeriod, bytes);
+            _isFirstPlay = true;
 
             return Task.CompletedTask;
         }
 
         public void Close() => throw new NotImplementedException();
 
-        public void Play() => Bass.ChannelPlay(_handle);
+        public void Play()
+        {
+            // play new created stream
+            Bass.ChannelPlay(_handle);
+
+            if (_isFirstPlay)
+            {
+                _isFirstPlay = false;
+                // create bpmChan stream and get bpm value for BpmPeriod seconds from current position
+                var pos = Bass.ChannelBytes2Seconds(_handle, Bass.ChannelGetPosition(_handle));
+                var maxpos = Bass.ChannelBytes2Seconds(_handle, Bass.ChannelGetLength(_handle));
+                DecodingBPM(true, pos, pos + BpmPeriod >= maxpos ? maxpos - 1 : pos + BpmPeriod, _audioBytes);
+            }
+        }
 
         public void PlayWithoutStreaming() => throw new NotImplementedException();
 
@@ -155,21 +171,21 @@ namespace Yugen.Audio.Samples.Services
             // detect bpm in background and return progress in GetBPM_ProgressCallback function
             if (_bpmchan != 0)
             {
-                var bpm = BassFx.BPMDecodeGet(_bpmchan, startSec, endSec, 0,
-                                              BassFlags.FxBpmBackground | BassFlags.FXBpmMult2 | BassFlags.FxFreeSource, 
+                Bpm = BassFx.BPMDecodeGet(_bpmchan, startSec, endSec, 0,
+                                              BassFlags.FxBpmBackground | BassFlags.FXBpmMult2 | BassFlags.FxFreeSource,
                                               GetBPM_ProgressCallback);
             }
         }
 
         private void GetBPM_ProgressCallback(int Channel, float Percent, IntPtr User)
         {
-            var bpmProgress = (int)Percent;
+            _bpmProgress = (int)Percent;
         }
 
         private void GetBPM_Callback(int Channel, float BPM, IntPtr User)
         {
             // update the bpm view
-            var bpm = BPM;
+            Bpm = BPM;
         }
 
         private async void GetBeatPos_Callback(int Channel, double beatPosition, IntPtr User)
@@ -178,7 +194,7 @@ namespace Yugen.Audio.Samples.Services
 
             await Task.Delay(TimeSpan.FromSeconds(beatPosition - curpos));
 
-            var beatPosition2 = Bass.ChannelBytes2Seconds(Channel, Bass.ChannelGetPosition(Channel)) / BassFx.TempoGetRateRatio(Channel);
+            _beatPosition = Bass.ChannelBytes2Seconds(Channel, Bass.ChannelGetPosition(Channel)) / BassFx.TempoGetRateRatio(Channel);
         }
     }
 }

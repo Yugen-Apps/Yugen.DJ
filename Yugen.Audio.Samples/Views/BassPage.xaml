@@ -28,11 +28,20 @@
         <Button Content="Stop"
                 Command="{x:Bind ViewModel.StopCommand}" />
 
-        <TextBlock Text="{x:Bind ViewModel.Position, Mode=OneWay}"/>
+        <TextBlock>
+            <Run Text="Position:"/>
+            <Run Text="{x:Bind ViewModel.Position, Mode=OneWay}"/>
+        </TextBlock>
+        
+        <TextBlock>
+            <Run Text="Bpm:"/>
+            <Run Text="{x:Bind ViewModel.Bpm, Mode=OneWay}"/>
+        </TextBlock>
 
         <Slider Header="Volume"
                 Minimum="0"
                 Maximum="1"
+                StepFrequency="0.1"
                 TickFrequency="0.1"
                 TickPlacement="Outside"
                 Value="{x:Bind ViewModel.Volume, Mode=TwoWay}"

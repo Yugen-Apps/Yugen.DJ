@@ -21,7 +21,7 @@ namespace Yugen.Audio.Samples.ViewModels
         private Timer _progressBarTimer;
         private double _position;
 
-        private double _volume;
+        private double _volume = 1;
         private double _pitch;
         private double _tempo;
 
@@ -39,6 +39,7 @@ namespace Yugen.Audio.Samples.ViewModels
                 //if (!IsDragging)
                 dispatcherQueue.EnqueueAsync(() =>
                 {
+                    OnPropertyChanged(nameof(Bpm));
                     OnPropertyChanged(nameof(Position));
                 });
             };
@@ -55,6 +56,8 @@ namespace Yugen.Audio.Samples.ViewModels
                 }
             }
         }
+
+        public float Bpm => _audioPlayer.Bpm;
 
         /// <summary>
         /// Gets or Sets the Volume (0 ... 1.0).
