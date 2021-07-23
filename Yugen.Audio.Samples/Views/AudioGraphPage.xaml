@@ -33,8 +33,17 @@
 
         <Button Content="Stop"
                 Command="{x:Bind ViewModel.StopCommand}" />
-        
+
         <controls:VuBars HorizontalAlignment="Left"/>
+
+        <Slider Header="Volume"
+                Minimum="0"
+                Maximum="1"
+                StepFrequency="0.1"
+                TickFrequency="0.1"
+                TickPlacement="Outside"
+                Value="{x:Bind ViewModel.Volume, Mode=TwoWay}"
+                Width="400" />
 
     </StackPanel>
 </Page>

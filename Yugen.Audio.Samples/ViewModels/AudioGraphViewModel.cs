@@ -17,6 +17,7 @@ namespace Yugen.Audio.Samples.ViewModels
     {
         private readonly IAudioGraphAudioPlayer _audioPlayer;
         private readonly VuBarsVieModel _vuBarsVieModel;
+        private double _volume;
 
         public AudioGraphViewModel(IAudioGraphAudioPlayer audioPlayer, VuBarsVieModel vuBarsVieModel)
         {
@@ -26,18 +27,28 @@ namespace Yugen.Audio.Samples.ViewModels
             OnLoadCommand = new RelayCommand(OnLoadCommandBehavior);
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
             PlayCommand = new RelayCommand(PlayCommandBehavior);
-            //PlayWithoutStreamingCommand = new RelayCommand(PlayWithoutStreamingCommandBehavior);
             StopCommand = new RelayCommand(StopCommandBehavior);
-            //RecordCommand = new AsyncRelayCommand(OpenCommandBehavior);
         }
 
         public ICommand OnLoadCommand { get; }
+        
         public ICommand OpenCommand { get; }
+        
         public ICommand PlayCommand { get; }
-        //public ICommand PlayWithoutStreamingCommand { get; }
+
         public ICommand StopCommand { get; }
 
-        //public ICommand RecordCommand { get; }
+        public double Volume
+        {
+            get => _volume;
+            set
+            {
+                if (SetProperty(ref _volume, value))
+                {
+                    _audioPlayer.Volume = value;
+                }
+            }
+        }
 
         public void OnLoadCommandBehavior()
         {

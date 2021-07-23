@@ -32,7 +32,12 @@ namespace Yugen.Audio.Samples.Services
         public bool IsRepeating { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public TimeSpan Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public AudioPlayerState State => throw new NotImplementedException();
-        public double Volume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        
+        public double Volume 
+        { 
+            get => 0; 
+            set => _deviceOutputNode.OutgoingGain = value;
+        }
 
         public async void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100)
         {

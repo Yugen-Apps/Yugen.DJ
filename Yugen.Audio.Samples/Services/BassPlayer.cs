@@ -11,9 +11,12 @@ namespace Yugen.Audio.Samples.Services
 {
     public class BassPlayer : IAudioPlayer
     {
+        private const int _bpmPeriod = 30;
+
         private byte[] _audioBytes;
         private int _handle;
         private ChannelInfo _channelInfo;
+        private bool _isFirstPlay;
 
         private long _length;
         private double _secondsDuration;
@@ -21,7 +24,6 @@ namespace Yugen.Audio.Samples.Services
         private int _bpmchan;
         private double _beatPosition;
         private int _bpmProgress;
-        private bool _isFirstPlay;
 
         //private BPMProgressProcedure _progressProcedure;
         //private BPMBeatProcedure _beatProcedure;
@@ -35,6 +37,7 @@ namespace Yugen.Audio.Samples.Services
             //_progressProcedure = GetBPM_ProgressCallback;
             //_beatProcedure = GetBeatPos_Callback;
             //_bpmProcedure = GetBPM_Callback;
+
         }
 
         public TimeSpan Duration { get; private set; }
@@ -45,7 +48,37 @@ namespace Yugen.Audio.Samples.Services
             set => Bass.ChannelSetPosition(_handle, Bass.ChannelSeconds2Bytes(_handle, value.TotalSeconds));
         }
 
-        public int BpmPeriod { get; set; } = 30;
+        public double Rms
+        {
+            get
+            {
+                if (_handle == 0)
+                {
+                    return 0;
+                }
+
+                var levels = new float[1];
+                if (!Bass.ChannelGetLevel(_handle, levels, 0.05f, LevelRetrievalFlags.Mono | LevelRetrievalFlags.RMS))
+                {
+                    System.Diagnostics.Debug.WriteLine($"Failed to get levels for channel {Enum.GetName(typeof(Errors), Bass.LastError)}");
+                    return 0;
+                }
+
+                var dB = levels[0] > 0 ? 20 * Math.Log10(levels[0]) : -1000;
+
+                //if (dB > -40)
+                //{
+                //    //TODO: Sometimes this value is less than zero so clamp it.
+                //    //TODO: Some problem with BASS/ManagedBass, if you have exactly N bytes available call Bass.ChannelGetLevel with Length = Bass.ChannelBytesToSeconds(N) sometimes results in Errors.Ended.
+                //    //TODO: Nuts.
+                //    //var leadIn = Math.Max(stream.Position - length, 0);
+                //    //return leadIn;
+                //    return -40;
+                //}
+
+                return dB;
+            }
+        }
 
         public float Bpm { get; private set; }
 
@@ -120,8 +153,8 @@ namespace Yugen.Audio.Samples.Services
             }
 
             // set the callback bpm and beat
-            BassFx.BPMCallbackSet(_handle, GetBPM_Callback, BpmPeriod, 0, BassFlags.FXBpmMult2);
-            BassFx.BPMBeatCallbackSet(_handle, GetBeatPos_Callback);
+            BassFx.BPMCallbackSet(_handle, BPMCallback, _bpmPeriod, 0, BassFlags.FXBpmMult2);
+            BassFx.BPMBeatCallbackSet(_handle, BeatPosCallback);
 
             _isFirstPlay = true;
 
@@ -141,7 +174,7 @@ namespace Yugen.Audio.Samples.Services
                 // create bpmChan stream and get bpm value for BpmPeriod seconds from current position
                 var pos = Bass.ChannelBytes2Seconds(_handle, Bass.ChannelGetPosition(_handle));
                 var maxpos = Bass.ChannelBytes2Seconds(_handle, Bass.ChannelGetLength(_handle));
-                DecodingBPM(true, pos, pos + BpmPeriod >= maxpos ? maxpos - 1 : pos + BpmPeriod, _audioBytes);
+                DecodingBPM(true, pos, pos + _bpmPeriod >= maxpos ? maxpos - 1 : pos + _bpmPeriod, _audioBytes);
             }
         }
 
@@ -173,22 +206,22 @@ namespace Yugen.Audio.Samples.Services
             {
                 Bpm = BassFx.BPMDecodeGet(_bpmchan, startSec, endSec, 0,
                                               BassFlags.FxBpmBackground | BassFlags.FXBpmMult2 | BassFlags.FxFreeSource,
-                                              GetBPM_ProgressCallback);
+                                              BPMProgressCallback);
             }
         }
 
-        private void GetBPM_ProgressCallback(int Channel, float Percent, IntPtr User)
+        private void BPMProgressCallback(int Channel, float Percent, IntPtr User)
         {
             _bpmProgress = (int)Percent;
         }
 
-        private void GetBPM_Callback(int Channel, float BPM, IntPtr User)
+        private void BPMCallback(int Channel, float BPM, IntPtr User)
         {
             // update the bpm view
             Bpm = BPM;
         }
 
-        private async void GetBeatPos_Callback(int Channel, double beatPosition, IntPtr User)
+        private async void BeatPosCallback(int Channel, double beatPosition, IntPtr User)
         {
             var curpos = Bass.ChannelBytes2Seconds(Channel, Bass.ChannelGetPosition(Channel));
 

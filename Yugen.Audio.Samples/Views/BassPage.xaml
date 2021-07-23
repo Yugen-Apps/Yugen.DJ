@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity" 
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core" xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <interactivity:Interaction.Behaviors>
@@ -32,11 +32,26 @@
             <Run Text="Position:"/>
             <Run Text="{x:Bind ViewModel.Position, Mode=OneWay}"/>
         </TextBlock>
-        
+
         <TextBlock>
             <Run Text="Bpm:"/>
             <Run Text="{x:Bind ViewModel.Bpm, Mode=OneWay}"/>
         </TextBlock>
+
+        <TextBlock>
+            <Run Text="Rms:"/>
+            <Run Text="{x:Bind ViewModel.Rms, Mode=OneWay}"/>
+        </TextBlock>
+
+        <muxc:ProgressBar Height="100" 
+                          Width="100"
+                          Minimum="-100"
+                          Maximum="0"
+                          Value="{x:Bind ViewModel.Rms, Mode=OneWay}">
+            <muxc:ProgressBar.RenderTransform>
+                <CompositeTransform Rotation="-90" />
+            </muxc:ProgressBar.RenderTransform>
+        </muxc:ProgressBar>
 
         <Slider Header="Volume"
                 Minimum="0"
