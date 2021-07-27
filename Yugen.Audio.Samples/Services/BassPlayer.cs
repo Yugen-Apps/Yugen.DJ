@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Models;
+using static System.Net.WebRequestMethods;
 
 namespace Yugen.Audio.Samples.Services
 {
@@ -25,19 +26,23 @@ namespace Yugen.Audio.Samples.Services
         private double _beatPosition;
         private int _bpmProgress;
 
-        //private BPMProgressProcedure _progressProcedure;
-        //private BPMBeatProcedure _beatProcedure;
-        //private BPMProcedure _bpmProcedure;
+        private DeviceInfo[] _deviceList;
+        private int _handle2;
 
         public void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100)
         {
-            Bass.Init();
-            //Bass.ChannelSetDevice(_handle, i);
+            //var isInitialized = Bass.Init(-1); // default
+            var isInitialized0 = Bass.Init(0); // no sound IsEnabled IsInitialized Name: N
+            var isInitialized1 = Bass.Init(1); // speakers IsDefault Driver IsEnabled IsInitialized Name: D
+            var isInitialized2 = Bass.Init(2); // headphones Driver IsEnabled IsInitialized Name: H
+            var isInitialized3 = Bass.Init(3); // speakers IsDefault IsEnabled IsInitialized Name: D
 
-            //_progressProcedure = GetBPM_ProgressCallback;
-            //_beatProcedure = GetBeatPos_Callback;
-            //_bpmProcedure = GetBPM_Callback;
-
+            _deviceList = new DeviceInfo[Bass.DeviceCount];
+            for (int i = 0; i < Bass.DeviceCount; i++)
+            {
+                var device = Bass.GetDeviceInfo(i);
+                _deviceList[i] = device;
+            }
         }
 
         public TimeSpan Duration { get; private set; }
@@ -124,6 +129,7 @@ namespace Yugen.Audio.Samples.Services
             // Create stream and get channel info
             //_handle = Bass.CreateStream(bytes, 0, bytes.Length, BassFlags.Float);
             _handle = Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode);
+
             Bass.ChannelGetInfo(_handle, out _channelInfo);
             //var sampleRate = _channelInfo.Frequency;
 
@@ -137,7 +143,8 @@ namespace Yugen.Audio.Samples.Services
                 //  Loads a MOD music file - MO3 / IT / XM / S3M / MTM / MOD / UMX formats from memory.
                 _handle = Bass.MusicLoad(audioBytes, 0, audioBytes.Length, BassFlags.MusicRamp | BassFlags.Prescan | BassFlags.Decode, 0);
             }
-            else
+
+            if (_handle == 0)
             {
                 System.Diagnostics.Debug.WriteLine("Selected file couldn't be loaded!");
             }
@@ -161,6 +168,21 @@ namespace Yugen.Audio.Samples.Services
             return Task.CompletedTask;
         }
 
+        public void Heaphones(bool isHeadphones)
+        {
+            var isDeviceSet = isHeadphones
+                ? Bass.ChannelSetDevice(_handle, 2)
+                : Bass.ChannelSetDevice(_handle, 3);
+        }
+
+        public Task Load2(byte[] audioBytes)
+        {
+            _handle2 = Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Float);
+            var isDeviceSet = Bass.ChannelSetDevice(_handle2, 3);
+
+            return Task.CompletedTask;
+        }
+
         public void Close() => throw new NotImplementedException();
 
         public void Play()
@@ -176,6 +198,12 @@ namespace Yugen.Audio.Samples.Services
                 var maxpos = Bass.ChannelBytes2Seconds(_handle, Bass.ChannelGetLength(_handle));
                 DecodingBPM(true, pos, pos + _bpmPeriod >= maxpos ? maxpos - 1 : pos + _bpmPeriod, _audioBytes);
             }
+        }
+
+        public void Play2()
+        {
+            // play new created stream
+            Bass.ChannelPlay(_handle2);
         }
 
         public void PlayWithoutStreaming() => throw new NotImplementedException();

@@ -101,7 +101,6 @@ namespace Yugen.Audio.Samples.Services
             }
         }
 
-
         public void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100)
         {
             _masteringVoice = new MasteringVoice(_xaudio2, inputChannels, inputSampleRate, deviceId);
@@ -148,10 +147,7 @@ namespace Yugen.Audio.Samples.Services
             return Task.CompletedTask;
         }
 
-        public Task Load(byte[] bytes)
-        {
-            throw new NotImplementedException();
-        }
+        public Task Load(byte[] bytes) => throw new NotImplementedException();
 
         /// <summary>
         /// Close this audio player.
@@ -165,7 +161,6 @@ namespace Yugen.Audio.Samples.Services
             _isDisposed = true;
             Wait();
         }
-
 
         /// <summary>
         /// Plays the sound.
@@ -386,9 +381,6 @@ namespace Yugen.Audio.Samples.Services
             _bufferEndEvent.Set();
         }
 
-        public void Record(StorageFile audioFile)
-        {
-            throw new NotImplementedException();
-        }
+        public void Record(StorageFile audioFile) => throw new NotImplementedException();
     }
 }

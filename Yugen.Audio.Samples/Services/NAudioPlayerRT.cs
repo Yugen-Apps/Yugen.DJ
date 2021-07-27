@@ -31,10 +31,7 @@ namespace Yugen.Audio.Samples.Services
             }
         }
 
-        public Task Load(StorageFile tmpAudioFile)
-        {
-            throw new NotImplementedException();
-        }
+        public Task Load(StorageFile tmpAudioFile) => throw new NotImplementedException();
 
         public Task Load(Stream audioStream)
         {
@@ -51,42 +48,23 @@ namespace Yugen.Audio.Samples.Services
             return Task.CompletedTask;
         }
 
-        public Task Load(byte[] bytes)
-        {
-            throw new NotImplementedException();
-        }
+        public Task Load(byte[] bytes) => throw new NotImplementedException();
 
-        public void Close()
-        {
-            throw new NotImplementedException();
-        }
+        public void Close() => throw new NotImplementedException();
 
         public void Play()
         {
             player.Play();
         }
 
-        public void PlayWithoutStreaming()
-        {
-        }
+        public void PlayWithoutStreaming() => throw new NotImplementedException();
 
-        public void Pause()
-        {
-            throw new NotImplementedException();
-        }
+        public void Pause() => throw new NotImplementedException();
 
-        public void Stop()
-        {
-        }
+        public void Stop() => throw new NotImplementedException();
 
-        public void Wait()
-        {
-            throw new NotImplementedException();
-        }
+        public void Wait() => throw new NotImplementedException();
 
-        public void Record(StorageFile audioFile)
-        {
-            throw new NotImplementedException();
-        }
+        public void Record(StorageFile audioFile) => throw new NotImplementedException();
     }
 }

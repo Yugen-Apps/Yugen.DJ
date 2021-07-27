@@ -15,45 +15,52 @@
         </core:EventTriggerBehavior>
     </interactivity:Interaction.Behaviors>
 
-    <StackPanel Spacing="4">
+    <StackPanel Orientation="Horizontal">
 
-        <TextBlock Text="Bass" />
 
-        <Button Content="Open"
-                Command="{x:Bind ViewModel.OpenCommand}" />
+        <StackPanel Spacing="4">
 
-        <Button Content="Play"
-                Command="{x:Bind ViewModel.PlayCommand}" />
+            <TextBlock Text="Bass" />
 
-        <Button Content="Stop"
+            <Button Content="Open"
+                    Command="{x:Bind ViewModel.OpenCommand}" />
+            <TextBlock Text="{x:Bind ViewModel.FileName1, Mode=OneWay}" />
+
+            <ToggleButton Content="Play"
+                          IsChecked="{x:Bind ViewModel.IsPlaying, Mode=TwoWay}" />
+
+            <Button Content="Stop"
                 Command="{x:Bind ViewModel.StopCommand}" />
 
-        <TextBlock>
+            <ToggleButton Content="Headphones"
+                          IsChecked="{x:Bind ViewModel.IsHeadphones, Mode=TwoWay}" />
+
+            <TextBlock>
             <Run Text="Position:"/>
             <Run Text="{x:Bind ViewModel.Position, Mode=OneWay}"/>
-        </TextBlock>
+            </TextBlock>
 
-        <TextBlock>
+            <TextBlock>
             <Run Text="Bpm:"/>
             <Run Text="{x:Bind ViewModel.Bpm, Mode=OneWay}"/>
-        </TextBlock>
+            </TextBlock>
 
-        <TextBlock>
+            <TextBlock>
             <Run Text="Rms:"/>
             <Run Text="{x:Bind ViewModel.Rms, Mode=OneWay}"/>
-        </TextBlock>
+            </TextBlock>
 
-        <muxc:ProgressBar Height="100" 
+            <muxc:ProgressBar Height="100" 
                           Width="100"
                           Minimum="-100"
                           Maximum="0"
                           Value="{x:Bind ViewModel.Rms, Mode=OneWay}">
-            <muxc:ProgressBar.RenderTransform>
-                <CompositeTransform Rotation="-90" />
-            </muxc:ProgressBar.RenderTransform>
-        </muxc:ProgressBar>
+                <muxc:ProgressBar.RenderTransform>
+                    <CompositeTransform Rotation="-90" />
+                </muxc:ProgressBar.RenderTransform>
+            </muxc:ProgressBar>
 
-        <Slider Header="Volume"
+            <Slider Header="Volume"
                 Minimum="0"
                 Maximum="1"
                 StepFrequency="0.1"
@@ -62,7 +69,7 @@
                 Value="{x:Bind ViewModel.Volume, Mode=TwoWay}"
                 Width="400" />
 
-        <Slider Header="Pitch"
+            <Slider Header="Pitch"
                 Minimum="-50"
                 Maximum="+50"
                 TickFrequency="10"
@@ -70,13 +77,26 @@
                 Value="{x:Bind ViewModel.Pitch, Mode=TwoWay}"
                 Width="400" />
 
-        <Slider Header="Tempo"
+            <Slider Header="Tempo"
                 Minimum="-95"
                 Maximum="+95"
                 TickFrequency="10"
                 TickPlacement="Outside"
                 Value="{x:Bind ViewModel.Tempo, Mode=TwoWay}"
                 Width="400" />
+
+        </StackPanel>
+
+        <StackPanel Spacing="4">
+
+            <Button Content="Open"
+                Command="{x:Bind ViewModel.Open2Command}" />
+            <TextBlock Text="{x:Bind ViewModel.FileName2, Mode=OneWay}" />
+
+            <Button Content="Play"
+                Command="{x:Bind ViewModel.Play2Command}" />
+
+        </StackPanel>
 
     </StackPanel>
 </Page>

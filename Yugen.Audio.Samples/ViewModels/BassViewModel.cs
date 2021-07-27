@@ -25,11 +25,17 @@ namespace Yugen.Audio.Samples.ViewModels
         private double _pitch;
         private double _tempo;
 
+        private bool _isPlaying;
+        private string _fileName1;
+        private string _fileName2;
+        private bool _isHeadphones;
+
         public BassViewModel()
         {
             OnLoadCommand = new RelayCommand(OnLoadCommandBehavior);
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
-            PlayCommand = new RelayCommand(PlayCommandBehavior);
+            Open2Command = new AsyncRelayCommand(Open2CommandBehavior);
+            Play2Command = new RelayCommand(Play2CommandBehavior);
             StopCommand = new RelayCommand(StopCommandBehavior);
 
             var dispatcherQueue = DispatcherQueue.GetForCurrentThread();
@@ -108,11 +114,58 @@ namespace Yugen.Audio.Samples.ViewModels
         }
 
         public ICommand OnLoadCommand { get; }
-        
+
         public ICommand OpenCommand { get; }
-        
-        public ICommand PlayCommand { get; }
-        
+
+        public ICommand Open2Command { get; }
+
+        public bool IsPlaying
+        {
+            get => _isPlaying;
+            set
+            {
+                if (SetProperty(ref _isPlaying, value))
+                {
+                    if (_isPlaying)
+                    {
+                        _audioPlayer.Play();
+                        _progressBarTimer.Start();
+                    }
+                    else
+                    {
+                        _audioPlayer.Pause();
+                        _progressBarTimer.Stop();
+                    }
+                }
+            }
+        }
+
+        public bool IsHeadphones
+        {
+            get => _isHeadphones;
+            set
+            {
+                if (SetProperty(ref _isHeadphones, value))
+                {
+                    _audioPlayer.Heaphones(_isHeadphones);
+                }
+            }
+        }
+
+        public string FileName1
+        {
+            get => _fileName1;
+            set => SetProperty(ref _fileName1, value);
+        }
+
+        public string FileName2
+        {
+            get => _fileName2;
+            set => SetProperty(ref _fileName2, value);
+        }
+
+        public ICommand Play2Command { get; }
+
         public ICommand StopCommand { get; }
 
         public void OnLoadCommandBehavior()
@@ -131,13 +184,28 @@ namespace Yugen.Audio.Samples.ViewModels
             {
                 var bytes = await audioFile.ReadBytesAsync();
                 await _audioPlayer.Load(bytes);
+                FileName1 = audioFile.Name;
             }
         }
 
-        private void PlayCommandBehavior()
+        private async Task Open2CommandBehavior()
         {
-            _audioPlayer.Play();
-            _progressBarTimer.Start();
+            var audioFile = await FilePickerHelper.OpenFile(
+                    new List<string> { ".mp3" },
+                    PickerLocationId.MusicLibrary
+                );
+
+            if (audioFile != null)
+            {
+                var bytes = await audioFile.ReadBytesAsync();
+                await _audioPlayer.Load2(bytes);
+                FileName2 = audioFile.Name;
+            }
+        }
+
+        private void Play2CommandBehavior()
+        {
+            _audioPlayer.Play2();
         }
 
         private void StopCommandBehavior() => _audioPlayer.Stop();
