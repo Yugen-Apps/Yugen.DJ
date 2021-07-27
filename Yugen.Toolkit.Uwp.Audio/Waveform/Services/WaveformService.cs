@@ -1,4 +1,6 @@
 ﻿using NAudio.Wave;
+using System.Collections.Generic;
+using System.IO;
 using Yugen.Toolkit.Uwp.Audio.Waveform.Interfaces;
 using Yugen.Toolkit.Uwp.Audio.Waveform.Models;
 using Yugen.Toolkit.Uwp.Audio.Waveform.Providers;
@@ -14,45 +16,56 @@ namespace Yugen.Toolkit.Uwp.Audio.Waveform.Services
         {
         }
 
-        public WaveformRendererSettings Settings { get; } = new WaveformRendererSettings();
-
-        public IPeakProvider PeakProvider { get; } = new MaxPeakProvider();
-
         public WaveformService(WaveformRendererSettings settings, IPeakProvider peakProvider)
         {
             Settings = settings;
-            PeakProvider = peakProvider;
+            _peakProvider = peakProvider;
         }
 
-        //public async Task Render(IStorageFile file)
-        //{
-        //    var stream = await file.OpenStreamForReadAsync();
-        //    Render(stream);
-        //}
+        public List<PeakInfo> PeakList { get; } = new List<PeakInfo>();
 
-        //public void Render(Stream stream)
-        //{
-        //    ISampleProvider isp;
-        //    var samples = 0L;
+        public WaveformRendererSettings Settings { get; } = new WaveformRendererSettings();
 
-        //    using (var reader = new StreamMediaFoundationReader(stream))
-        //    {
-        //        isp = reader.ToSampleProvider();
-        //        var buffer = new float[reader.Length / 2];
-        //        isp.Read(buffer, 0, buffer.Length);
+        private IPeakProvider _peakProvider = new MaxPeakProvider();
 
-        //        var bytesPerSample = reader.Waveformat.BitsPerSample / 8;
-        //        samples = reader.Length / bytesPerSample;
-        //    }
+        public void Render(Stream stream)
+        {
+            ISampleProvider isp;
+            long samples;
 
-        //    Render(isp, samples);
-        //}
+            using (var reader = new StreamMediaFoundationReader(stream))
+            {
+                isp = reader.ToSampleProvider();
+                float[] Buffer = new float[reader.Length / 2];
+                isp.Read(Buffer, 0, Buffer.Length);
+
+                int bytesPerSample = reader.WaveFormat.BitsPerSample / 8;
+                samples = reader.Length / bytesPerSample;
+
+                //int sampleRate = isp.WaveFormat.SampleRate;
+                //double totalMinutes = reader.TotalTime.TotalMinutes;
+            }
+
+            Render(isp, samples);
+        }
 
         public void Render(ISampleProvider isp, long samples)
         {
             var samplesPerPixel = (int)(samples / Settings.Width);
             var stepSize = Settings.PixelsPerPeak + Settings.SpacerPixels;
-            PeakProvider.Init(isp, samplesPerPixel * stepSize);
+            _peakProvider.Init(isp, samplesPerPixel * stepSize);
+
+            // DecibelScale - if true, convert values to decibels for a logarithmic waveform
+            if (Settings.DecibelScale)
+            {
+                _peakProvider = new DecibelPeakProvider(_peakProvider, 48);
+            }
+
+            PeakList.Clear();
+            for (int i = 0; i < Settings.Width; i++)
+            {
+                PeakList.Add(_peakProvider.GetNextPeak());
+            }
         }
     }
 }

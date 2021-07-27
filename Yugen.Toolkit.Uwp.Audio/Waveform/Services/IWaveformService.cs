@@ -1,5 +1,6 @@
 ﻿using NAudio.Wave;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Interfaces;
+using System.Collections.Generic;
+using System.IO;
 using Yugen.Toolkit.Uwp.Audio.Waveform.Models;
 
 namespace Yugen.Toolkit.Uwp.Audio.Waveform.Services
@@ -8,8 +9,9 @@ namespace Yugen.Toolkit.Uwp.Audio.Waveform.Services
     {
         WaveformRendererSettings Settings { get; }
 
-        IPeakProvider PeakProvider { get; }
+        List<PeakInfo> PeakList { get; }
 
         void Render(ISampleProvider isp, long samples);
+        void Render(Stream stream);
     }
 }

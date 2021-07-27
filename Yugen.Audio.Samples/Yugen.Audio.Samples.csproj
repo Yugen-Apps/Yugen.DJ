@@ -148,7 +148,7 @@
     <Compile Include="Services\SharpDXAudioPlayer.cs" />
     <Compile Include="ViewModels\BassViewModel.cs" />
     <Compile Include="ViewModels\DeckViewModel.cs" />
-    <Compile Include="ViewModels\WaveformRenderer.cs" />
+    <Compile Include="Renderers\WaveformRenderer.cs" />
     <Compile Include="ViewModels\WaveformViewModel.cs" />
     <Compile Include="ViewModels\AudioFrameInputNodeViewModel.cs" />
     <Compile Include="ViewModels\AudioGraphViewModel.cs" />
@@ -416,9 +416,7 @@
       <Name>Yugen.Toolkit.Uwp.Audio</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Renderers\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

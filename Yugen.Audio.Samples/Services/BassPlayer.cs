@@ -1,7 +1,11 @@
 ﻿using ManagedBass;
+using ManagedBass.DirectX8;
 using ManagedBass.Fx;
+using SharpDX.MediaFoundation;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Yugen.Audio.Samples.Interfaces;
@@ -68,7 +72,6 @@ namespace Yugen.Audio.Samples.Services
                     System.Diagnostics.Debug.WriteLine($"Failed to get levels for channel {Enum.GetName(typeof(Errors), Bass.LastError)}");
                     return 0;
                 }
-
                 var dB = levels[0] > 0 ? 20 * Math.Log10(levels[0]) : -1000;
 
                 //if (dB > -40)
@@ -132,6 +135,23 @@ namespace Yugen.Audio.Samples.Services
 
             Bass.ChannelGetInfo(_handle, out _channelInfo);
             //var sampleRate = _channelInfo.Frequency;
+
+
+            // TODO: FFT / Waveform
+            // Perform a 1024 sample FFT on a channel and list the result.
+            var fft = new float[512]; // fft data buffer
+            Bass.ChannelGetData(_handle, fft, (int)DataFlags.FFT1024);
+            //for (int a = 0; a < 512; a++)
+            //{ 
+            //    Console.WriteLine("{0}: {1}", a, fft[a]);
+            //}
+            //Perform a 1024 sample FFT on a channel and list the complex result.
+            //var fft = new float[2048]; // fft data buffer
+            //Bass.ChannelGetData(_handle, fft, (int)(DataFlags.FFT1024 | DataFlags.FFTComplex));
+            //for (int a = 0; a < 1024; a++)
+            //{
+            //    Console.WriteLine("{0}: ({1}, {2})", a, fft[a * 2], fft[a * 2 + 1]);
+            //}
 
             // Get duration
             _length = Bass.ChannelGetLength(_handle);
