@@ -9,9 +9,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Waveform.Services
     {
         WaveformRendererSettings Settings { get; }
 
-        List<PeakInfo> PeakList { get; }
+        List<(float min, float max)> Render(ISampleProvider isp, long samples);
 
-        void Render(ISampleProvider isp, long samples);
-        void Render(Stream stream);
+        List<(float min, float max)> Render(Stream stream);
     }
 }

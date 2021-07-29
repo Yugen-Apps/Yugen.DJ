@@ -3,27 +3,26 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using Yugen.Toolkit.Uwp.Audio.Helpers;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Models;
 
-namespace Yugen.Audio.Samples.Renderers
+namespace Yugen.Audio.Controls.Renderers
 {
     public class WaveformRenderer
     {
-        public void DrawRealLine(CanvasControl sender, CanvasDrawingSession ds, WaveformRendererSettings waveformRendererSettings, List<PeakInfo> peakList)
+        public void DrawRealLine(CanvasControl sender, CanvasDrawingSession ds, int height, int width, List<(float min, float max)> peakList)
         {
-            int midPoint = waveformRendererSettings.TopHeight;
+            int midPoint = height / 2;
             int strokeWidth = 1;
 
             for (int x = 0; x < peakList.Count; x++)
             {
                 var currentPeak = peakList[x];
-                float mu = (float)x / waveformRendererSettings.Width;
+                float mu = (float)x / width;
                 Windows.UI.Color color = ColorHelper.GradientColor(mu);
 
-                float topLineHeight = waveformRendererSettings.TopHeight * currentPeak.Max;
-                ds.DrawLine(x, midPoint, x, midPoint - topLineHeight, color, strokeWidth);
+                float topLineHeight = midPoint * currentPeak.max;
+                float bottomLineHeight = midPoint * currentPeak.min;
 
-                float bottomLineHeight = waveformRendererSettings.BottomHeight * currentPeak.Min;
+                ds.DrawLine(x, midPoint, x, midPoint - topLineHeight, color, strokeWidth);
                 ds.DrawLine(x, midPoint, x, midPoint - bottomLineHeight, color, strokeWidth);
             }
         }

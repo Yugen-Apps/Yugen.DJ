@@ -121,11 +121,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TouchPointsRenderer.cs" />
+    <Compile Include="Waveform.xaml.cs">
+      <DependentUpon>Waveform.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Renderers\WaveformRenderer.cs" />
+    <Compile Include="Renderers\TouchPointsRenderer.cs" />
     <Compile Include="Vinyl.xaml.cs">
       <DependentUpon>Vinyl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VinylRenderer.cs" />
+    <Compile Include="Renderers\VinylRenderer.cs" />
     <EmbeddedResource Include="Properties\Yugen.Audio.Controls.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +145,10 @@
     <Content Include="Images\Vinyl.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Waveform.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Vinyl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

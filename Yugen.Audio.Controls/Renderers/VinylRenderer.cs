@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Input;
 using Yugen.Toolkit.Uwp.Audio.Helpers;
 
-namespace Yugen.Audio.Controls
+namespace Yugen.Audio.Controls.Renderers
 {
     public class VinylRenderer
     {

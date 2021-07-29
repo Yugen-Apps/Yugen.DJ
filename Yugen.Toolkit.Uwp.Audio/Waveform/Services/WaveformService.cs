@@ -12,6 +12,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Waveform.Services
     /// </summary>
     public class WaveformService : IWaveformService
     {
+        private IPeakProvider _peakProvider = new MaxPeakProvider();
+
         public WaveformService()
         {
         }
@@ -22,13 +24,9 @@ namespace Yugen.Toolkit.Uwp.Audio.Waveform.Services
             _peakProvider = peakProvider;
         }
 
-        public List<PeakInfo> PeakList { get; } = new List<PeakInfo>();
-
         public WaveformRendererSettings Settings { get; } = new WaveformRendererSettings();
 
-        private IPeakProvider _peakProvider = new MaxPeakProvider();
-
-        public void Render(Stream stream)
+        public List<(float min, float max)> Render(Stream stream)
         {
             ISampleProvider isp;
             long samples;
@@ -46,10 +44,10 @@ namespace Yugen.Toolkit.Uwp.Audio.Waveform.Services
                 //double totalMinutes = reader.TotalTime.TotalMinutes;
             }
 
-            Render(isp, samples);
+            return Render(isp, samples);
         }
 
-        public void Render(ISampleProvider isp, long samples)
+        public List<(float min, float max)> Render(ISampleProvider isp, long samples)
         {
             var samplesPerPixel = (int)(samples / Settings.Width);
             var stepSize = Settings.PixelsPerPeak + Settings.SpacerPixels;
@@ -61,11 +59,14 @@ namespace Yugen.Toolkit.Uwp.Audio.Waveform.Services
                 _peakProvider = new DecibelPeakProvider(_peakProvider, 48);
             }
 
-            PeakList.Clear();
+            var peakList = new List<(float min, float max)>();
             for (int i = 0; i < Settings.Width; i++)
             {
-                PeakList.Add(_peakProvider.GetNextPeak());
+                var peak = _peakProvider.GetNextPeak();
+                //System.Diagnostics.Debug.WriteLine($"{peak.Min} , {peak.Max}");
+                peakList.Add((peak.Min, peak.Max));
             }
+            return peakList;
         }
     }
 }

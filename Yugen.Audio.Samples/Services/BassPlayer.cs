@@ -1,16 +1,11 @@
 ﻿using ManagedBass;
-using ManagedBass.DirectX8;
 using ManagedBass.Fx;
-using SharpDX.MediaFoundation;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Models;
-using static System.Net.WebRequestMethods;
 
 namespace Yugen.Audio.Samples.Services
 {
@@ -138,19 +133,19 @@ namespace Yugen.Audio.Samples.Services
 
 
             // TODO: FFT / Waveform
-            // Perform a 1024 sample FFT on a channel and list the result.
-            var fft = new float[512]; // fft data buffer
-            Bass.ChannelGetData(_handle, fft, (int)DataFlags.FFT1024);
+            //// Perform a 1024 sample FFT on a channel and list the result.
+            //var fft = new float[512]; // fft data buffer
+            //Bass.ChannelGetData(_handle, fft, (int)DataFlags.FFT1024);
             //for (int a = 0; a < 512; a++)
-            //{ 
-            //    Console.WriteLine("{0}: {1}", a, fft[a]);
+            //{
+            //    System.Diagnostics.Debug.WriteLine("{0}: {1}", a, fft[a]);
             //}
-            //Perform a 1024 sample FFT on a channel and list the complex result.
-            //var fft = new float[2048]; // fft data buffer
-            //Bass.ChannelGetData(_handle, fft, (int)(DataFlags.FFT1024 | DataFlags.FFTComplex));
+            ////Perform a 1024 sample FFT on a channel and list the complex result.
+            //var fft2 = new float[2048]; // fft data buffer
+            //Bass.ChannelGetData(_handle, fft2, (int)(DataFlags.FFT1024 | DataFlags.FFTComplex));
             //for (int a = 0; a < 1024; a++)
             //{
-            //    Console.WriteLine("{0}: ({1}, {2})", a, fft[a * 2], fft[a * 2 + 1]);
+            //    System.Diagnostics.Debug.WriteLine("{0}: ({1}, {2})", a, fft2[a * 2], fft2[a * 2 + 1]);
             //}
 
             // Get duration

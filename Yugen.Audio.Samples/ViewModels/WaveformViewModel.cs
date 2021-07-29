@@ -1,46 +1,66 @@
-﻿using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.UI.Xaml;
+﻿using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Uwp.Helpers;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Yugen.Audio.Samples.Renderers;
+using System.Windows.Input;
+using Windows.Storage.Pickers;
 using Yugen.Toolkit.Standard.Mvvm;
 using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
+using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.Audio.Samples.ViewModels
 {
     public class WaveformViewModel : ViewModelBase
     {
-        private readonly IWaveformService _waveformRendererService;
-        private WaveformRenderer _waveformRenderer = new WaveformRenderer();
-        private bool _isGenerated;
-        private CanvasControl _sender;
+        private readonly IWaveformService _waveformService;
+        private List<(float min, float max)> _peakList;
 
         public WaveformViewModel(IWaveformService waveformRendererService)
         {
-            _waveformRendererService = waveformRendererService;
+            _waveformService = waveformRendererService;
+
+            OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
         }
 
-        public void OnDraw(CanvasControl sender, CanvasDrawingSession ds)
+        public ICommand OpenCommand { get; }
+
+        public List<(float min, float max)> PeakList
         {
-            _sender = sender;
-            if (_isGenerated)
+            get => _peakList;
+            set => SetProperty(ref _peakList, value);
+        }
+
+        private async Task OpenCommandBehavior()
+        {
+            var audioFile = await FilePickerHelper.OpenFile(
+                     new List<string> { ".mp3" },
+                     PickerLocationId.MusicLibrary
+                 );
+
+            if (audioFile != null)
             {
-                _waveformRenderer.DrawRealLine(sender, ds, _waveformRendererService.Settings, _waveformRendererService.PeakList);
-            }
-            else
-            {
-                _waveformRenderer.DrawFakeLine(sender, ds);
+                var bytes = await audioFile.ReadBytesAsync();
+
+                var stream = await audioFile.OpenStreamForReadAsync();
+
+                MemoryStream waveformStream = new MemoryStream();
+                await stream.CopyToAsync(waveformStream);
+                await GenerateAudioData(waveformStream);
+                stream.Position = 0;
             }
         }
 
         public async Task GenerateAudioData(Stream stream)
         {
+            List<(float min, float max)> peakList = null;
+
             await Task.Run(() =>
             {
-                _waveformRendererService.Render(stream);
-                _isGenerated = true;
-                _sender.Invalidate();
+                peakList = _waveformService.Render(stream);
             });
+
+            PeakList = peakList;
         }
     }
 }

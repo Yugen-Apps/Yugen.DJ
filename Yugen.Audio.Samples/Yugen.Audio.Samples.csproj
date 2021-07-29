@@ -147,9 +147,8 @@
     <Compile Include="Interfaces\IAudioPlayer.cs" />
     <Compile Include="Services\SharpDXAudioPlayer.cs" />
     <Compile Include="ViewModels\BassViewModel.cs" />
-    <Compile Include="ViewModels\DeckViewModel.cs" />
-    <Compile Include="Renderers\WaveformRenderer.cs" />
     <Compile Include="ViewModels\WaveformViewModel.cs" />
+    <Compile Include="ViewModels\DeckViewModel.cs" />
     <Compile Include="ViewModels\AudioFrameInputNodeViewModel.cs" />
     <Compile Include="ViewModels\AudioGraphViewModel.cs" />
     <Compile Include="ViewModels\AppShellViewModel.cs" />
@@ -158,9 +157,6 @@
     <Compile Include="ViewModels\SharpDXViewModel.cs" />
     <Compile Include="Views\BassPage.xaml.cs">
       <DependentUpon>BassPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Controls\Waveform.xaml.cs">
-      <DependentUpon>Waveform.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
@@ -308,10 +304,6 @@
     <Page Include="Views\BassPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Controls\Waveform.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\HomePage.xaml">
       <SubType>Designer</SubType>

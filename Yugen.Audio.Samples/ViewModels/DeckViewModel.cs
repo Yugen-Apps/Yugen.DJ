@@ -11,6 +11,7 @@ using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Services;
 using Yugen.Toolkit.Standard.Mvvm;
 using Yugen.Toolkit.Uwp.Audio.Bpm;
+using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
 using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.Audio.Samples.ViewModels
@@ -20,15 +21,16 @@ namespace Yugen.Audio.Samples.ViewModels
         private readonly IAudioPlayer _audioPlayer = new BassPlayer();
 
         private IBPMService _bpmService;
-        private WaveformViewModel _waveformViewModel;
+        private readonly IWaveformService _waveformService;
         private double _bpm;
+        private List<(float min, float max)> _peakList;
 
         public DeckViewModel(
             IBPMService bpmService,
-            WaveformViewModel waveformViewModel)
+            IWaveformService waveformRendererService)
         {
-            _waveformViewModel = waveformViewModel;
             _bpmService = bpmService;
+            _waveformService = waveformRendererService;
 
             _audioPlayer.Initialize("");
 
@@ -44,6 +46,12 @@ namespace Yugen.Audio.Samples.ViewModels
         {
             get => _bpm;
             set => SetProperty(ref _bpm, value);
+        }
+
+        public List<(float min, float max)> PeakList
+        {
+            get => _peakList;
+            set => SetProperty(ref _peakList, value);
         }
 
         private async Task OpenCommandBehavior()
@@ -68,7 +76,7 @@ namespace Yugen.Audio.Samples.ViewModels
 
                 MemoryStream waveformStream = new MemoryStream();
                 await stream.CopyToAsync(waveformStream);
-                await _waveformViewModel.GenerateAudioData(waveformStream);
+                await GenerateAudioData(waveformStream);
                 stream.Position = 0;
 
                 MemoryStream bpmStream = new MemoryStream();
@@ -79,9 +87,21 @@ namespace Yugen.Audio.Samples.ViewModels
                     dispatcherQueue.EnqueueAsync(() =>
                     {
                         Bpm = _bpmService.Detect(bpmStream);
-                    }); 
+                    });
                 });
             }
+        }
+
+        public async Task GenerateAudioData(Stream stream)
+        {
+            List<(float min, float max)> peakList = null;
+
+            await Task.Run(() =>
+            {
+                peakList = _waveformService.Render(stream);
+            });
+
+            PeakList = peakList;
         }
 
         private void PlayCommandBehavior()

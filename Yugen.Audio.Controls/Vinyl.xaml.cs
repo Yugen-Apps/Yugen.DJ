@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Yugen.Audio.Controls.Renderers;
 
 namespace Yugen.Audio.Controls
 {

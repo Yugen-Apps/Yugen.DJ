@@ -10,9 +10,9 @@ namespace Yugen.Audio.Samples.Views
         {
             this.InitializeComponent();
 
-            DataContext = App.Current.Services.GetService<DeckViewModel>();
+            DataContext = App.Current.Services.GetService<WaveformViewModel>();
         }
 
-        private DeckViewModel ViewModel => (DeckViewModel)DataContext;
+        private WaveformViewModel ViewModel => (WaveformViewModel)DataContext;
     }
 }
