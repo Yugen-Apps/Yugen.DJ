@@ -1,0 +1,94 @@
+﻿<Page
+    x:Class="Yugen.Audio.Samples.Views.VuBarPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:controls="using:Yugen.Audio.Samples.Views.Controls" 
+    xmlns:audiovisualizer="using:AudioVisualizer" 
+    xmlns:yugenControls="using:Yugen.Audio.Controls"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Loaded="OnLoaded">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel>
+            <TextBlock Text="VuBarCustomControl"/>
+            <controls:VuBarCustomControl Height="200" 
+                                         Width="200" />
+
+            <TextBlock Text="VuBarCompositionVisualizer"/>
+            <controls:VuBarCompositionVisualizer Height="200" 
+                                                 Width="200" />
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <TextBlock Text="VuBarSwapChainVisualizer"/>
+            <controls:VuBarSwapChainVisualizer Height="200" 
+                                               Width="200" />
+
+            <TextBlock Text="VUBar"/>
+            <yugenControls:VUBar x:Name="VUBar" 
+                            Height="200" 
+                            Width="200" />
+
+        </StackPanel>
+
+        <StackPanel Grid.Column="2">
+            <Slider Minimum="-100" 
+                    Maximum="20" 
+                    Orientation="Horizontal" 
+                    Header="RMS" 
+                    TickFrequency="10" 
+                    TickPlacement="Outside" 
+                    Value="{x:Bind RmsFake, Mode=TwoWay}"
+                    VerticalAlignment="Bottom"/>
+            <Slider Minimum="-100" 
+                    Maximum="20" 
+                    Orientation="Horizontal" 
+                    Header="Peak" 
+                    TickFrequency="10" 
+                    TickPlacement="Outside" 
+                    Value="{x:Bind PeakFake, Mode=TwoWay}"
+                    VerticalAlignment="Bottom"/>
+
+            <TextBlock Text="DiscreteVUBar"/>
+            <Border Margin="4"  
+                    BorderThickness="1" 
+                    BorderBrush="Gray"
+                    Height="200"
+                    Width="100">
+                <controls:DiscreteVUBar x:Name="DiscreteVUBar" />
+            </Border>
+        </StackPanel>
+
+        <!--<Grid Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Border Margin="4"  
+                    BorderThickness="1" 
+                    BorderBrush="Gray"
+                    Width="100">
+                <audiovisualizer:DiscreteVUBar x:Name="BarControl"/>
+            </Border>
+
+            <Grid Grid.Column="1">
+                <StackPanel Orientation="Horizontal" 
+                            Margin="4">
+                    <Slider Minimum="-100" Maximum="20" Orientation="Vertical" Header="RMS" TickFrequency="20" TickPlacement="Outside" Value="{x:Bind Rms, Mode=TwoWay}"/>
+                    <Slider Minimum="-100" Maximum="20" Orientation="Vertical" Header="Peak" TickFrequency="20" TickPlacement="Outside" Value="{x:Bind Peak, Mode=TwoWay}"/>
+                </StackPanel>
+            </Grid>
+        </Grid>-->
+
+    </Grid>
+</Page>

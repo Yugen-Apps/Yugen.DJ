@@ -146,6 +146,7 @@
     <Compile Include="Extensions\WaveSourceExtensions.cs" />
     <Compile Include="Interfaces\IAudioPlayer.cs" />
     <Compile Include="Services\SharpDXAudioPlayer.cs" />
+    <Compile Include="System\Windows\Threading.cs" />
     <Compile Include="ViewModels\BassViewModel.cs" />
     <Compile Include="ViewModels\WaveformViewModel.cs" />
     <Compile Include="ViewModels\DeckViewModel.cs" />
@@ -158,6 +159,14 @@
     <Compile Include="Views\BassPage.xaml.cs">
       <DependentUpon>BassPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Controls\DiscreteVUBar.cs" />
+    <Compile Include="Views\Controls\VuBarCompositionVisualizer.cs" />
+    <Compile Include="Views\Controls\VuBarSwapChainVisualizer.cs" />
+    <Compile Include="Views\FakeDataSource.cs" />
+    <Compile Include="Views\VuBarPage.cs">
+      <DependentUpon>VuBarPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\VuBarCustomControl.cs" />
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
@@ -302,6 +311,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BassPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VuBarPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
