@@ -52,7 +52,7 @@ namespace Yugen.Audio.Samples.Services
             set => Bass.ChannelSetPosition(_handle, Bass.ChannelSeconds2Bytes(_handle, value.TotalSeconds));
         }
 
-        public double Rms
+        public float Rms
         {
             get
             {
@@ -67,7 +67,10 @@ namespace Yugen.Audio.Samples.Services
                     System.Diagnostics.Debug.WriteLine($"Failed to get levels for channel {Enum.GetName(typeof(Errors), Bass.LastError)}");
                     return 0;
                 }
-                var dB = levels[0] > 0 ? 20 * Math.Log10(levels[0]) : -1000;
+
+                var dB = levels[0] > 0
+                         ? 20 * Math.Log10(levels[0])
+                         : -1000;
 
                 //if (dB > -40)
                 //{
@@ -79,7 +82,11 @@ namespace Yugen.Audio.Samples.Services
                 //    return -40;
                 //}
 
-                return dB;
+                //var left = Bass.ChannelGetLevelLeft(_handle);
+                //var right = Bass.ChannelGetLevelRight(_handle);
+                //System.Diagnostics.Debug.WriteLine($"{left} - {right}");
+
+                return (float)dB;
             }
         }
 

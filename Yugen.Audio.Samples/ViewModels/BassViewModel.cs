@@ -66,7 +66,7 @@ namespace Yugen.Audio.Samples.ViewModels
 
         public float Bpm => _audioPlayer.Bpm;
 
-        public double Rms => _audioPlayer.Rms;
+        public float Rms => _audioPlayer.Rms;
 
         /// <summary>
         /// Gets or Sets the Volume (0 ... 1.0).
