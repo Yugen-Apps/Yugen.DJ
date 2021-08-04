@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Yugen.Audio.Controls.Renderers;
+using Yugen.Toolkit.Uwp.Audio.Controls.Renderers;
 
-namespace Yugen.Audio.Controls
+namespace Yugen.Toolkit.Uwp.Audio.Controls
 {
     public sealed partial class Vinyl : UserControl
     {

@@ -7,8 +7,8 @@
     <ProjectGuid>{A8B69E7A-9046-450F-A369-A0E29A0B57FB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Yugen.Audio.Controls</RootNamespace>
-    <AssemblyName>Yugen.Audio.Controls</AssemblyName>
+    <RootNamespace>Yugen.Toolkit.Uwp.Audio.Controls</RootNamespace>
+    <AssemblyName>Yugen.Toolkit.Uwp.Audio.Controls</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
@@ -131,7 +131,7 @@
       <DependentUpon>Vinyl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Renderers\VinylRenderer.cs" />
-    <EmbeddedResource Include="Properties\Yugen.Audio.Controls.rd.xml" />
+    <EmbeddedResource Include="Properties\Yugen.Toolkit.Uwp.Audio.Controls.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">

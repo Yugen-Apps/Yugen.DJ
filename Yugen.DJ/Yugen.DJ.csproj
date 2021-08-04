@@ -260,6 +260,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Yugen.Toolkit.Uwp.Audio.Controls\Yugen.Toolkit.Uwp.Audio.Controls.csproj">
+      <Project>{a8b69e7a-9046-450f-a369-a0e29a0b57fb}</Project>
+      <Name>Yugen.Toolkit.Uwp.Audio.Controls</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Yugen.Toolkit.Uwp.Audio\Yugen.Toolkit.Uwp.Audio.csproj">
       <Project>{d76f470b-0b55-4669-b878-1c8c8b207f54}</Project>
       <Name>Yugen.Toolkit.Uwp.Audio</Name>

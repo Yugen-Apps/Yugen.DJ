@@ -4,6 +4,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
+             xmlns:controls="using:Yugen.Toolkit.Uwp.Audio.Controls"
              xmlns:visualizer="using:AudioVisualizer"
              mc:Ignorable="d"
              d:DesignHeight="300"
@@ -62,7 +63,7 @@
                                           PointerReleased="OnVinylPointerReleased"
                                           Margin="0,-28,0,0"
                                           Visibility="{x:Bind ViewModel.IsSongLoaded, Mode=OneWay}"/>
-            
+
         </Grid>
 
         <!-- Row 2 -->
@@ -106,13 +107,13 @@
         </TextBlock>
 
         <!-- Row 5 -->
-        <canvas:CanvasControl x:Name="WaveformCanvas"
-                              Grid.ColumnSpan="2"
-                              Grid.Row="5"
-                              Draw="OnWaveformCanvasDraw"
-                              Margin="4,2"
-                              Height="100"
-                              Width="500" />
+        <controls:Waveform x:Name="WaveformCanvas"
+                           Grid.ColumnSpan="2"
+                           Grid.Row="5"
+                           Margin="4,2"
+                           Height="100"
+                           Width="500"
+                           PeakList="{x:Bind ViewModel.PeakList, Mode=OneWay}"/>
 
         <visualizer:DiscreteVUBar x:Name="Channel0VUBar"
                                   Grid.Column="2"

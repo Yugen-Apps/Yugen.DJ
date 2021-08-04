@@ -10,7 +10,6 @@ namespace Yugen.DJ.Uwp
         {
             this.InitializeComponent();
 
-
             DataContext = App.Current.Services.GetService<MainViewModel>();
         }
 

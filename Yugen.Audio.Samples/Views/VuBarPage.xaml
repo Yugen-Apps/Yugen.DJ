@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:controls="using:Yugen.Audio.Samples.Views.Controls" 
     xmlns:audiovisualizer="using:AudioVisualizer" 
-    xmlns:yugenControls="using:Yugen.Audio.Controls"
+    xmlns:yugenControls="using:Yugen.Toolkit.Uwp.Audio.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     Loaded="OnLoaded">

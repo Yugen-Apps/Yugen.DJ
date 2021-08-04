@@ -28,6 +28,9 @@ namespace Yugen.Audio.Samples.Services
         private DeviceInfo[] _deviceList;
         private int _handle2;
 
+        // Option 1 - 2
+        //private int _mixerStreamHandle;
+
         public void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100)
         {
             //var isInitialized = Bass.Init(-1); // default
@@ -35,6 +38,12 @@ namespace Yugen.Audio.Samples.Services
             var isInitialized1 = Bass.Init(1); // speakers IsDefault Driver IsEnabled IsInitialized Name: D
             var isInitialized2 = Bass.Init(2); // headphones Driver IsEnabled IsInitialized Name: H
             var isInitialized3 = Bass.Init(3); // speakers IsDefault IsEnabled IsInitialized Name: D
+
+            // Option 1 - 2
+            //_mixerStreamHandle = BassMix.CreateMixerStream(44100, 2, 0);
+            //Bass.ChannelSetDevice(_mixerStreamHandle, _primaryDeviceId);
+            //Bass.ChannelSetAttribute(_mixerStreamHandle, ChannelAttribute.Buffer, 0);
+            //Bass.ChannelPlay(_mixerStreamHandle);
 
             _deviceList = new DeviceInfo[Bass.DeviceCount];
             for (int i = 0; i < Bass.DeviceCount; i++)
@@ -131,6 +140,23 @@ namespace Yugen.Audio.Samples.Services
         {
             _audioBytes = audioBytes;
 
+            // Option 1
+            //var streamHandle = Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode); // create decoder for 1st file
+            //_primarySplitStreamLeft = BassMix.CreateSplitStream(streamHandle, BassFlags.Decode, null); // create splitter for mixer
+            //_secondarySplitStreamLeft = BassMix.CreateSplitStream(streamHandle, 0, null); // create splitter for separate playback
+            //Bass.ChannelSetDevice(_secondarySplitStreamLeft, _secondaryDeviceId); // set device for separate playback splitter
+            //BassMix.MixerAddChannel(_mixerStreamHandle, _primarySplitStreamLeft, BassFlags.MixerChanPause); // add 1st splitter to the mixer
+
+            // Option 2
+            //var streamHandle = Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode); // create decoder for 1st file
+            //var isSet1 = BassMix.MixerAddChannel(_mixerStreamHandle, streamHandle, 0); // add 1st splitter to the mixer
+            //_primarySplitStreamLeft = BassMix.CreateSplitStream(_mixerStreamHandle, 0, null); // create splitter for mixer
+            //var isSet2 = Bass.ChannelSetDevice(_primarySplitStreamLeft, _primaryDeviceId); // set device for separate playback splitter
+            //_secondarySplitStreamLeft = BassMix.CreateSplitStream(_mixerStreamHandle, 0, null); // create splitter for separate playback
+            //var isSet3 = Bass.ChannelSetDevice(_secondarySplitStreamLeft, _secondaryDeviceId); // set device for separate playback splitter
+            //Bass.ChannelSetLink(_primarySplitStreamLeft, _secondarySplitStreamLeft);
+            //Bass.ChannelPlay(_primarySplitStreamLeft);
+
             // Create stream and get channel info
             //_handle = Bass.CreateStream(bytes, 0, bytes.Length, BassFlags.Float);
             _handle = Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode);
@@ -220,6 +246,19 @@ namespace Yugen.Audio.Samples.Services
                 var maxpos = Bass.ChannelBytes2Seconds(_handle, Bass.ChannelGetLength(_handle));
                 DecodingBPM(true, pos, pos + _bpmPeriod >= maxpos ? maxpos - 1 : pos + _bpmPeriod, _audioBytes);
             }
+
+            //if (_isPlayingLeft)
+            //{
+            //    // Option 1 - 2
+            //    //BassMix.ChannelFlags(_primarySplitStreamLeft, BassFlags.Default, BassFlags.MixerChanPause);
+            //    //Bass.ChannelPlay(_secondarySplitStreamLeft);
+            //}
+            //else
+            //{
+            //    // Option 1 - 2
+            //    //BassMix.ChannelFlags(_primarySplitStreamLeft, BassFlags.MixerChanPause, BassFlags.MixerChanPause);
+            //    //Bass.ChannelPause(_secondarySplitStreamLeft);
+            //}
         }
 
         public void Play2()

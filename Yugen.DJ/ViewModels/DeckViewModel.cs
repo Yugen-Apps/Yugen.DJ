@@ -1,9 +1,12 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
+using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.System;
 using Yugen.DJ.Interfaces;
 using Yugen.DJ.Models;
 using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
@@ -25,8 +28,10 @@ namespace Yugen.DJ.ViewModels
         private string _title;
         private int _bpm;
 
+        private DispatcherQueue _dispatcherQueue;
         private TimeSpan _naturalDuration = new TimeSpan();
         private TimeSpan _position = new TimeSpan();
+        private List<(float min, float max)> _peakList;
 
         public DeckViewModel(IDockService dockService)
         {
@@ -34,8 +39,6 @@ namespace Yugen.DJ.ViewModels
 
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
         }
-
-        public IWaveformService WaveformRendererService => _dockService?.WaveformRendererService;
 
         public event EventHandler WaveformGenerated;
 
@@ -111,6 +114,12 @@ namespace Yugen.DJ.ViewModels
             set { SetProperty(ref _bpm, value); }
         }
 
+        public List<(float min, float max)> PeakList
+        {
+            get => _peakList;
+            set => SetProperty(ref _peakList, value);
+        }
+
         public TimeSpan NaturalDuration
         {
             get { return _naturalDuration; }
@@ -127,6 +136,8 @@ namespace Yugen.DJ.ViewModels
 
         private async Task OpenCommandBehavior()
         {
+            _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+
             IsPaused = true;
 
             await _dockService.LoadSong();
@@ -155,12 +166,18 @@ namespace Yugen.DJ.ViewModels
 
         private void OnBpmGenerated(object sender, double e)
         {
-            DispatcherHelper.ExecuteOnUIThreadAsync(() =>
-            {
-                BPM = (int)e;
-            });
+            _ = _dispatcherQueue.EnqueueAsync(() =>
+              {
+                  BPM = (int)e;
+              });
         }
 
-        private void OnWaveformGenerated(object sender, EventArgs e) => WaveformGenerated?.Invoke(this, e);
+        private void OnWaveformGenerated(object sender, EventArgs e)
+        {
+            _ = _dispatcherQueue.EnqueueAsync(() =>
+            {
+                PeakList = _dockService.PeakList;
+            });
+        }
     }
 }

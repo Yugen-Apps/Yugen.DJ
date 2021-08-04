@@ -1,7 +1,11 @@
 ﻿using AudioVisualizer;
+using Microsoft.Toolkit.Uwp;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage.FileProperties;
+using Windows.System;
 using Yugen.DJ.Interfaces;
 using Yugen.DJ.Models;
 using Yugen.Toolkit.Uwp.Audio.Bpm;
@@ -11,27 +15,23 @@ namespace Yugen.DJ.Services
 {
     public class DockService : IDockService
     {
-        public IWaveformService WaveformRendererService { get; private set; }
-
         private IAudioPlaybackService _audioPlaybackService;
         private readonly IAppService _appService;
         private readonly IBPMService _bpmService;
         private readonly ISongService _songService;
         private readonly IAudioVisualizerService _audioVisualizerService;
+        private readonly IWaveformService _waveformService;
 
         private Side _side;
 
         public DockService(IAppService appService, IBPMService bpmService, ISongService songService,
-            IWaveformService waveformRendererService, IAudioVisualizerService audioVisualizerService)
+            IWaveformService waveformService, IAudioVisualizerService audioVisualizerService)
         {
             _appService = appService;
             _audioVisualizerService = audioVisualizerService;
             _bpmService = bpmService;
             _songService = songService;
-
-            WaveformRendererService = waveformRendererService;
-
-            _songService.AudioDataGenerated += OnAudioDataGenerated;
+            _waveformService = waveformService;
         }
 
 
@@ -50,6 +50,9 @@ namespace Yugen.DJ.Services
         public IVisualizationSource PlaybackSource =>
             _audioVisualizerService.GetPlaybackSource(_audioPlaybackService?.MasterFileInput)?.Source;
 
+        public List<(float min, float max)> PeakList { get; private set; }
+        public double Bpm { get; private set; }
+
         public void Init(Side side)
         {
             _side = side;
@@ -67,21 +70,40 @@ namespace Yugen.DJ.Services
 
             AudioPropertiesLoaded?.Invoke(this, EventArgs.Empty);
 
-            _ = Task.Run(async () => await _songService.GenerateAudioData(_songService.AudioFile));
+            _ = Task.Run(async () =>
+            {
+                var stream = await _songService.AudioFile.OpenStreamForReadAsync();
+
+                MemoryStream waveformStream = new MemoryStream();
+                await stream.CopyToAsync(waveformStream);
+                await GenerateWaveForm(waveformStream);
+                stream.Position = 0;
+
+                MemoryStream bpmStream = new MemoryStream();
+                await stream.CopyToAsync(bpmStream);
+                DetectBpm(bpmStream);
+            });
         }
 
         public void TogglePlay(bool v) => _audioPlaybackService.TogglePlay(v);
 
-        private void OnAudioDataGenerated(object sender, EventArgs e)
+        private async Task GenerateWaveForm(Stream stream)
         {
-            _ = Task.Run(() =>
-            {
-                var bpm = _bpmService.Detect(_songService.Buffer, _songService.SampleRate, _songService.TotalMinutes);
-                BpmGenerated?.Invoke(this, bpm);
+            List<(float min, float max)> peakList = null;
 
-                WaveformRendererService.Render(_songService.Isp, _songService.Samples);
-                WaveformGenerated?.Invoke(this, EventArgs.Empty);
+            await Task.Run(() =>
+            {
+                peakList = _waveformService.Render(stream);
             });
+
+            PeakList = peakList;
+            WaveformGenerated?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void DetectBpm(Stream stream)
+        {
+            var bmp = _bpmService.Detect(stream);
+            BpmGenerated?.Invoke(this, bmp);
         }
 
         public void ChangePitch(double pitch) => _audioPlaybackService.ChangePitch(pitch);

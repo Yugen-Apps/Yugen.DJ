@@ -21,8 +21,6 @@ namespace Yugen.DJ.Views.Controls
 
             DataContext = App.Current.Services.GetService<DeckViewModel>();
             _vinylRenderer = App.Current.Services.GetService<VinylRenderer>();
-
-            ViewModel.WaveformGenerated += OnWaveformCanvasGenerated;
         }
 
         public Side Side
@@ -53,20 +51,11 @@ namespace Yugen.DJ.Views.Controls
         public void OnVinylPointerReleased(object sender, PointerRoutedEventArgs e) =>
             _vinylRenderer.PointerReleased(sender, e);
 
-        // WaveformRenderer
-        private void OnWaveformCanvasGenerated(object sender, EventArgs e) =>
-            WaveformCanvas.Invalidate();
-
-        private void OnWaveformCanvasDraw(CanvasControl sender, CanvasDrawEventArgs args) { }
-            //ViewModel.WaveformRendererService.DrawLine(sender, args.DrawingSession);
-
         private void OnUnloaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
             // Explicitly remove references to allow the Win2D controls to get garbage collected
             VinylCanvasAnimated.RemoveFromVisualTree();
             VinylCanvasAnimated = null;
-            WaveformCanvas.RemoveFromVisualTree();
-            WaveformCanvas = null;
         }
     }
 }

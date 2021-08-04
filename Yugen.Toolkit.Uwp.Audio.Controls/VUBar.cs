@@ -7,7 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Hosting;
 
-namespace Yugen.Audio.Controls
+namespace Yugen.Toolkit.Uwp.Audio.Controls
 {
     public class VUBar : Control
     {

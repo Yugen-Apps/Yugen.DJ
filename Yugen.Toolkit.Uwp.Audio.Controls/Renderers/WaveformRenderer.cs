@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Yugen.Toolkit.Uwp.Audio.Helpers;
 
-namespace Yugen.Audio.Controls.Renderers
+namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
 {
     public class WaveformRenderer
     {
