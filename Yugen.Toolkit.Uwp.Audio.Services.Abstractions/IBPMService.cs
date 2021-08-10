@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace Yugen.Toolkit.Uwp.Audio.Bpm
+namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 {
     public interface IBPMService
     {

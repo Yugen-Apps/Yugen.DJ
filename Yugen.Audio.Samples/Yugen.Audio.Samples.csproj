@@ -12,7 +12,7 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
-    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <TargetPlatformMinVersion>10.0.18362.0</TargetPlatformMinVersion>
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -332,6 +332,14 @@
     <ProjectReference Include="..\Yugen.Toolkit.Uwp.Audio.Controls\Yugen.Toolkit.Uwp.Audio.Controls.csproj">
       <Project>{a8b69e7a-9046-450f-a369-a0e29a0b57fb}</Project>
       <Name>Yugen.Toolkit.Uwp.Audio.Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yugen.Toolkit.Uwp.Audio.Services.Abstractions\Yugen.Toolkit.Uwp.Audio.Services.Abstractions.csproj">
+      <Project>{BDD73429-0041-47D2-9CA9-8D669FFC4CDD}</Project>
+      <Name>Yugen.Toolkit.Uwp.Audio.Services.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yugen.Toolkit.Uwp.Audio.Services.NAudio\Yugen.Toolkit.Uwp.Audio.Services.NAudio.csproj">
+      <Project>{C36A19C8-C53A-481E-9057-A5B7FDDC988C}</Project>
+      <Name>Yugen.Toolkit.Uwp.Audio.Services.NAudio</Name>
     </ProjectReference>
     <ProjectReference Include="..\Yugen.Toolkit.Uwp.Audio\Yugen.Toolkit.Uwp.Audio.csproj">
       <Project>{d76f470b-0b55-4669-b878-1c8c8b207f54}</Project>

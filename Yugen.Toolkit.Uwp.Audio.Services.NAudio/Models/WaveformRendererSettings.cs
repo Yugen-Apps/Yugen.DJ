@@ -1,4 +1,4 @@
-﻿namespace Yugen.Toolkit.Uwp.Audio.Waveform.Models
+﻿namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio.Models
 {
     public class WaveformRendererSettings
     {

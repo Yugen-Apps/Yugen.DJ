@@ -7,9 +7,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage.Pickers;
-using Windows.UI.Xaml.Shapes;
 using Yugen.Toolkit.Standard.Mvvm;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.Audio.Samples.ViewModels

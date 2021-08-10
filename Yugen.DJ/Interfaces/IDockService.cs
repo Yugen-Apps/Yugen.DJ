@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.Storage.FileProperties;
 using Yugen.DJ.Models;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
 
 namespace Yugen.DJ.Interfaces
 {

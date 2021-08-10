@@ -1,8 +1,8 @@
 ﻿using NAudio.Wave;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Interfaces;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Models;
+using Yugen.Toolkit.Uwp.Audio.Services.NAudio.Interfaces;
+using Yugen.Toolkit.Uwp.Audio.Services.NAudio.Models;
 
-namespace Yugen.Toolkit.Uwp.Audio.Waveform.Providers
+namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio.Providers
 {
     /// <summary>
     /// The peak provider decides how peaks are calculated. There are four built in options you can choose from.

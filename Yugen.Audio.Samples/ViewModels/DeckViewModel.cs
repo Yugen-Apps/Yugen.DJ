@@ -10,8 +10,7 @@ using Windows.System;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Services;
 using Yugen.Toolkit.Standard.Mvvm;
-using Yugen.Toolkit.Uwp.Audio.Bpm;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.Audio.Samples.ViewModels

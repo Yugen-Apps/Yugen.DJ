@@ -12,8 +12,8 @@ using Yugen.Audio.Samples.Services;
 using Yugen.Audio.Samples.ViewModels;
 using Yugen.Audio.Samples.ViewModels.Controls;
 using Yugen.Audio.Samples.Views;
-using Yugen.Toolkit.Uwp.Audio.Bpm;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
+using Yugen.Toolkit.Uwp.Audio.Services.NAudio;
 using Yugen.Toolkit.Uwp.Services;
 
 namespace Yugen.Audio.Samples

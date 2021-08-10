@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Models;
+using Yugen.Toolkit.Uwp.Audio.Services.NAudio.Models;
 
-namespace Yugen.Toolkit.Uwp.Audio.Waveform.Providers
+namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio.Providers
 {
     public class AveragePeakProvider : PeakProvider
     {

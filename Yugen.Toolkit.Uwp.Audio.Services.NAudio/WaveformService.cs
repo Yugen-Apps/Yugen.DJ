@@ -1,11 +1,12 @@
 ﻿using NAudio.Wave;
 using System.Collections.Generic;
 using System.IO;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Interfaces;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Models;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Providers;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
+using Yugen.Toolkit.Uwp.Audio.Services.NAudio.Interfaces;
+using Yugen.Toolkit.Uwp.Audio.Services.NAudio.Models;
+using Yugen.Toolkit.Uwp.Audio.Services.NAudio.Providers;
 
-namespace Yugen.Toolkit.Uwp.Audio.Waveform.Services
+namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
 {
     /// <summary>
     /// https://github.com/naudio/NAudio.WaveformRenderer

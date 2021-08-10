@@ -5,8 +5,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
-namespace Yugen.Toolkit.Uwp.Audio.Bpm
+namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
 {
     /// <summary>
     /// https://github.com/matixmatix/bpmdetector/blob/master/BPMDetector.cs

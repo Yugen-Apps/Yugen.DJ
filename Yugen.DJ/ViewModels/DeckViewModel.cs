@@ -9,7 +9,6 @@ using System.Windows.Input;
 using Windows.System;
 using Yugen.DJ.Interfaces;
 using Yugen.DJ.Models;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
 
 namespace Yugen.DJ.ViewModels
 {
@@ -39,8 +38,6 @@ namespace Yugen.DJ.ViewModels
 
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
         }
-
-        public event EventHandler WaveformGenerated;
 
         public VUBarVieModel VUBarVieModel { get; set; } = new VUBarVieModel();
 

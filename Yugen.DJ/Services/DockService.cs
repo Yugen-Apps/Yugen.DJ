@@ -1,15 +1,12 @@
 ﻿using AudioVisualizer;
-using Microsoft.Toolkit.Uwp;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage.FileProperties;
-using Windows.System;
 using Yugen.DJ.Interfaces;
 using Yugen.DJ.Models;
-using Yugen.Toolkit.Uwp.Audio.Bpm;
-using Yugen.Toolkit.Uwp.Audio.Waveform.Services;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.DJ.Services
 {
