@@ -157,6 +157,14 @@
       <Project>{a8b69e7a-9046-450f-a369-a0e29a0b57fb}</Project>
       <Name>Yugen.Toolkit.Uwp.Audio.Controls</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Yugen.Toolkit.Uwp.Audio.Services.Abstractions\Yugen.Toolkit.Uwp.Audio.Services.Abstractions.csproj">
+      <Project>{BDD73429-0041-47D2-9CA9-8D669FFC4CDD}</Project>
+      <Name>Yugen.Toolkit.Uwp.Audio.Services.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yugen.Toolkit.Uwp.Audio.Services.Bass\Yugen.Toolkit.Uwp.Audio.Services.Bass.csproj">
+      <Project>{E32CC781-64B3-4B05-BECE-C9E5F69E01B6}</Project>
+      <Name>Yugen.Toolkit.Uwp.Audio.Services.Bass</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

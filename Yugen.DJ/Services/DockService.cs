@@ -15,13 +15,13 @@ namespace Yugen.DJ.Services
         private IAudioPlaybackService _audioPlaybackService;
         private readonly IAppService _appService;
         private readonly IBPMService _bpmService;
-        private readonly ISongService _songService;
+        private readonly ITrackService _songService;
         private readonly IAudioVisualizerService _audioVisualizerService;
         private readonly IWaveformService _waveformService;
 
         private Side _side;
 
-        public DockService(IAppService appService, IBPMService bpmService, ISongService songService,
+        public DockService(IAppService appService, IBPMService bpmService, ITrackService songService,
             IWaveformService waveformService, IAudioVisualizerService audioVisualizerService)
         {
             _appService = appService;

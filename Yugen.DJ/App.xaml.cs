@@ -134,7 +134,7 @@ namespace Yugen.DJ
 
                 .AddTransient<IAudioVisualizerService, AudioVisualizerService>()
                 .AddTransient<IBPMService, BPMService>()
-                .AddTransient<ISongService, SongService>()
+                .AddTransient<ITrackService, TrackService>()
                 .AddTransient<IWaveformService, WaveformService>()
 
                 .AddTransient<DeckViewModel>()

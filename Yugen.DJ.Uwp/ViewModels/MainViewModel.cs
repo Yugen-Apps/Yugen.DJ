@@ -13,6 +13,7 @@ using System.Windows.Input;
 using Windows.Storage.Pickers;
 using Windows.System;
 using Yugen.Toolkit.Standard.Mvvm;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.DJ.Uwp.ViewModels
@@ -23,7 +24,7 @@ namespace Yugen.DJ.Uwp.ViewModels
 
         private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         private readonly Timer _progressBarTimer = new Timer(100);
-
+        private readonly ITrackService _trackService;
         private int _primaryDeviceId = 3;
         private int _secondaryDeviceId = 2;
 
@@ -42,8 +43,10 @@ namespace Yugen.DJ.Uwp.ViewModels
         private int _secondarySplitStreamRight;
         private bool _isPlayingRight;
 
-        public MainViewModel()
+        public MainViewModel(ITrackService trackService)
         {
+            _trackService = trackService;
+
             var isPrimaryInitialized = Bass.Init(_primaryDeviceId);
             var isSecondaryInitialized = Bass.Init(_secondaryDeviceId);
 
@@ -157,11 +160,11 @@ namespace Yugen.DJ.Uwp.ViewModels
 
         private async Task OpenLeftCommandBehavior()
         {
-            var audioFile = await FilePickerHelper.OpenFile(".mp3", PickerLocationId.MusicLibrary);
+            await _trackService.LoadFile();
 
-            if (audioFile != null)
+            if (_trackService.AudioBytes != null)
             {
-                var audioBytes = await audioFile.ReadBytesAsync();
+                var audioBytes = await _trackService.AudioBytes;
 
                 var streamHandle = Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode); // create decoder for 1st file
                 _streamHandleLeft = BassFx.TempoCreate(streamHandle, BassFlags.Decode | BassFlags.FxFreeSource);
@@ -346,11 +349,11 @@ namespace Yugen.DJ.Uwp.ViewModels
 
         private async Task OpenRightCommandBehavior()
         {
-            var audioFile = await FilePickerHelper.OpenFile(".mp3", PickerLocationId.MusicLibrary);
+            await _trackService.LoadFile();
 
-            if (audioFile != null)
+            if (_trackService.AudioBytes != null)
             {
-                var audioBytes = await audioFile.ReadBytesAsync();
+                var audioBytes = await _trackService.AudioBytes;
 
                 var streamHandle = Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode); // create decoder for 1st file
                 _streamHandleRight = BassFx.TempoCreate(streamHandle, BassFlags.Decode | BassFlags.Loop | BassFlags.FxFreeSource);

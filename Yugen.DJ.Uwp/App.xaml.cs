@@ -6,6 +6,8 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Yugen.DJ.Uwp.ViewModels;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
+using Yugen.Toolkit.Uwp.Audio.Services.Bass;
 
 namespace Yugen.DJ.Uwp
 {
@@ -99,6 +101,7 @@ namespace Yugen.DJ.Uwp
         {
             return new ServiceCollection()
                 .AddSingleton<MainViewModel>()
+                .AddSingleton<ITrackService, TrackService>()
                 .BuildServiceProvider();
         }
     }

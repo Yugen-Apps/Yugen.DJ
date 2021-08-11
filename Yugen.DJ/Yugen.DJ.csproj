@@ -142,14 +142,12 @@
     <Compile Include="Extensions\BpmExtensions.cs" />
     <Compile Include="Interfaces\IDockService.cs" />
     <Compile Include="Services\DockService.cs" />
-    <Compile Include="Interfaces\ISongService.cs" />
     <Compile Include="Interfaces\IAudioVisualizerService.cs" />
     <Compile Include="Interfaces\IAudioGraphService.cs" />
     <Compile Include="Interfaces\IMixerService.cs" />
     <Compile Include="Interfaces\IAppService.cs" />
     <Compile Include="Services\LeftAudioPlaybackService.cs" />
     <Compile Include="Services\RightAudioPlaybackService.cs" />
-    <Compile Include="Services\SongService.cs" />
     <Compile Include="Models\Side.cs" />
     <Compile Include="ViewModels\DeckViewModel.cs" />
     <Compile Include="Services\MixerService.cs" />

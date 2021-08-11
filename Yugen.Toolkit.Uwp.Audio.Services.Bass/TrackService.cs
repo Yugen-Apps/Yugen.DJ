@@ -1,26 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Toolkit.Uwp.Helpers;
+using System;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Pickers;
-using Yugen.DJ.Interfaces;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 using Yugen.Toolkit.Uwp.Helpers;
 
-namespace Yugen.DJ.Services
+namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 {
-    public class SongService : ISongService
+    public class TrackService : ITrackService
     {
         public StorageFile AudioFile { get; private set; }
+
+        public Task<byte[]> AudioBytes => AudioFile?.ReadBytesAsync() ?? null;
 
         public MusicProperties MusicProperties { get; private set; }
 
         public async Task LoadFile()
         {
-            AudioFile = await FilePickerHelper.OpenFile(
-                    new List<string> { ".mp3" },
-                    PickerLocationId.MusicLibrary
-                );
+            AudioFile = await FilePickerHelper.OpenFile(".mp3", PickerLocationId.MusicLibrary);
 
             if (AudioFile != null)
             {

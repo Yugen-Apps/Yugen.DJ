@@ -121,6 +121,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="IBPMService.cs" />
+    <Compile Include="ITrackService.cs" />
     <Compile Include="IWaveformService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Yugen.Toolkit.Uwp.Audio.Services.Abstractions.rd.xml" />
