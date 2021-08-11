@@ -33,7 +33,7 @@ namespace Yugen.Audio.Samples.ViewModels.Controls
                 for (int i = 0; i < levels.Count(); i++)
                 {
                     float ratio = i / (float)levels.Count();
-                    levels[i].Color = Toolkit.Uwp.Audio.Helpers.ColorHelper.GradientColor(ratio);
+                    levels[i].Color = Toolkit.Uwp.Helpers.ColorHelper.GradientColor(ratio);
                     levels[i].Level = i + fromDb;
                 }
 

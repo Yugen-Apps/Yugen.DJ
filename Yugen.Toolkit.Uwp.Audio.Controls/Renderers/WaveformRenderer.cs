@@ -2,7 +2,7 @@
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
-using Yugen.Toolkit.Uwp.Audio.Helpers;
+using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
 {
