@@ -1,84 +1,14 @@
 ﻿using ManagedBass;
-using Microsoft.Toolkit.Mvvm.Input;
-using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Windows.Storage.Pickers;
-using Yugen.Toolkit.Standard.Mvvm;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
-using Yugen.Toolkit.Uwp.Helpers;
 
-namespace Yugen.Audio.Samples.ViewModels
+namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 {
-    public class WaveformViewModel : ViewModelBase
+    public class WaveformService : IWaveformService
     {
-        private readonly IWaveformService _waveformService;
-        private List<(float min, float max)> _peakList;
-        private List<(float min, float max)> _peakList2;
-        private bool _swap;
-
-        public WaveformViewModel(IWaveformService waveformRendererService)
-        {
-            _waveformService = waveformRendererService;
-
-            OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
-
-            Bass.Init(-1);
-        }
-
-        public ICommand OpenCommand { get; }
-
-        public List<(float min, float max)> PeakList
-        {
-            get => _peakList;
-            set => SetProperty(ref _peakList, value);
-        }
-
-        public List<(float min, float max)> PeakList2
-        {
-            get => _peakList2;
-            set => SetProperty(ref _peakList2, value);
-        }
-
-        private async Task OpenCommandBehavior()
-        {
-            var audioFile = await FilePickerHelper.OpenFile(
-                     new List<string> { ".mp3" },
-                     PickerLocationId.MusicLibrary
-                 );
-
-            if (audioFile != null)
-            {
-                _swap = !_swap;
-                if (_swap)
-                {
-                    var audioStream = await audioFile.OpenStreamForReadAsync();
-                    await NaudioGenerateAudioData(audioStream);
-                }
-                else
-                {
-                    var audioBytes = await audioFile.ReadBytesAsync();
-                    BassGenerateAudioData(audioBytes);
-                }
-            }
-        }
-
-        private async Task NaudioGenerateAudioData(Stream audioStream)
-        {
-            List<(float min, float max)> peakList = null;
-
-            await Task.Run(() =>
-            {
-                peakList = _waveformService.GenerateAudioData(audioStream);
-            });
-
-            PeakList = peakList;
-        }
-
-        private void BassGenerateAudioData(byte[] audioBytes)
+        public List<(float min, float max)> GenerateAudioData(byte[] audioBytes)
         {
             List<(float min, float max)> peakList = new List<(float min, float max)>();
 
@@ -112,10 +42,10 @@ namespace Yugen.Audio.Samples.ViewModels
 
             int waveformCompressedPointCount = 500;
 
-            int stream = Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode | BassFlags.Float | BassFlags.Prescan);
-            int frameLength = (int)Bass.ChannelSeconds2Bytes(stream, 0.02);
-            long streamLength = Bass.ChannelGetLength(stream, 0);
-            int frameCount = (int)((double)streamLength / (double)frameLength);
+            int stream = ManagedBass.Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode | BassFlags.Float | BassFlags.Prescan);
+            int frameLength = (int)ManagedBass.Bass.ChannelSeconds2Bytes(stream, 0.02);
+            long streamLength = ManagedBass.Bass.ChannelGetLength(stream, 0);
+            int frameCount = (int)(streamLength / (double)frameLength);
             int waveformLength = frameCount * 2;
             float[] waveformData = new float[waveformLength];
             float[] levels;
@@ -127,7 +57,7 @@ namespace Yugen.Audio.Samples.ViewModels
             List<int> waveMaxPointIndexes = new List<int>();
             for (int i = 1; i <= actualPoints; i++)
             {
-                waveMaxPointIndexes.Add((int)Math.Round(waveformLength * ((double)i / (double)actualPoints), 0));
+                waveMaxPointIndexes.Add((int)Math.Round(waveformLength * (i / (double)actualPoints), 0));
             }
 
             float maxLeftPointLevel = float.MinValue;
@@ -135,7 +65,7 @@ namespace Yugen.Audio.Samples.ViewModels
             int currentPointIndex = 0;
             for (int i = 0; i < waveformLength; i += 2)
             {
-                levels = Bass.ChannelGetLevel(stream, 0.02f, LevelRetrievalFlags.Stereo);
+                levels = ManagedBass.Bass.ChannelGetLevel(stream, 0.02f, LevelRetrievalFlags.Stereo);
 
                 waveformData[i] = levels[0];
                 waveformData[i + 1] = levels[1];
@@ -160,12 +90,12 @@ namespace Yugen.Audio.Samples.ViewModels
                 }
             }
 
-            Bass.StreamFree(stream);
+            ManagedBass.Bass.StreamFree(stream);
 
-            ////
-
-
-            PeakList2 = peakList;
+            return peakList;
         }
+
+        public List<(float min, float max)> GenerateAudioData(Stream stream) =>
+            throw new NotImplementedException();
     }
 }

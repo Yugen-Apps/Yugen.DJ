@@ -123,6 +123,7 @@
     <Compile Include="BPMService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrackService.cs" />
+    <Compile Include="WaveformService.cs" />
     <EmbeddedResource Include="Properties\Yugen.Toolkit.Uwp.Audio.Services.Bass.rd.xml" />
   </ItemGroup>
   <ItemGroup Condition="'$(Platform)' == 'x64'">

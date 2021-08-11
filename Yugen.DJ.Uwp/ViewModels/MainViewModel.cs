@@ -24,6 +24,7 @@ namespace Yugen.DJ.Uwp.ViewModels
 
         private readonly IBPMService _bpmService;
         private readonly ITrackService _trackService;
+        private readonly IWaveformService _waveformService;
 
         private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         private readonly Timer _progressBarTimer = new Timer(100);
@@ -48,9 +49,12 @@ namespace Yugen.DJ.Uwp.ViewModels
 
         public MainViewModel(
             IBPMService bpmService,
-            ITrackService trackService)
+            ITrackService trackService, 
+            IWaveformService waveformService)
         {
+            _bpmService = bpmService;
             _trackService = trackService;
+            _waveformService = waveformService;
 
             var isPrimaryInitialized = Bass.Init(_primaryDeviceId);
             var isSecondaryInitialized = Bass.Init(_secondaryDeviceId);
@@ -68,7 +72,6 @@ namespace Yugen.DJ.Uwp.ViewModels
                 });
             };
             _progressBarTimer.Start();
-            _bpmService = bpmService;
         }
 
 
@@ -190,7 +193,7 @@ namespace Yugen.DJ.Uwp.ViewModels
 
                 BpmLeft = (float)_bpmService.Decoding(audioBytes);
 
-                BassGenerateAudioData(audioBytes);
+                PeakList = _waveformService.GenerateAudioData(audioBytes);
             }
         }
 
@@ -227,94 +230,6 @@ namespace Yugen.DJ.Uwp.ViewModels
             //System.Diagnostics.Debug.WriteLine($"{left} - {right}");
 
             return (float)dB;
-        }
-
-        private void BassGenerateAudioData(byte[] audioBytes)
-        {
-            List<(float min, float max)> peakList = new List<(float min, float max)>();
-
-            ///
-
-            //var handle = Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode);
-
-            // TODO: FFT / Waveform
-            // Perform a 1024 sample FFT on a channel and list the result.
-            //var fft = new float[512]; // fft data buffer
-            //Bass.ChannelGetData(handle, fft, (int)DataFlags.FFT1024);
-            //for (int a = 0; a < 512; a++)
-            //{
-            //    var peak = fft[a] * 100000;
-            //    peakList.Add((peak, peak));
-            //    System.Diagnostics.Debug.WriteLine("{0}: {1}", a, fft[a]);
-            //}
-
-            //Perform a 1024 sample FFT on a channel and list the complex result.
-            //var fft2 = new float[2048]; // fft data buffer
-            //Bass.ChannelGetData(handle, fft2, (int)(DataFlags.FFT1024 | DataFlags.FFTComplex));
-            //for (int a = 0; a < 1024; a++)
-            //{
-            //    var min = fft2[a * 2] * 100000;
-            //    var max = fft2[a * 2 + 1] * 100000;
-            //    peakList.Add((min, max));
-            //    //System.Diagnostics.Debug.WriteLine("{0}: ({1}, {2})", a, fft2[a * 2], fft2[a * 2 + 1]);
-            //}
-
-            ////
-
-            int waveformCompressedPointCount = 500;
-
-            int stream = Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode | BassFlags.Float | BassFlags.Prescan);
-            int frameLength = (int)Bass.ChannelSeconds2Bytes(stream, 0.02);
-            long streamLength = Bass.ChannelGetLength(stream, 0);
-            int frameCount = (int)((double)streamLength / (double)frameLength);
-            int waveformLength = frameCount * 2;
-            float[] waveformData = new float[waveformLength];
-            float[] levels;
-
-            int actualPoints = Math.Min(waveformCompressedPointCount, frameCount);
-
-            int compressedPointCount = actualPoints * 2;
-            //float[] waveformCompressedPoints = new float[compressedPointCount];
-            List<int> waveMaxPointIndexes = new List<int>();
-            for (int i = 1; i <= actualPoints; i++)
-            {
-                waveMaxPointIndexes.Add((int)Math.Round(waveformLength * ((double)i / (double)actualPoints), 0));
-            }
-
-            float maxLeftPointLevel = float.MinValue;
-            float maxRightPointLevel = float.MinValue;
-            int currentPointIndex = 0;
-            for (int i = 0; i < waveformLength; i += 2)
-            {
-                levels = Bass.ChannelGetLevel(stream, 0.02f, LevelRetrievalFlags.Stereo);
-
-                waveformData[i] = levels[0];
-                waveformData[i + 1] = levels[1];
-
-                if (levels[0] > maxLeftPointLevel)
-                {
-                    maxLeftPointLevel = levels[0];
-                }
-                if (levels[1] > maxRightPointLevel)
-                {
-                    maxRightPointLevel = levels[1];
-                }
-
-                if (i > waveMaxPointIndexes[currentPointIndex])
-                {
-                    //waveformCompressedPoints[(currentPointIndex * 2)] = maxLeftPointLevel;
-                    //waveformCompressedPoints[(currentPointIndex * 2) + 1] = maxRightPointLevel;
-                    peakList.Add((-maxLeftPointLevel, maxRightPointLevel));
-                    maxLeftPointLevel = float.MinValue;
-                    maxRightPointLevel = float.MinValue;
-                    currentPointIndex++;
-                }
-            }
-
-            Bass.StreamFree(stream);
-
-            ////
-            PeakList = peakList;
         }
 
         private async Task OpenRightCommandBehavior()

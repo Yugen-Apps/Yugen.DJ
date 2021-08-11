@@ -90,7 +90,7 @@ namespace Yugen.DJ.Services
 
             await Task.Run(() =>
             {
-                peakList = _waveformService.Render(stream);
+                peakList = _waveformService.GenerateAudioData(stream);
             });
 
             PeakList = peakList;
