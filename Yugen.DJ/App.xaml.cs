@@ -132,7 +132,6 @@ namespace Yugen.DJ
                 .AddSingletonFactory<RightAudioPlaybackService>()
                 .AddTransient<IAudioGraphService, AudioGraphService>()
 
-                .AddTransient<IAudioVisualizerService, AudioVisualizerService>()
                 .AddTransient<IBPMService, BPMService>()
                 .AddTransient<ITrackService, TrackService>()
                 .AddTransient<IWaveformService, WaveformService>()

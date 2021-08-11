@@ -138,11 +138,9 @@
     <Compile Include="Interfaces\IAudioPlaybackFactory.cs" />
     <Compile Include="Services\AppService.cs" />
     <Compile Include="Services\AudioGraphService.cs" />
-    <Compile Include="Services\AudioVisualizerService.cs" />
     <Compile Include="Extensions\BpmExtensions.cs" />
     <Compile Include="Interfaces\IDockService.cs" />
     <Compile Include="Services\DockService.cs" />
-    <Compile Include="Interfaces\IAudioVisualizerService.cs" />
     <Compile Include="Interfaces\IAudioGraphService.cs" />
     <Compile Include="Interfaces\IMixerService.cs" />
     <Compile Include="Interfaces\IAppService.cs" />

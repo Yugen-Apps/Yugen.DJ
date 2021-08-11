@@ -16,16 +16,17 @@ namespace Yugen.DJ.Services
         private readonly IAppService _appService;
         private readonly IBPMService _bpmService;
         private readonly ITrackService _songService;
-        private readonly IAudioVisualizerService _audioVisualizerService;
         private readonly IWaveformService _waveformService;
 
         private Side _side;
 
-        public DockService(IAppService appService, IBPMService bpmService, ITrackService songService,
-            IWaveformService waveformService, IAudioVisualizerService audioVisualizerService)
+        public DockService(
+            IAppService appService, 
+            IBPMService bpmService, 
+            ITrackService songService,
+            IWaveformService waveformService)
         {
             _appService = appService;
-            _audioVisualizerService = audioVisualizerService;
             _bpmService = bpmService;
             _songService = songService;
             _waveformService = waveformService;
@@ -44,8 +45,14 @@ namespace Yugen.DJ.Services
 
         public MusicProperties MusicProperties => _songService?.MusicProperties;
 
-        public IVisualizationSource PlaybackSource =>
-            _audioVisualizerService.GetPlaybackSource(_audioPlaybackService?.MasterFileInput)?.Source;
+        public IVisualizationSource PlaybackSource => GetPlaybackSource()?.Source;
+
+        private PlaybackSource GetPlaybackSource()
+        {
+            return _audioPlaybackService?.MasterFileInput == null
+                   ? null
+                   : AudioVisualizer.PlaybackSource.CreateFromAudioNode(_audioPlaybackService.MasterFileInput);
+        }
 
         public List<(float min, float max)> PeakList { get; private set; }
         public double Bpm { get; private set; }
