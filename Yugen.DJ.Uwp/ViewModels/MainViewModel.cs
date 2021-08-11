@@ -22,9 +22,12 @@ namespace Yugen.DJ.Uwp.ViewModels
     {
         private const int _bpmPeriod = 30;
 
+        private readonly IBPMService _bpmService;
+        private readonly ITrackService _trackService;
+
         private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         private readonly Timer _progressBarTimer = new Timer(100);
-        private readonly ITrackService _trackService;
+
         private int _primaryDeviceId = 3;
         private int _secondaryDeviceId = 2;
 
@@ -43,7 +46,9 @@ namespace Yugen.DJ.Uwp.ViewModels
         private int _secondarySplitStreamRight;
         private bool _isPlayingRight;
 
-        public MainViewModel(ITrackService trackService)
+        public MainViewModel(
+            IBPMService bpmService,
+            ITrackService trackService)
         {
             _trackService = trackService;
 
@@ -63,6 +68,7 @@ namespace Yugen.DJ.Uwp.ViewModels
                 });
             };
             _progressBarTimer.Start();
+            _bpmService = bpmService;
         }
 
 
@@ -182,46 +188,10 @@ namespace Yugen.DJ.Uwp.ViewModels
 
                 Bass.ChannelSetLink(_primarySplitStreamLeft, _secondarySplitStreamLeft);
 
-                DecodingBPM(audioBytes);
+                BpmLeft = (float)_bpmService.Decoding(audioBytes);
 
                 BassGenerateAudioData(audioBytes);
             }
-        }
-
-        private void DecodingBPM(byte[] audioBytes)
-        {
-            var bpmchan = Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode);
-
-            // create bpmChan stream and get bpm value for BpmPeriod seconds from current position
-            var positon = Bass.ChannelGetPosition(bpmchan);
-            var positionSeconds = Bass.ChannelBytes2Seconds(bpmchan, positon);
-            var length = Bass.ChannelGetLength(bpmchan);
-            var lengthSeconds = Bass.ChannelBytes2Seconds(bpmchan, length);
-
-            BpmLeft = BassFx.BPMDecodeGet(bpmchan, 0, lengthSeconds, 0,
-                                          BassFlags.FxBpmBackground | BassFlags.FXBpmMult2 | BassFlags.FxFreeSource,
-                                          null);
-
-            //double startSec = positionSeconds;
-            //double endSec = positionSeconds + _bpmPeriod >= lengthSeconds
-            //                ? lengthSeconds - 1 
-            //                : positionSeconds + _bpmPeriod;
-
-            //BassFx.BPMCallbackSet(bpmchan, BPMCallback, _bpmPeriod, 0, BassFlags.FXBpmMult2);
-
-            //// detect bpm in background and return progress in GetBPM_ProgressCallback function
-            //if (bpmchan != 0)
-            //{
-            //    BpmLeft = BassFx.BPMDecodeGet(bpmchan, startSec, endSec, 0,
-            //                                  BassFlags.FxBpmBackground | BassFlags.FXBpmMult2 | BassFlags.FxFreeSource,
-            //                                  null);
-            //}
-        }
-
-        private void BPMCallback(int Channel, float BPM, IntPtr User)
-        {
-            // TODO: add dispatcher update the bpm view
-            //BpmLeft = BPM;
         }
 
         private float GetRms()

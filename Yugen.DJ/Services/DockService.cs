@@ -99,7 +99,7 @@ namespace Yugen.DJ.Services
 
         private void DetectBpm(Stream stream)
         {
-            var bmp = _bpmService.Detect(stream);
+            var bmp = _bpmService.Decoding(stream);
             BpmGenerated?.Invoke(this, bmp);
         }
 

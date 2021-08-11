@@ -85,7 +85,7 @@ namespace Yugen.Audio.Samples.ViewModels
                 {
                     dispatcherQueue.EnqueueAsync(() =>
                     {
-                        Bpm = _bpmService.Detect(bpmStream);
+                        Bpm = _bpmService.Decoding(bpmStream);
                     });
                 });
             }

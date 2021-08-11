@@ -102,6 +102,7 @@ namespace Yugen.DJ.Uwp
             return new ServiceCollection()
                 .AddSingleton<MainViewModel>()
                 .AddSingleton<ITrackService, TrackService>()
+                .AddSingleton<IBPMService, BPMService>()
                 .BuildServiceProvider();
         }
     }

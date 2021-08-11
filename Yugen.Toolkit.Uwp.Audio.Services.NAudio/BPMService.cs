@@ -16,13 +16,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
     {
         public double BPM { get; private set; }
 
-        public async Task<double> Detect(IStorageFile file)
-        {
-            var stream = await file.OpenStreamForReadAsync();
-            return Detect(stream);
-        }
-
-        public double Detect(Stream stream)
+        public double Decoding(Stream stream)
         {
             var buffer = new float[0];
             var sampleRate = 0;
@@ -52,7 +46,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
         // 0.1s window ... 0.1*44100 = 4410 samples (lets adjust this to 3600)
         //var sampleStep = 3600;
 
-        public double Detect(float[] buffer, int sampleRate, double totalMinutes)
+        private double Detect(float[] buffer, int sampleRate, double totalMinutes)
         {
             // 0.1s window EG: 0.1*44100 = 4410 samples
             var sampleStep = (int)(0.1 * sampleRate);
@@ -119,5 +113,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
             }
             return tmp;
         }
+
+        public double Decoding(byte[] audioBytes) => throw new NotImplementedException();
     }
 }

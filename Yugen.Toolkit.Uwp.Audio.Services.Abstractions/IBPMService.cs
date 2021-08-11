@@ -1,6 +1,4 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
-using Windows.Storage;
 
 namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 {
@@ -8,10 +6,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
     {
         double BPM { get; }
 
-        double Detect(float[] buffer, int sampleRate, double totalMinutes);
+        double Decoding(Stream stream);
 
-        Task<double> Detect(IStorageFile file);
-
-        double Detect(Stream stream);
+        double Decoding(byte[] audioBytes);
     }
 }
