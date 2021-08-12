@@ -16,6 +16,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 
         Task LoadSong(StorageFile audioFile);
 
+        Task LoadSong(byte[] audioBytes);
+
         void TogglePlay(bool isPaused);
 
         void ChangePitch(double pitch);
@@ -23,5 +25,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
         void ChangeVolume(double volume, double fader);
 
         void IsHeadphones(bool isHeadphone);
+        float GetRms();
     }
 }

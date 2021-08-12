@@ -24,7 +24,18 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             this.InitializeComponent();
         }
 
-        public void PauseToggled(bool isChecked) => _vinylRenderer.PauseToggled(isChecked);
+        public bool IsPaused
+        {
+            get { return (bool)GetValue(IsPausedProperty); }
+            set { SetValue(IsPausedProperty, value); }
+        }
+
+        public static readonly DependencyProperty IsPausedProperty =
+            DependencyProperty.Register(
+                nameof(IsPaused),
+                typeof(bool),
+                typeof(Vinyl),
+                new PropertyMetadata(true, IsPausedCallback));
 
         public void StepClicked() => _vinylRenderer.StepClicked();
 
@@ -99,6 +110,14 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             // Explicitly remove references to allow the Win2D controls to get garbage collected
             VinylCanvasAnimated.RemoveFromVisualTree();
             VinylCanvasAnimated = null;
+        }
+
+        private static void IsPausedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue != null)
+            {
+                ((Vinyl)d)._vinylRenderer?.PauseToggled((bool)e.NewValue);
+            }
         }
     }
 }

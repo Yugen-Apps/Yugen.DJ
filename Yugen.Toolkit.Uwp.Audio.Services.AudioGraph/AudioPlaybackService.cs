@@ -6,13 +6,15 @@ using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 {
-    public abstract class AudioPlaybackService : IAudioPlaybackService
+    public class AudioPlaybackService : IAudioPlaybackService
     {
         private readonly IAudioDeviceService _audioDeviceService;
         private readonly IAudioGraphService _masterAudioGraphService;
         private readonly IAudioGraphService _headphonesAudioGraphService;
 
-        public AudioPlaybackService(IAudioDeviceService audioDeviceService, IAudioGraphService masterAudioGraphService,
+        public AudioPlaybackService(
+            IAudioDeviceService audioDeviceService, 
+            IAudioGraphService masterAudioGraphService,
             IAudioGraphService headphonesAudioGraphService)
         {
             _audioDeviceService = audioDeviceService;
@@ -72,5 +74,9 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
             _headphonesAudioGraphService.IsHeadphones(isHeadphone);
 
         private void OnPositionChanged(object sender, TimeSpan e) => PositionChanged?.Invoke(sender, e);
+
+        public Task LoadSong(byte[] audioBytes) => throw new NotImplementedException();
+
+        public float GetRms() => throw new NotImplementedException();
     }
 }

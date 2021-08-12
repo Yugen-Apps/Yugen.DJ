@@ -8,9 +8,9 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 {
     public class BPMService : IBPMService
     {
-        public double BPM { get; private set; }
+        public float BPM { get; private set; }
 
-        public double Decoding(byte[] audioBytes)
+        public float Decoding(byte[] audioBytes)
         {
             var bpmchan = ManagedBass.Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode);
 
@@ -48,6 +48,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
             //BpmLeft = BPM;
         }
 
-        public double Decoding(Stream stream) => throw new NotImplementedException();
+        public float Decoding(Stream stream) => throw new NotImplementedException();
     }
 }

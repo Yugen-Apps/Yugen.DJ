@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
 using Windows.Storage.Pickers;
-using Yugen.Audio.Samples.Helpers;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Services;
 using Yugen.Toolkit.Standard.Mvvm;
+using Yugen.Toolkit.Uwp.Audio.Services.Common.Helpers;
 using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.Audio.Samples.ViewModels

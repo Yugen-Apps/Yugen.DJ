@@ -7,7 +7,7 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="9d75ad67-5ea3-4cb9-8011-70a48f364801"
+    Name="Yugen.DJ.Uwp"
     Publisher="CN=emili"
     Version="1.0.0.0" />
 

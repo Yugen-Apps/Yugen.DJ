@@ -9,18 +9,17 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
     public interface IDockService
     {
         TimeSpan NaturalDuration { get; }
-        MusicProperties MusicProperties { get; }
         AudioFileInputNode MasterFileInput { get; }
-        List<(float min, float max)> PeakList { get; }
 
-        event EventHandler<double> BpmGenerated;
+        event EventHandler<float> BpmGenerated;
         event EventHandler<TimeSpan> PositionChanged;
-        event EventHandler AudioPropertiesLoaded;
-        event EventHandler WaveformGenerated;
+        event EventHandler<MusicProperties> AudioPropertiesLoaded;
+        event EventHandler<List<(float min, float max)>> WaveformGenerated;
 
         void Init(Side side);
         Task LoadSong();
-        void TogglePlay(bool v);
+        void TogglePlay(bool isPaused);
         void ChangePitch(double pitch);
+        float GetRms();
     }
 }
