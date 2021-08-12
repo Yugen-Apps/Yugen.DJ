@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BDD73429-0041-47D2-9CA9-8D669FFC4CDD}</ProjectGuid>
+    <ProjectGuid>{196CFD93-4D2F-4CA6-B927-D5C8B9566679}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Yugen.Toolkit.Uwp.Audio.Services.Abstractions</RootNamespace>
-    <AssemblyName>Yugen.Toolkit.Uwp.Audio.Services.Abstractions</AssemblyName>
+    <RootNamespace>Yugen.Toolkit.Uwp.Audio.Services.AudioGraph</RootNamespace>
+    <AssemblyName>Yugen.Toolkit.Uwp.Audio.Services.AudioGraph</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
@@ -26,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,6 +36,7 @@
     <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <PlatformTarget>x86</PlatformTarget>
@@ -45,6 +47,7 @@
     <DebugType>full</DebugType>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <PlatformTarget>x86</PlatformTarget>
@@ -55,6 +58,7 @@
     <DebugType>pdbonly</DebugType>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <PlatformTarget>ARM</PlatformTarget>
@@ -65,6 +69,7 @@
     <DebugType>full</DebugType>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
     <PlatformTarget>ARM</PlatformTarget>
@@ -75,6 +80,7 @@
     <DebugType>pdbonly</DebugType>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
     <PlatformTarget>ARM64</PlatformTarget>
@@ -85,6 +91,7 @@
     <DebugType>full</DebugType>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
     <PlatformTarget>ARM64</PlatformTarget>
@@ -95,6 +102,7 @@
     <DebugType>pdbonly</DebugType>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -105,6 +113,7 @@
     <DebugType>full</DebugType>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
     <PlatformTarget>x64</PlatformTarget>
@@ -115,29 +124,35 @@
     <DebugType>pdbonly</DebugType>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <ErrorReport>prompt</ErrorReport>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="IAppService.cs" />
-    <Compile Include="IAudioDeviceService.cs" />
-    <Compile Include="IAudioGraphService.cs" />
-    <Compile Include="IAudioPlaybackFactory.cs" />
-    <Compile Include="IAudioPlaybackService.cs" />
-    <Compile Include="IBPMService.cs" />
-    <Compile Include="IDockService.cs" />
-    <Compile Include="IMixerService.cs" />
-    <Compile Include="ITrackService.cs" />
-    <Compile Include="IWaveformService.cs" />
+    <Compile Include="AppService.cs" />
+    <Compile Include="AudioFrameInput\AudioFrameService.cs" />
+    <Compile Include="AudioFrameInput\IMemoryBufferByteAccess.cs" />
+    <Compile Include="AudioGraphService.cs" />
+    <Compile Include="AudioPlaybackFactory.cs" />
+    <Compile Include="AudioPlaybackService.cs" />
+    <Compile Include="DockService.cs" />
+    <Compile Include="LeftAudioPlaybackService.cs" />
+    <Compile Include="MixerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Side.cs" />
-    <EmbeddedResource Include="Properties\Yugen.Toolkit.Uwp.Audio.Services.Abstractions.rd.xml" />
+    <Compile Include="RightAudioPlaybackService.cs" />
+    <EmbeddedResource Include="Properties\Yugen.Toolkit.Uwp.Audio.Services.AudioGraph.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.12</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Yugen.Toolkit.Uwp.Audio.Services.Abstractions\Yugen.Toolkit.Uwp.Audio.Services.Abstractions.csproj">
+      <Project>{bdd73429-0041-47d2-9ca9-8d669ffc4cdd}</Project>
+      <Name>Yugen.Toolkit.Uwp.Audio.Services.Abstractions</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

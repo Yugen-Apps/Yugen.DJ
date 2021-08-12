@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using AudioVisualizer;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.Helpers;
@@ -7,8 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.System;
-using Yugen.DJ.Interfaces;
-using Yugen.DJ.Models;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.DJ.ViewModels
 {
@@ -139,8 +139,17 @@ namespace Yugen.DJ.ViewModels
 
             await _dockService.LoadSong();
 
-            VUBarVieModel.Source = _dockService.PlaybackSource;
+            SetPlaybackSource();
+
             _dockService.TogglePlay(IsPaused);
+        }
+
+        private void SetPlaybackSource()
+        {
+            if (_dockService.MasterFileInput != null)
+            {
+                VUBarVieModel.Source = PlaybackSource.CreateFromAudioNode(_dockService.MasterFileInput)?.Source;
+            }
         }
 
         private void AudioServiceOnAudioPropertiesLoaded(object sender, EventArgs e)

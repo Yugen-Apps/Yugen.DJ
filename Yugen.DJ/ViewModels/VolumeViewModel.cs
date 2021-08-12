@@ -1,6 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Yugen.DJ.Interfaces;
-using Yugen.DJ.Models;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.DJ.ViewModels
 {

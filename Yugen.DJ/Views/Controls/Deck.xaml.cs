@@ -5,9 +5,9 @@ using Microsoft.Toolkit.Uwp.Helpers;
 using System;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Yugen.DJ.Models;
 using Yugen.DJ.Renderers;
 using Yugen.DJ.ViewModels;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.DJ.Views.Controls
 {

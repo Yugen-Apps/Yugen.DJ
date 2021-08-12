@@ -127,38 +127,13 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Factories\AudioPlaybackFactory.cs" />
-    <Compile Include="Audio\AudioFrameInput\AudioFrameService.cs" />
-    <Compile Include="Audio\AudioFrameInput\IMemoryBufferByteAccess.cs" />
-    <Compile Include="Audio\SystemVolume\Interfaces\IActivateAudioInterfaceCompletionHandler.cs" />
-    <Compile Include="Audio\SystemVolume\Models\HResult.cs" />
-    <Compile Include="Audio\SystemVolume\Interfaces\IActivateAudioInterfaceAsyncOperation.cs" />
-    <Compile Include="Audio\SystemVolume\Interfaces\IAudioEndpointVolume.cs" />
-    <Compile Include="Audio\SystemVolume\SystemVolumeHelper.cs" />
-    <Compile Include="Interfaces\IAudioPlaybackFactory.cs" />
-    <Compile Include="Services\AppService.cs" />
-    <Compile Include="Services\AudioGraphService.cs" />
-    <Compile Include="Extensions\BpmExtensions.cs" />
-    <Compile Include="Interfaces\IDockService.cs" />
-    <Compile Include="Services\DockService.cs" />
-    <Compile Include="Interfaces\IAudioGraphService.cs" />
-    <Compile Include="Interfaces\IMixerService.cs" />
-    <Compile Include="Interfaces\IAppService.cs" />
-    <Compile Include="Services\LeftAudioPlaybackService.cs" />
-    <Compile Include="Services\RightAudioPlaybackService.cs" />
-    <Compile Include="Models\Side.cs" />
     <Compile Include="ViewModels\DeckViewModel.cs" />
-    <Compile Include="Services\MixerService.cs" />
     <Compile Include="ViewModels\MixerViewModel.cs" />
     <Compile Include="ViewModels\VolumeViewModel.cs" />
     <Compile Include="ViewModels\VUBarVieModel.cs" />
     <Compile Include="Views\Controls\Deck.xaml.cs">
       <DependentUpon>Deck.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Services\AudioDeviceService.cs" />
-    <Compile Include="Services\AudioPlaybackService.cs" />
-    <Compile Include="Interfaces\IAudioPlaybackService.cs" />
-    <Compile Include="Interfaces\IAudioDeviceService.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="Views\Controls\Mixer.xaml.cs">
       <DependentUpon>Mixer.xaml</DependentUpon>
@@ -264,11 +239,20 @@
       <Project>{BDD73429-0041-47D2-9CA9-8D669FFC4CDD}</Project>
       <Name>Yugen.Toolkit.Uwp.Audio.Services.Abstractions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Yugen.Toolkit.Uwp.Audio.Services.AudioGraph\Yugen.Toolkit.Uwp.Audio.Services.AudioGraph.csproj">
+      <Project>{196cfd93-4d2f-4ca6-b927-d5c8b9566679}</Project>
+      <Name>Yugen.Toolkit.Uwp.Audio.Services.AudioGraph</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Yugen.Toolkit.Uwp.Audio.Services.Common\Yugen.Toolkit.Uwp.Audio.Services.Common.csproj">
+      <Project>{4623f944-d15c-4364-9ee8-07f5e757a04c}</Project>
+      <Name>Yugen.Toolkit.Uwp.Audio.Services.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Yugen.Toolkit.Uwp.Audio.Services.NAudio\Yugen.Toolkit.Uwp.Audio.Services.NAudio.csproj">
       <Project>{C36A19C8-C53A-481E-9057-A5B7FDDC988C}</Project>
       <Name>Yugen.Toolkit.Uwp.Audio.Services.NAudio</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
