@@ -14,6 +14,10 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Common
         public DeviceInformation MasterAudioDeviceInformation { get; set; }
         public DeviceInformation HeadphonesAudioDeviceInformation { get; set; }
 
+        public int PrimaryDeviceId => throw new NotImplementedException();
+
+        public int SecondaryDeviceId => throw new NotImplementedException();
+
         public double GetMasterVolume() => SystemVolumeHelper.GetVolume();
 
         public void SetVolume(double volume) => SystemVolumeHelper.SetVolume(volume / 100);

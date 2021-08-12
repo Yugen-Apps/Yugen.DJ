@@ -6,6 +6,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Yugen.DJ.Uwp.ViewModels;
+using Yugen.DJ.Uwp.Views;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 using Yugen.Toolkit.Uwp.Audio.Services.Bass;
 
@@ -39,12 +40,12 @@ namespace Yugen.DJ.Uwp
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
-
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
-            if (rootFrame == null)
+            if (!(Window.Current.Content is Frame rootFrame))
             {
+                InitializeServices();
+
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
@@ -100,11 +101,24 @@ namespace Yugen.DJ.Uwp
         private IServiceProvider ConfigureServices()
         {
             return new ServiceCollection()
-                .AddSingleton<MainViewModel>()
+                .AddSingleton<IAudioDeviceService, AudioDeviceService>()
                 .AddSingleton<IBPMService, BPMService>()
+                .AddTransient<IDockService, DockService>()
+                .AddTransient<IAudioPlaybackService, AudioPlaybackService>()
+                .AddSingleton<IMixerService, MixerService>()
                 .AddSingleton<ITrackService, TrackService>()
                 .AddSingleton<IWaveformService, WaveformService>()
+                .AddSingleton<LeftDeckViewModel>()
+                .AddSingleton<RightDeckViewModel>()
+                .AddSingleton<MainViewModel>()
+                .AddSingleton<MixerViewModel>()
+                .AddTransient<VolumeViewModel>()
                 .BuildServiceProvider();
+        }
+
+        private void InitializeServices()
+        {
+            Services.GetService<IAudioDeviceService>().Init();
         }
     }
 }

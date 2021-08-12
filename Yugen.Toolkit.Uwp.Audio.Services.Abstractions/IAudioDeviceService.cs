@@ -8,6 +8,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
         DeviceInformationCollection DeviceInfoCollection { get; }
         DeviceInformation MasterAudioDeviceInformation { get; set; }
         DeviceInformation HeadphonesAudioDeviceInformation { get; set; }
+        int PrimaryDeviceId { get; }
+        int SecondaryDeviceId { get; }
 
         double GetMasterVolume();
 

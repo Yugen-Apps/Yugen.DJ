@@ -32,7 +32,7 @@
         <!-- Column 0 -->
         <controls:Deck Grid.Column="0"
                        Grid.RowSpan="3"
-                       Side="Left" />
+                       DataContext="{x:Bind ViewModel.LeftDeckViewModel}"/>
 
         <!-- Column 1 -->
         <Button Grid.Column="1"
@@ -51,7 +51,7 @@
         <!-- Column 2 -->
         <controls:Deck Grid.Column="2"
                        Grid.RowSpan="3"
-                       Side="Right" />
+                       DataContext="{x:Bind ViewModel.RightDeckViewModel}"/>
 
     </Grid>
 

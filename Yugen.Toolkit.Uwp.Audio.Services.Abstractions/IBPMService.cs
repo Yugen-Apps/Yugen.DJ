@@ -4,10 +4,10 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 {
     public interface IBPMService
     {
-        double BPM { get; }
+        float BPM { get; }
 
-        double Decoding(Stream stream);
+        float Decoding(Stream stream);
 
-        double Decoding(byte[] audioBytes);
+        float Decoding(byte[] audioBytes);
     }
 }

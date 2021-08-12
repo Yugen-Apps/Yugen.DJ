@@ -14,9 +14,9 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
     /// </summary>
     public class BPMService : IBPMService
     {
-        public double BPM { get; private set; }
+        public float BPM { get; private set; }
 
-        public double Decoding(Stream stream)
+        public float Decoding(Stream stream)
         {
             var buffer = new float[0];
             var sampleRate = 0;
@@ -46,7 +46,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
         // 0.1s window ... 0.1*44100 = 4410 samples (lets adjust this to 3600)
         //var sampleStep = 3600;
 
-        private double Detect(float[] buffer, int sampleRate, double totalMinutes)
+        private float Detect(float[] buffer, int sampleRate, double totalMinutes)
         {
             // 0.1s window EG: 0.1*44100 = 4410 samples
             var sampleStep = (int)(0.1 * sampleRate);
@@ -91,7 +91,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
                     beats++;
             }
 
-            return BPM = beats / totalMinutes / 2;
+            return BPM = (float)(beats / totalMinutes / 2);
         }
 
         private static double RangeQuadSum(float[] samples, int start, int stop)
@@ -114,6 +114,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
             return tmp;
         }
 
-        public double Decoding(byte[] audioBytes) => throw new NotImplementedException();
+        public float Decoding(byte[] audioBytes) => throw new NotImplementedException();
     }
 }

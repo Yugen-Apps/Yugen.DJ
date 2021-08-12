@@ -20,7 +20,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
         private float _angle;
         private float _radians;
         private bool _isTouched;
-        private bool _isPaused;
+        private bool _isPaused = true;
 
         private Transform2DEffect _canvasImage;
         private Vector2 _currentCanvasImageSize;
@@ -28,9 +28,13 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
 
         public static async Task<VinylRenderer> Create(CanvasAnimatedControl sender)
         {
-            var bitmapTiger = await CanvasBitmap.LoadAsync(sender, "Yugen.Toolkit.Uwp.Audio.Controls/Images/Circle.png");
+#if DEBUG
+            var vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Yugen.Toolkit.Uwp.Audio.Controls/Images/VinylDebug.png");
+#else
+            var vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Yugen.Toolkit.Uwp.Audio.Controls/Images/Vinyl.png");
+#endif
 
-            return new VinylRenderer(sender, bitmapTiger);
+            return new VinylRenderer(sender, vinylBitmap);
         }
 
         private VinylRenderer(CanvasAnimatedControl sender, CanvasBitmap canvasBitmap)

@@ -6,13 +6,13 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-using Yugen.Audio.Samples.Helpers;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Services;
 using Yugen.Audio.Samples.ViewModels;
 using Yugen.Audio.Samples.ViewModels.Controls;
 using Yugen.Audio.Samples.Views;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
+using Yugen.Toolkit.Uwp.Audio.Services.Common.Helpers;
 using Yugen.Toolkit.Uwp.Audio.Services.NAudio;
 using Yugen.Toolkit.Uwp.Services;
 

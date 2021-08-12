@@ -7,9 +7,9 @@ using Windows.Media.Audio;
 using Windows.Media.MediaProperties;
 using Windows.Media.Render;
 using Windows.Storage;
-using Yugen.Audio.Samples.Helpers;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Models;
+using Yugen.Toolkit.Uwp.Audio.Services.Common.Helpers;
 
 namespace Yugen.Audio.Samples.Services
 {

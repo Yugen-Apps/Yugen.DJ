@@ -9,10 +9,8 @@ using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Yugen.DJ.Renderers;
 using Yugen.DJ.ViewModels;
 using Yugen.DJ.Views;
-using Yugen.Toolkit.Standard.Extensions;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 using Yugen.Toolkit.Uwp.Audio.Services.AudioGraph;
 using Yugen.Toolkit.Uwp.Audio.Services.Common;
@@ -121,27 +119,22 @@ namespace Yugen.DJ
             //Log.Warning("Serilog started Warning!");
 
             return new ServiceCollection()
-                .AddSingleton<IAppService, AppService>()
                 .AddSingleton<IAudioDeviceService, AudioDeviceService>()
                 .AddSingleton<IMixerService, MixerService>()
+
                 .AddTransient<IDockService, DockService>()
-
-                .AddTransient<IAudioPlaybackFactory, AudioPlaybackFactory>()
-                .AddSingletonFactory<LeftAudioPlaybackService>()
-                .AddSingletonFactory<RightAudioPlaybackService>()
+                .AddTransient<IAudioPlaybackService, AudioPlaybackService>()
                 .AddTransient<IAudioGraphService, AudioGraphService>()
-
                 .AddTransient<IBPMService, BPMService>()
                 .AddTransient<ITrackService, TrackService>()
                 .AddTransient<IWaveformService, WaveformService>()
 
-                .AddTransient<DeckViewModel>()
+                .AddSingleton<LeftDeckViewModel>()
+                .AddSingleton<RightDeckViewModel>()
                 .AddSingleton<MainViewModel>()
                 .AddSingleton<MixerViewModel>()
                 .AddSingleton<SettingsViewModel>()
                 .AddTransient<VolumeViewModel>()
-
-                .AddTransient<VinylRenderer>()
 
                 .AddLogging(loggingBuilder =>
                 {
