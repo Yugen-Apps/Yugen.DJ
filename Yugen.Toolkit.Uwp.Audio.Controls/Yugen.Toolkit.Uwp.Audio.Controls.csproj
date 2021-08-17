@@ -89,7 +89,7 @@
   <ItemGroup>
     <Content Include="Images\Vinyl.png" />
     <Content Include="Images\Vinyl1920.png" />
-    <Content Include="Images\VinylDebu1920.png" />
+    <Content Include="Images\VinylDebug1920.png" />
     <Content Include="Images\VinylDebug.png" />
   </ItemGroup>
   <ItemGroup>

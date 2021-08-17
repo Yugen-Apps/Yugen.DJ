@@ -16,7 +16,7 @@ namespace Yugen.DJ.Uwp.ViewModels
         private readonly IDockService _dockService;
         private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-        protected virtual Side _side { get; }
+        public virtual Side Side { get; }
 
         private bool _isSongLoaded;
         private bool _isPaused = true;
@@ -35,7 +35,7 @@ namespace Yugen.DJ.Uwp.ViewModels
             _dockService = dockService;
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
 
-            _dockService.Init(_side);
+            _dockService.Init(Side);
 
             _dockService.PositionChanged += OnDockServicePositionChanged;
             _dockService.AudioPropertiesLoaded += OnDockServiceAudioPropertiesLoaded;

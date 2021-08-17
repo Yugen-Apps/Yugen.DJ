@@ -74,6 +74,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\MixerViewModel.cs" />
+    <Compile Include="StateTriggers\SideStateTrigger.cs" />
     <Compile Include="ViewModels\VolumeViewModel.cs" />
     <Compile Include="Views\Controls\Mixer.xaml.cs">
       <DependentUpon>Mixer.xaml</DependentUpon>
