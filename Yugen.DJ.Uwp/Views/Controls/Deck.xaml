@@ -45,7 +45,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Row 0 -->
-        <ToggleButton x:Name="PlayToggleButton" 
+        <ToggleButton x:Name="PlayToggleButton"
                       Grid.Column="0"
                       Grid.Row="0"
                       IsChecked="{x:Bind ViewModel.IsPaused, Mode=TwoWay}"
@@ -53,7 +53,7 @@
             <FontIcon Glyph="{x:Bind ViewModel.PlayPauseButton, Mode=OneWay}" />
         </ToggleButton>
 
-        <Button x:Name="EjectButton" 
+        <Button x:Name="EjectButton"
                 Grid.Column="2"
                 Grid.Row="0"
                 Command="{x:Bind ViewModel.OpenCommand}"
@@ -100,7 +100,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
-            
+
             <TextBlock Grid.Column="0"
                        FontWeight="Bold"
                        Text="{x:Bind ViewModel.Title, Mode=OneWay}" />
@@ -126,15 +126,15 @@
         </Grid>
 
         <!-- Row 4 -->
-        <controls:Waveform x:Name="WaveFormControl" 
+        <controls:Waveform x:Name="WaveFormControl"
                            Grid.ColumnSpan="2"
                            Grid.Row="4"
                            HorizontalAlignment="Left"
                            PeakList="{x:Bind ViewModel.PeakList, Mode=OneWay}"
-                           VerticalAlignment="Bottom"/>
+                           VerticalAlignment="Bottom" />
 
         <controls:VUBar x:Name="VUBarControl"
-                        Grid.Column="2"                        
+                        Grid.Column="2"
                         Grid.Row="4"
                         Height="144"
                         Margin="4"
