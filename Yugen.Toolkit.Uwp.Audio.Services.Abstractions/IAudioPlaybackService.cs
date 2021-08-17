@@ -10,6 +10,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
         event EventHandler<TimeSpan> PositionChanged;
 
         TimeSpan NaturalDuration { get; }
+
         AudioFileInputNode MasterFileInput { get; }
 
         Task Init();
@@ -25,6 +26,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
         void ChangeVolume(double volume, double fader);
 
         void IsHeadphones(bool isHeadphone);
+
         float GetRms();
     }
 }

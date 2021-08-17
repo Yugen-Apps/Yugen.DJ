@@ -16,17 +16,21 @@ namespace Yugen.Audio.Samples.Services
         //private AudioDecoder _audioDecoder;
         //private readonly IXAudio2SourceVoice _sourceVoice;
 
-        public TimeSpan Duration => throw new NotImplementedException();
-        public bool IsRepeating { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public TimeSpan Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public AudioPlayerState State => throw new NotImplementedException();
-        public double Volume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
         public VortexAudioPlayer()
         {
             _xaudio2 = new IXAudio2(IntPtr.Zero);
             _xaudio2.StartEngine();
         }
+
+        public TimeSpan Duration => throw new NotImplementedException();
+
+        public bool IsRepeating { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public TimeSpan Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public AudioPlayerState State => throw new NotImplementedException();
+
+        public double Volume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100)
         {

@@ -19,7 +19,7 @@
         </Grid.RowDefinitions>
 
         <StackPanel>
-            <ToggleButton x:Name="PauseToggleButton" 
+            <ToggleButton x:Name="PauseToggleButton"
                           Content="Pause" />
 
             <Button Content="Step"
@@ -27,7 +27,7 @@
 
             <Button Content="Task"
                     Click="OnTaskClicked" />
-            
+
             <Button Content="BackgroundTask"
                     Click="OnBackgroundTaskClicked" />
         </StackPanel>
@@ -37,7 +37,7 @@
                 BorderBrush="Red"
                 BorderThickness="1">
             <controls:Vinyl x:Name="Vinyl"
-                            IsPaused="{x:Bind PauseToggleButton.IsChecked.Value, Mode=OneWay}"/>
+                            IsPaused="{x:Bind PauseToggleButton.IsChecked.Value, Mode=OneWay}" />
         </Border>
     </Grid>
 </Page>

@@ -12,7 +12,7 @@ namespace Yugen.DJ.Uwp.ViewModels
         private double _masterVolume = 0;
 
         public MixerViewModel(
-            IMixerService mixerService, 
+            IMixerService mixerService,
             IAudioDeviceService audioDeviceService)
         {
             _mixerService = mixerService;

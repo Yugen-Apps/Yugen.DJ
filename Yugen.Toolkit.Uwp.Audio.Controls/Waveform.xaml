@@ -13,5 +13,4 @@
                           Draw="OnDraw"
                           Height="100"
                           Width="500" />
-
 </UserControl>

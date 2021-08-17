@@ -192,7 +192,9 @@ namespace Yugen.Audio.Samples.Services
             }
         }
 
-        public void PlayWithoutStreaming() { }
+        public void PlayWithoutStreaming()
+        {
+        }
 
         /// <summary>
         /// Pauses the sound.
@@ -232,6 +234,7 @@ namespace Yugen.Audio.Samples.Services
             _playingTask.Wait();
         }
 
+        public void Record(StorageFile audioFile) => throw new NotImplementedException();
 
         /// <summary>
         /// Internal method to play the sound.
@@ -380,7 +383,5 @@ namespace Yugen.Audio.Samples.Services
         {
             _bufferEndEvent.Set();
         }
-
-        public void Record(StorageFile audioFile) => throw new NotImplementedException();
     }
 }

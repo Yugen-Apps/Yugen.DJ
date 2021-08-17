@@ -64,6 +64,7 @@
     <Compile Include="IAudioDeviceService.cs" />
     <Compile Include="IAudioGraphService.cs" />
     <Compile Include="IAudioPlaybackService.cs" />
+    <Compile Include="IAudioPlaybackServiceProvider.cs" />
     <Compile Include="IBPMService.cs" />
     <Compile Include="IDockService.cs" />
     <Compile Include="IMixerService.cs" />

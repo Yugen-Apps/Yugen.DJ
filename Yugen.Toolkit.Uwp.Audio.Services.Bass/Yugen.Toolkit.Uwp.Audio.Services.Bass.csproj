@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="AudioDeviceService.cs" />
     <Compile Include="AudioPlaybackService.cs" />
+    <Compile Include="AudioPlaybackServiceProvider.cs" />
     <Compile Include="BPMService.cs" />
     <Compile Include="DockService.cs" />
     <Compile Include="MixerService.cs" />

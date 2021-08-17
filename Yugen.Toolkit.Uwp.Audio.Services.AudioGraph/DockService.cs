@@ -11,27 +11,24 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
     public class DockService : IDockService
     {
         private readonly IAudioPlaybackService _audioPlaybackService;
+        private readonly IAudioPlaybackServiceProvider _audioPlaybackServiceProvider;
         private readonly IBPMService _bpmService;
-        private readonly IMixerService _mixerService;
         private readonly ITrackService _trackService;
         private readonly IWaveformService _waveformService;
 
-        private Side _side;
-
         public DockService(
             IAudioPlaybackService audioPlaybackService,
+            IAudioPlaybackServiceProvider audioPlaybackServiceProvider,
             IBPMService bpmService,
-            IMixerService mixerService,
             ITrackService trackService,
             IWaveformService waveformService)
         {
             _audioPlaybackService = audioPlaybackService;
+            _audioPlaybackServiceProvider = audioPlaybackServiceProvider;
             _bpmService = bpmService;
-            _mixerService = mixerService;
             _trackService = trackService;
             _waveformService = waveformService;
         }
-
 
         public event EventHandler<TimeSpan> PositionChanged;
 
@@ -49,18 +46,9 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         public void Init(Side side)
         {
-            _side = side;
-
             _audioPlaybackService.Init();
 
-            if (side == Side.Left)
-            {
-                _mixerService.LeftAudioPlaybackService = _audioPlaybackService;
-            }
-            else
-            {
-                _mixerService.RightAudioPlaybackService = _audioPlaybackService;
-            }
+            _audioPlaybackServiceProvider.Init(side, _audioPlaybackService);
 
             _audioPlaybackService.PositionChanged += (sender, e) => PositionChanged?.Invoke(sender, e);
         }
@@ -89,6 +77,10 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         public void TogglePlay(bool isPaused) => _audioPlaybackService.TogglePlay(isPaused);
 
+        public void ChangePitch(double pitch) => _audioPlaybackService.ChangePitch(pitch);
+
+        public float GetRms() => throw new NotImplementedException();
+
         private async Task GenerateWaveForm(Stream stream)
         {
             List<(float min, float max)> peakList = null;
@@ -106,9 +98,5 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
             var bmp = _bpmService.Decoding(stream);
             BpmGenerated?.Invoke(this, bmp);
         }
-
-        public void ChangePitch(double pitch) => _audioPlaybackService.ChangePitch(pitch);
-
-        public float GetRms() => throw new NotImplementedException();
     }
 }

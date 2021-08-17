@@ -91,7 +91,7 @@ namespace Yugen.Audio.Samples.ViewModels
             get => _pitch;
             set
             {
-                if (SetProperty(ref _pitch, value)) 
+                if (SetProperty(ref _pitch, value))
                 {
                     _audioPlayer.Pitch = value;
                 }

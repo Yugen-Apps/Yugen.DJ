@@ -164,7 +164,6 @@ namespace Yugen.Audio.Samples.ViewModels
 
             ////
 
-
             PeakList2 = peakList;
         }
     }

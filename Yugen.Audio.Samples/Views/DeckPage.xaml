@@ -2,11 +2,10 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:controls="using:Yugen.Toolkit.Uwp.Audio.Controls"
       mc:Ignorable="d"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -24,13 +23,13 @@
                     Command="{x:Bind ViewModel.OpenCommand}" />
 
             <TextBlock Text="{x:Bind ViewModel.Bpm, Mode=OneWay}" />
-            
+
             <Button Content="Play"
                     Command="{x:Bind ViewModel.PlayCommand}" />
         </StackPanel>
 
-        <controls:Waveform Grid.Column="1" 
-                           PeakList="{x:Bind ViewModel.PeakList, Mode=OneWay}"/>
+        <controls:Waveform Grid.Column="1"
+                           PeakList="{x:Bind ViewModel.PeakList, Mode=OneWay}" />
 
         <Border Grid.Column="1"
                 Grid.Row="1"
@@ -39,5 +38,4 @@
             <controls:Vinyl x:Name="Vinyl" />
         </Border>
     </Grid>
-
 </Page>

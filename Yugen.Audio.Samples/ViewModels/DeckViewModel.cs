@@ -19,8 +19,8 @@ namespace Yugen.Audio.Samples.ViewModels
     {
         private readonly IAudioPlayer _audioPlayer = new BassPlayer();
 
-        private IBPMService _bpmService;
         private readonly IWaveformService _waveformService;
+        private IBPMService _bpmService;
         private double _bpm;
         private List<(float min, float max)> _peakList;
 
@@ -53,6 +53,18 @@ namespace Yugen.Audio.Samples.ViewModels
             set => SetProperty(ref _peakList, value);
         }
 
+        public async Task GenerateAudioData(Stream stream)
+        {
+            List<(float min, float max)> peakList = null;
+
+            await Task.Run(() =>
+            {
+                peakList = _waveformService.GenerateAudioData(stream);
+            });
+
+            PeakList = peakList;
+        }
+
         private async Task OpenCommandBehavior()
         {
             var audioFile = await FilePickerHelper.OpenFile(
@@ -64,7 +76,6 @@ namespace Yugen.Audio.Samples.ViewModels
             {
                 var bytes = await audioFile.ReadBytesAsync();
                 await _audioPlayer.Load(bytes);
-
 
                 var stream = await audioFile.OpenStreamForReadAsync();
 
@@ -89,18 +100,6 @@ namespace Yugen.Audio.Samples.ViewModels
                     });
                 });
             }
-        }
-
-        public async Task GenerateAudioData(Stream stream)
-        {
-            List<(float min, float max)> peakList = null;
-
-            await Task.Run(() =>
-            {
-                peakList = _waveformService.GenerateAudioData(stream);
-            });
-
-            PeakList = peakList;
         }
 
         private void PlayCommandBehavior()

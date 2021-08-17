@@ -12,6 +12,13 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
 {
     public sealed partial class Vinyl : UserControl
     {
+        public static readonly DependencyProperty IsPausedProperty =
+            DependencyProperty.Register(
+                nameof(IsPaused),
+                typeof(bool),
+                typeof(Vinyl),
+                new PropertyMetadata(true, IsPausedCallback));
+
         private const float _width = 400;
         private const float _height = 400;
 
@@ -30,14 +37,15 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             set { SetValue(IsPausedProperty, value); }
         }
 
-        public static readonly DependencyProperty IsPausedProperty =
-            DependencyProperty.Register(
-                nameof(IsPaused),
-                typeof(bool),
-                typeof(Vinyl),
-                new PropertyMetadata(true, IsPausedCallback));
-
         public void StepClicked() => _vinylRenderer.StepClicked();
+
+        private static void IsPausedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue != null)
+            {
+                ((Vinyl)d)._vinylRenderer?.PauseToggled((bool)e.NewValue);
+            }
+        }
 
         private void OnCreateResources(CanvasAnimatedControl sender, CanvasCreateResourcesEventArgs args)
         {
@@ -110,14 +118,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             // Explicitly remove references to allow the Win2D controls to get garbage collected
             VinylCanvasAnimated.RemoveFromVisualTree();
             VinylCanvasAnimated = null;
-        }
-
-        private static void IsPausedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue != null)
-            {
-                ((Vinyl)d)._vinylRenderer?.PauseToggled((bool)e.NewValue);
-            }
         }
     }
 }

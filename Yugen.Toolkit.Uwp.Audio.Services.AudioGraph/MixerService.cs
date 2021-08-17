@@ -4,27 +4,22 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 {
     public class MixerService : IMixerService
     {
+        private readonly IAudioPlaybackServiceProvider _audioPlaybackServiceProvider;
+
         //private double _fader = 0.5;
         private double _leftFader = 0.5;
-
         private double _rightFader = 0.5;
         private double _leftVolume = 100;
         private double _rightVolume = 100;
 
-        public IAudioPlaybackService LeftAudioPlaybackService { get; set; }
-
-        public IAudioPlaybackService RightAudioPlaybackService { get; set; }
-
-        public void IsHeadphones(bool isHeadPhones, Side side) 
+        public MixerService(IAudioPlaybackServiceProvider audioPlaybackServiceProvider)
         {
-            if (side == Side.Left)
-            {
-                LeftAudioPlaybackService?.IsHeadphones(isHeadPhones);
-            }
-            else
-            {
-                RightAudioPlaybackService?.IsHeadphones(isHeadPhones);
-            }
+            _audioPlaybackServiceProvider = audioPlaybackServiceProvider;
+        }
+
+        public void IsHeadphones(bool isHeadPhones, Side side)
+        {
+            _audioPlaybackServiceProvider.GetAudioPlaybackService(side)?.IsHeadphones(isHeadPhones);
         }
 
         public void ChangeVolume(double volume, Side side)
@@ -56,8 +51,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         private void UpdateVolume()
         {
-            LeftAudioPlaybackService?.ChangeVolume(_leftVolume, _leftFader);
-            RightAudioPlaybackService?.ChangeVolume(_rightVolume, _rightFader);
+            _audioPlaybackServiceProvider.LeftAudioPlaybackService?.ChangeVolume(_leftVolume, _leftFader);
+            _audioPlaybackServiceProvider.RightAudioPlaybackService?.ChangeVolume(_rightVolume, _rightFader);
         }
     }
 }

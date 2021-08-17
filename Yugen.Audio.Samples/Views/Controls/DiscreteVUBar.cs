@@ -19,10 +19,10 @@ namespace Yugen.Audio.Samples.Views.Controls
 {
     public class DiscreteVUBar : Control
     {
-        int _barCount;
+        private int _barCount;
         private Orientation _orientation;
         private MeterBarLevel[] _levels;
-        int _channelIndex;
+        private int _channelIndex;
         private Thickness _elementMargin;
         private Color _unlitElementColor;
         private Mutex _lock;

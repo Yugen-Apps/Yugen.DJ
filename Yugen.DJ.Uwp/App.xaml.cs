@@ -79,7 +79,7 @@ namespace Yugen.DJ.Uwp
         /// </summary>
         /// <param name="sender">The Frame which failed navigation</param>
         /// <param name="e">Details about the navigation failure</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
@@ -105,14 +105,17 @@ namespace Yugen.DJ.Uwp
                 .AddSingleton<IBPMService, BPMService>()
                 .AddTransient<IDockService, DockService>()
                 .AddTransient<IAudioPlaybackService, AudioPlaybackService>()
+                .AddSingleton<IAudioPlaybackServiceProvider, AudioPlaybackServiceProvider>()
                 .AddSingleton<IMixerService, MixerService>()
                 .AddSingleton<ITrackService, TrackService>()
                 .AddSingleton<IWaveformService, WaveformService>()
+
                 .AddSingleton<LeftDeckViewModel>()
                 .AddSingleton<RightDeckViewModel>()
                 .AddSingleton<MainViewModel>()
                 .AddSingleton<MixerViewModel>()
                 .AddTransient<VolumeViewModel>()
+
                 .BuildServiceProvider();
         }
 

@@ -18,19 +18,24 @@ namespace Yugen.DJ.ViewModels
         private readonly IDockService _dockService;
         private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-        protected virtual Side _side { get; }
-
         private bool _isSongLoaded;
+
         private bool _isPaused = true;
+
         private string _playPauseButton = "\uE768";
+
         private double _pitch = 0;
 
         private string _artist;
+
         private string _title;
+
         private int _bpm;
 
         private TimeSpan _naturalDuration = new TimeSpan();
+
         private TimeSpan _position = new TimeSpan();
+
         private List<(float min, float max)> _peakList;
 
         public DeckViewModel(IDockService dockService)
@@ -122,6 +127,8 @@ namespace Yugen.DJ.ViewModels
         }
 
         public ICommand OpenCommand { get; }
+
+        protected virtual Side _side { get; }
 
         private async Task OpenCommandBehavior()
         {

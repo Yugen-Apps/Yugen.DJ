@@ -9,6 +9,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
         StorageFile AudioFile { get; }
 
         MusicProperties MusicProperties { get; }
+
         Task<byte[]> AudioBytes { get; }
 
         Task LoadFile();

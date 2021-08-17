@@ -11,7 +11,9 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Common
     public class AudioDeviceService : IAudioDeviceService
     {
         public DeviceInformationCollection DeviceInfoCollection { get; private set; }
+
         public DeviceInformation MasterAudioDeviceInformation { get; set; }
+
         public DeviceInformation HeadphonesAudioDeviceInformation { get; set; }
 
         public int PrimaryDeviceId => throw new NotImplementedException();

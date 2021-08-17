@@ -24,11 +24,11 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
             _audioDeviceService = audioDeviceService;
         }
 
+        public event EventHandler<TimeSpan> PositionChanged;
+
         public TimeSpan NaturalDuration { get; private set; }
 
         public AudioFileInputNode MasterFileInput => throw new NotImplementedException();
-
-        public event EventHandler<TimeSpan> PositionChanged;
 
         public void ChangePitch(double pitch)
         {
@@ -42,7 +42,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
             ManagedBass.Bass.ChannelSetAttribute(_primarySplitStream, ChannelAttribute.Volume, volume);
             //get => Bass.ChannelGetAttribute(_primarySplitStream, ChannelAttribute.Volume);
-
         }
 
         public Task Init()

@@ -9,11 +9,43 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
 {
     public sealed partial class Waveform : UserControl
     {
+        public static readonly DependencyProperty PeakListProperty =
+            DependencyProperty.Register(nameof(PeakList),
+                                        typeof(List<(float min, float max)>),
+                                        typeof(Waveform),
+                                        new PropertyMetadata(null, IsGeneratedCallback));
+
+        public static readonly DependencyProperty GenerateCommandProperty =
+            DependencyProperty.Register(nameof(GenerateCommand),
+                                        typeof(ICommand),
+                                        typeof(Waveform),
+                                        new PropertyMetadata(null));
+
         private WaveformRenderer _waveformRenderer = new WaveformRenderer();
 
         public Waveform()
         {
             this.InitializeComponent();
+        }
+
+        public List<(float min, float max)> PeakList
+        {
+            get { return (List<(float min, float max)>)GetValue(PeakListProperty); }
+            set { SetValue(PeakListProperty, value); }
+        }
+
+        public ICommand GenerateCommand
+        {
+            get { return (ICommand)GetValue(GenerateCommandProperty); }
+            set { SetValue(GenerateCommandProperty, value); }
+        }
+
+        private static void IsGeneratedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue != null)
+            {
+                ((Waveform)d).WaveformCanvas.Invalidate();
+            }
         }
 
         private void OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
@@ -34,37 +66,5 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             WaveformCanvas.RemoveFromVisualTree();
             WaveformCanvas = null;
         }
-
-        private static void IsGeneratedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (e.NewValue != null)
-            {
-                ((Waveform)d).WaveformCanvas.Invalidate();
-            }
-        }
-
-        public List<(float min, float max)> PeakList
-        {
-            get { return (List<(float min, float max)>)GetValue(PeakListProperty); }
-            set { SetValue(PeakListProperty, value); }
-        }
-
-        public static readonly DependencyProperty PeakListProperty =
-            DependencyProperty.Register(nameof(PeakList),
-                                        typeof(List<(float min, float max)>),
-                                        typeof(Waveform),
-                                        new PropertyMetadata(null, IsGeneratedCallback));
-
-        public ICommand GenerateCommand
-        {
-            get { return (ICommand)GetValue(GenerateCommandProperty); }
-            set { SetValue(GenerateCommandProperty, value); }
-        }
-
-        public static readonly DependencyProperty GenerateCommandProperty =
-            DependencyProperty.Register(nameof(GenerateCommand), 
-                                        typeof(ICommand), 
-                                        typeof(Waveform), 
-                                        new PropertyMetadata(null));
     }
 }

@@ -28,6 +28,5 @@
   <Library Name="Yugen.Toolkit.Uwp.Audio.Services.Common">
 
   	<!-- add directives for your library here -->
-
   </Library>
 </Directives>

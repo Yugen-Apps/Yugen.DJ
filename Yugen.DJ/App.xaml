@@ -1,9 +1,8 @@
-﻿<Application x:Class="Yugen.DJ.Uwp.App"
+﻿<Application x:Class="Yugen.DJ.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:Yugen.DJ.Uwp"
-             xmlns:converters="using:Yugen.Toolkit.Uwp.Converters"
-             xmlns:media="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+             xmlns:media="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:converters="using:Yugen.Toolkit.Uwp.Converters">
 
     <Application.Resources>
 
@@ -19,108 +18,108 @@
                     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 
                     <media:AcrylicBrush x:Key="CustomAcrylicBrush"
-                            BackgroundSource="Backdrop"
-                            TintOpacity="0.5"
-                            TintColor="#FF000000"
-                            FallbackColor="#FF000000" />
+                                        BackgroundSource="Backdrop"
+                                        TintOpacity="0.5"
+                                        TintColor="#FF000000"
+                                        FallbackColor="#FF000000" />
 
                     <Style x:Key="HeadphonesToggleButtonStyle"
-               TargetType="ToggleButton">
+                           TargetType="ToggleButton">
                         <Setter Property="Margin"
-                    Value="5" />
+                                Value="5" />
                         <Setter Property="Background"
-                    Value="Transparent" />
+                                Value="Transparent" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ToggleButton">
                                     <Grid x:Name="RootGrid"
-                              Background="{TemplateBinding Background}">
+                                          Background="{TemplateBinding Background}">
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup x:Name="CommonStates">
                                                 <VisualState x:Name="Normal">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
-                                                                           Storyboard.TargetName="ContentPresenter">
+                                                                                       Storyboard.TargetName="ContentPresenter">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="{StaticResource SystemControlForegroundChromeWhiteBrush}" />
+                                                                                    Value="{StaticResource SystemControlForegroundChromeWhiteBrush}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="PointerOver">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
-                                                                           Storyboard.TargetName="ContentPresenter">
+                                                                                       Storyboard.TargetName="ContentPresenter">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="{StaticResource SystemColorHighlightBrush}" />
+                                                                                    Value="{StaticResource SystemColorHighlightBrush}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="Pressed">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
-                                                                           Storyboard.TargetName="ContentPresenter">
+                                                                                       Storyboard.TargetName="ContentPresenter">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="{StaticResource SystemControlForegroundAccentBrush}" />
+                                                                                    Value="{StaticResource SystemControlForegroundAccentBrush}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="Disabled">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity"
-                                                                           Storyboard.TargetName="RootGrid">
+                                                                                       Storyboard.TargetName="RootGrid">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="0.6" />
+                                                                                    Value="0.6" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="Checked">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
-                                                                           Storyboard.TargetName="ContentPresenter">
+                                                                                       Storyboard.TargetName="ContentPresenter">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="{StaticResource SystemColorHighlightBrush}" />
+                                                                                    Value="{StaticResource SystemColorHighlightBrush}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="CheckedPointerOver">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
-                                                                           Storyboard.TargetName="ContentPresenter">
+                                                                                       Storyboard.TargetName="ContentPresenter">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="{StaticResource SystemControlForegroundChromeWhiteBrush}" />
+                                                                                    Value="{StaticResource SystemControlForegroundChromeWhiteBrush}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="CheckedPressed">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
-                                                                           Storyboard.TargetName="ContentPresenter">
+                                                                                       Storyboard.TargetName="ContentPresenter">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="{StaticResource SystemControlForegroundAccentBrush}" />
+                                                                                    Value="{StaticResource SystemControlForegroundAccentBrush}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="CheckedDisabled">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity"
-                                                                           Storyboard.TargetName="RootGrid">
+                                                                                       Storyboard.TargetName="RootGrid">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="0.6" />
+                                                                                    Value="0.6" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                             </VisualStateGroup>
                                         </VisualStateManager.VisualStateGroups>
                                         <ContentPresenter x:Name="ContentPresenter"
-                                              AutomationProperties.AccessibilityView="Raw"
-                                              BorderBrush="{TemplateBinding BorderBrush}"
-                                              BorderThickness="{TemplateBinding BorderThickness}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              ContentTransitions="{TemplateBinding ContentTransitions}"
-                                              Content="{TemplateBinding Content}"
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              Padding="{TemplateBinding Padding}"
-                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                          AutomationProperties.AccessibilityView="Raw"
+                                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                          ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                          Content="{TemplateBinding Content}"
+                                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          Padding="{TemplateBinding Padding}"
+                                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
                                     </Grid>
                                 </ControlTemplate>
                             </Setter.Value>
@@ -128,112 +127,109 @@
                     </Style>
 
                     <Style x:Key="PlayToggleButtonStyle"
-               TargetType="ToggleButton">
+                           TargetType="ToggleButton">
                         <Setter Property="Margin"
-                    Value="5" />
+                                Value="5" />
                         <Setter Property="Background"
-                    Value="Transparent" />
+                                Value="Transparent" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ToggleButton">
                                     <Grid x:Name="RootGrid"
-                              Background="{TemplateBinding Background}">
+                                          Background="{TemplateBinding Background}">
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup x:Name="CommonStates">
                                                 <VisualState x:Name="Normal">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
-                                                                           Storyboard.TargetName="ContentPresenter">
+                                                                                       Storyboard.TargetName="ContentPresenter">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="{StaticResource SystemColorHighlightBrush}" />
+                                                                                    Value="{StaticResource SystemColorHighlightBrush}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="PointerOver">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
-                                                                           Storyboard.TargetName="ContentPresenter">
+                                                                                       Storyboard.TargetName="ContentPresenter">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="{StaticResource SystemControlForegroundChromeWhiteBrush}" />
+                                                                                    Value="{StaticResource SystemControlForegroundChromeWhiteBrush}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="Pressed">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
-                                                                           Storyboard.TargetName="ContentPresenter">
+                                                                                       Storyboard.TargetName="ContentPresenter">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="{StaticResource SystemControlForegroundAccentBrush}" />
+                                                                                    Value="{StaticResource SystemControlForegroundAccentBrush}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="Disabled">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity"
-                                                                           Storyboard.TargetName="RootGrid">
+                                                                                       Storyboard.TargetName="RootGrid">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="0.6" />
+                                                                                    Value="0.6" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="Checked">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
-                                                                           Storyboard.TargetName="ContentPresenter">
+                                                                                       Storyboard.TargetName="ContentPresenter">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="{StaticResource SystemColorHighlightBrush}" />
+                                                                                    Value="{StaticResource SystemColorHighlightBrush}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="CheckedPointerOver">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
-                                                                           Storyboard.TargetName="ContentPresenter">
+                                                                                       Storyboard.TargetName="ContentPresenter">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="{StaticResource SystemControlForegroundChromeWhiteBrush}" />
+                                                                                    Value="{StaticResource SystemControlForegroundChromeWhiteBrush}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="CheckedPressed">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
-                                                                           Storyboard.TargetName="ContentPresenter">
+                                                                                       Storyboard.TargetName="ContentPresenter">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="{StaticResource SystemControlForegroundAccentBrush}" />
+                                                                                    Value="{StaticResource SystemControlForegroundAccentBrush}" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                                 <VisualState x:Name="CheckedDisabled">
                                                     <Storyboard>
                                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity"
-                                                                           Storyboard.TargetName="RootGrid">
+                                                                                       Storyboard.TargetName="RootGrid">
                                                             <DiscreteObjectKeyFrame KeyTime="0"
-                                                                        Value="0.6" />
+                                                                                    Value="0.6" />
                                                         </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState>
                                             </VisualStateGroup>
                                         </VisualStateManager.VisualStateGroups>
                                         <ContentPresenter x:Name="ContentPresenter"
-                                              AutomationProperties.AccessibilityView="Raw"
-                                              BorderBrush="{TemplateBinding BorderBrush}"
-                                              BorderThickness="{TemplateBinding BorderThickness}"
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"
-                                              ContentTransitions="{TemplateBinding ContentTransitions}"
-                                              Content="{TemplateBinding Content}"
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              Padding="{TemplateBinding Padding}"
-                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                                          AutomationProperties.AccessibilityView="Raw"
+                                                          BorderBrush="{TemplateBinding BorderBrush}"
+                                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                          ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                          Content="{TemplateBinding Content}"
+                                                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          Padding="{TemplateBinding Padding}"
+                                                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
                                     </Grid>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
                     </Style>
                 </ResourceDictionary>
-
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-
     </Application.Resources>
-
 </Application>

@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Windows.Storage;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
@@ -45,6 +43,28 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
         //trackLength = (float)leftChn.Length / isp.Waveformat.SampleRate;
         // 0.1s window ... 0.1*44100 = 4410 samples (lets adjust this to 3600)
         //var sampleStep = 3600;
+
+        public float Decoding(byte[] audioBytes) => throw new NotImplementedException();
+
+        private static double RangeQuadSum(float[] samples, int start, int stop)
+        {
+            double tmp = 0;
+            for (var i = start; i <= stop; i++)
+            {
+                tmp += Math.Pow(samples[i], 2);
+            }
+            return tmp;
+        }
+
+        private static double RangeSum(double[] data, int start, int stop)
+        {
+            double tmp = 0;
+            for (var i = start; i <= stop; i++)
+            {
+                tmp += data[i];
+            }
+            return tmp;
+        }
 
         private float Detect(float[] buffer, int sampleRate, double totalMinutes)
         {
@@ -93,27 +113,5 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
 
             return BPM = (float)(beats / totalMinutes / 2);
         }
-
-        private static double RangeQuadSum(float[] samples, int start, int stop)
-        {
-            double tmp = 0;
-            for (var i = start; i <= stop; i++)
-            {
-                tmp += Math.Pow(samples[i], 2);
-            }
-            return tmp;
-        }
-
-        private static double RangeSum(double[] data, int start, int stop)
-        {
-            double tmp = 0;
-            for (var i = start; i <= stop; i++)
-            {
-                tmp += data[i];
-            }
-            return tmp;
-        }
-
-        public float Decoding(byte[] audioBytes) => throw new NotImplementedException();
     }
 }

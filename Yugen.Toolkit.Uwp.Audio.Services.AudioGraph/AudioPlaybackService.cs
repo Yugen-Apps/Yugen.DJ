@@ -13,7 +13,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
         private readonly IAudioGraphService _headphonesAudioGraphService;
 
         public AudioPlaybackService(
-            IAudioDeviceService audioDeviceService, 
+            IAudioDeviceService audioDeviceService,
             IAudioGraphService masterAudioGraphService,
             IAudioGraphService headphonesAudioGraphService)
         {
@@ -73,10 +73,10 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
         public void IsHeadphones(bool isHeadphone) =>
             _headphonesAudioGraphService.IsHeadphones(isHeadphone);
 
-        private void OnPositionChanged(object sender, TimeSpan e) => PositionChanged?.Invoke(sender, e);
-
         public Task LoadSong(byte[] audioBytes) => throw new NotImplementedException();
 
         public float GetRms() => throw new NotImplementedException();
+
+        private void OnPositionChanged(object sender, TimeSpan e) => PositionChanged?.Invoke(sender, e);
     }
 }

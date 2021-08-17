@@ -6,6 +6,7 @@ namespace Yugen.DJ.Uwp.StateTriggers
     public class SideStateTrigger : StateTriggerBase
     {
         private Side _side;
+
         public Side Side
         {
             get => _side;

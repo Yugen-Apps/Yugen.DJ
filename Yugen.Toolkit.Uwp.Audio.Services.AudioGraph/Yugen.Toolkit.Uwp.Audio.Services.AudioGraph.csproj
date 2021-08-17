@@ -69,6 +69,7 @@
     <Compile Include="AudioFrameInput\IMemoryBufferByteAccess.cs" />
     <Compile Include="AudioGraphService.cs" />
     <Compile Include="AudioPlaybackService.cs" />
+    <Compile Include="AudioPlaybackServiceProvider.cs" />
     <Compile Include="DockService.cs" />
     <Compile Include="MixerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -31,9 +31,9 @@ namespace Yugen.Audio.Samples.ViewModels
         }
 
         public ICommand OnLoadCommand { get; }
-        
+
         public ICommand OpenCommand { get; }
-        
+
         public ICommand PlayCommand { get; }
 
         public ICommand StopCommand { get; }

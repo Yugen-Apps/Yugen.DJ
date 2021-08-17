@@ -26,7 +26,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
             //double startSec = positionSeconds;
             //double endSec = positionSeconds + _bpmPeriod >= lengthSeconds
-            //                ? lengthSeconds - 1 
+            //                ? lengthSeconds - 1
             //                : positionSeconds + _bpmPeriod;
 
             //BassFx.BPMCallbackSet(bpmchan, BPMCallback, _bpmPeriod, 0, BassFlags.FXBpmMult2);
@@ -42,12 +42,12 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
             return BPM;
         }
 
+        public float Decoding(Stream stream) => throw new NotImplementedException();
+
         private void BPMCallback(int Channel, float BPM, IntPtr User)
         {
             // TODO: add dispatcher update the bpm view
             //BpmLeft = BPM;
         }
-
-        public float Decoding(Stream stream) => throw new NotImplementedException();
     }
 }

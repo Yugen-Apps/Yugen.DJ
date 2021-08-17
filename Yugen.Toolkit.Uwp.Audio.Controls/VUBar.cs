@@ -11,6 +11,13 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
 {
     public class VUBar : Control
     {
+        public static readonly DependencyProperty RmsProperty =
+            DependencyProperty.Register(
+                nameof(Rms),
+                typeof(float),
+                typeof(VUBar),
+                new PropertyMetadata(-100f));
+
         private Compositor _compositor;
         private ContainerVisual _meterVisual;
         private CompositionBrush _unlitElementBrush;
@@ -42,13 +49,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             get { return (float)GetValue(RmsProperty); }
             set { SetValue(RmsProperty, value); }
         }
-
-        public static readonly DependencyProperty RmsProperty =
-            DependencyProperty.Register(
-                nameof(Rms),
-                typeof(float),
-                typeof(VUBar),
-                new PropertyMetadata(-100f));
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {

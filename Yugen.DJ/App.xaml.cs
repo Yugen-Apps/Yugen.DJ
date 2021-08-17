@@ -120,12 +120,12 @@ namespace Yugen.DJ
 
             return new ServiceCollection()
                 .AddSingleton<IAudioDeviceService, AudioDeviceService>()
-                .AddSingleton<IMixerService, MixerService>()
-
+                .AddTransient<IBPMService, BPMService>()
                 .AddTransient<IDockService, DockService>()
                 .AddTransient<IAudioPlaybackService, AudioPlaybackService>()
                 .AddTransient<IAudioGraphService, AudioGraphService>()
-                .AddTransient<IBPMService, BPMService>()
+                .AddSingleton<IAudioPlaybackServiceProvider, AudioPlaybackServiceProvider>()
+                .AddSingleton<IMixerService, MixerService>()
                 .AddTransient<ITrackService, TrackService>()
                 .AddTransient<IWaveformService, WaveformService>()
 

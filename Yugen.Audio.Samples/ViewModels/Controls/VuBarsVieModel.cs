@@ -18,7 +18,9 @@ namespace Yugen.Audio.Samples.ViewModels.Controls
         }
 
         public Vector3 ElementShadowOffset => new Vector3(2, 2, -10);
+
         public float ElementShadowBlurRadius => 5;
+
         public Color ElementShadowColor => Colors.Red;
 
         public MeterBarLevel[] Levels

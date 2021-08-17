@@ -31,28 +31,6 @@ namespace Yugen.Audio.Samples.Services
         // Option 1 - 2
         //private int _mixerStreamHandle;
 
-        public void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100)
-        {
-            //var isInitialized = Bass.Init(-1); // default
-            var isInitialized0 = Bass.Init(0); // no sound IsEnabled IsInitialized Name: N
-            var isInitialized1 = Bass.Init(1); // speakers IsDefault Driver IsEnabled IsInitialized Name: D
-            var isInitialized2 = Bass.Init(2); // headphones Driver IsEnabled IsInitialized Name: H
-            var isInitialized3 = Bass.Init(3); // speakers IsDefault IsEnabled IsInitialized Name: D
-
-            // Option 1 - 2
-            //_mixerStreamHandle = BassMix.CreateMixerStream(44100, 2, 0);
-            //Bass.ChannelSetDevice(_mixerStreamHandle, _primaryDeviceId);
-            //Bass.ChannelSetAttribute(_mixerStreamHandle, ChannelAttribute.Buffer, 0);
-            //Bass.ChannelPlay(_mixerStreamHandle);
-
-            _deviceList = new DeviceInfo[Bass.DeviceCount];
-            for (int i = 0; i < Bass.DeviceCount; i++)
-            {
-                var device = Bass.GetDeviceInfo(i);
-                _deviceList[i] = device;
-            }
-        }
-
         public TimeSpan Duration { get; private set; }
 
         public TimeSpan Position
@@ -132,6 +110,28 @@ namespace Yugen.Audio.Samples.Services
             set => Bass.ChannelSetAttribute(_handle, ChannelAttribute.Tempo, value);
         }
 
+        public void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100)
+        {
+            //var isInitialized = Bass.Init(-1); // default
+            var isInitialized0 = Bass.Init(0); // no sound IsEnabled IsInitialized Name: N
+            var isInitialized1 = Bass.Init(1); // speakers IsDefault Driver IsEnabled IsInitialized Name: D
+            var isInitialized2 = Bass.Init(2); // headphones Driver IsEnabled IsInitialized Name: H
+            var isInitialized3 = Bass.Init(3); // speakers IsDefault IsEnabled IsInitialized Name: D
+
+            // Option 1 - 2
+            //_mixerStreamHandle = BassMix.CreateMixerStream(44100, 2, 0);
+            //Bass.ChannelSetDevice(_mixerStreamHandle, _primaryDeviceId);
+            //Bass.ChannelSetAttribute(_mixerStreamHandle, ChannelAttribute.Buffer, 0);
+            //Bass.ChannelPlay(_mixerStreamHandle);
+
+            _deviceList = new DeviceInfo[Bass.DeviceCount];
+            for (int i = 0; i < Bass.DeviceCount; i++)
+            {
+                var device = Bass.GetDeviceInfo(i);
+                _deviceList[i] = device;
+            }
+        }
+
         public Task Load(StorageFile tmpAudioFile) => throw new NotImplementedException();
 
         public Task Load(Stream audioStream) => throw new NotImplementedException();
@@ -163,7 +163,6 @@ namespace Yugen.Audio.Samples.Services
 
             Bass.ChannelGetInfo(_handle, out _channelInfo);
             //var sampleRate = _channelInfo.Frequency;
-
 
             // TODO: FFT / Waveform
             //// Perform a 1024 sample FFT on a channel and list the result.
