@@ -21,10 +21,6 @@
                                 Value="2" />
                         <Setter Target="EjectButton.(Grid.Column)"
                                 Value="0" />
-                        <Setter Target="WaveFormControl.(Grid.Column)"
-                                Value="1" />
-                        <Setter Target="VUBarControl.(Grid.Column)"
-                                Value="0" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -125,18 +121,9 @@
 
         <!-- Row 4 -->
         <controls:Waveform x:Name="WaveFormControl"
-                           Grid.ColumnSpan="2"
+                           Grid.ColumnSpan="3"
                            Grid.Row="4"
-                           HorizontalAlignment="Left"
                            PeakList="{x:Bind ViewModel.PeakList, Mode=OneWay}"
                            VerticalAlignment="Bottom" />
-
-        <controls:VUBar x:Name="VUBarControl"
-                        Grid.Column="2"
-                        Grid.Row="4"
-                        Height="144"
-                        Margin="4"
-                        Width="50"
-                        Rms="{x:Bind ViewModel.Rms, Mode=OneWay}" />
     </Grid>
 </UserControl>

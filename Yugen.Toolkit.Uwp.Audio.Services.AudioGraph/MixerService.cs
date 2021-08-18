@@ -1,4 +1,5 @@
-﻿using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
+﻿using System;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 {
@@ -16,6 +17,9 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
         {
             _audioPlaybackServiceProvider = audioPlaybackServiceProvider;
         }
+
+        public event EventHandler<float> LeftRmsChanged;
+        public event EventHandler<float> RightRmsChanged;
 
         public void IsHeadphones(bool isHeadPhones, Side side)
         {

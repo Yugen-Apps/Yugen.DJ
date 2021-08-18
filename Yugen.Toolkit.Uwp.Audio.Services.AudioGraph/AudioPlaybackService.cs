@@ -26,6 +26,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         public event EventHandler<TimeSpan> PositionChanged;
 
+        public event EventHandler<float> RmsChanged;
+
         public AudioFileInputNode MasterFileInput => _masterAudioGraphService?.AudioFileInput;
 
         public TimeSpan NaturalDuration => MasterFileInput?.Duration ?? new TimeSpan();
@@ -74,8 +76,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
             _headphonesAudioGraphService.IsHeadphones(isHeadphone);
 
         public Task LoadSong(byte[] audioBytes) => throw new NotImplementedException();
-
-        public float GetRms() => throw new NotImplementedException();
 
         private void OnPositionChanged(object sender, TimeSpan e) => PositionChanged?.Invoke(sender, e);
     }

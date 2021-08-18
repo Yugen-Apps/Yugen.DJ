@@ -4,6 +4,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="using:Yugen.DJ.Uwp.Views.Controls"
+             xmlns:controls="using:Yugen.Toolkit.Uwp.Audio.Controls"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="400">
@@ -12,6 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -25,6 +27,13 @@
         <local:Volume Grid.Column="0"
                       Grid.Row="1"
                       Side="Left" />
+
+        <controls:VUBar Grid.Column="0"
+                        Grid.Row="3"
+                        Height="144"
+                        Margin="4"
+                        Width="50"
+                        Rms="{x:Bind ViewModel.LeftRms, Mode=OneWay}" />
 
         <!--Column 1 -->
         <Slider Grid.Column="0"
@@ -47,12 +56,19 @@
                 TickFrequency="5"
                 TickPlacement="Outside"
                 Value="{x:Bind ViewModel.CrossFader, Mode=TwoWay}"
-                VerticalAlignment="Bottom"
+                VerticalAlignment="Top"
                 Width="200" />
 
         <!-- Column 2 -->
         <local:Volume Grid.Column="2"
                       Grid.Row="1"
                       Side="Right" />
+
+        <controls:VUBar Grid.Column="2"
+                        Grid.Row="3"
+                        Height="144"
+                        Margin="4"
+                        Width="50"
+                        Rms="{x:Bind ViewModel.RightRms, Mode=OneWay}" />
     </Grid>
 </UserControl>

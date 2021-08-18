@@ -8,6 +8,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
     public interface IAudioPlaybackService
     {
         event EventHandler<TimeSpan> PositionChanged;
+        event EventHandler<float> RmsChanged;
 
         TimeSpan NaturalDuration { get; }
 
@@ -26,7 +27,5 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
         void ChangeVolume(double volume, double fader);
 
         void IsHeadphones(bool isHeadphone);
-
-        float GetRms();
     }
 }

@@ -6,7 +6,7 @@
 
         IAudioPlaybackService RightAudioPlaybackService { get; }
 
-        void Init(Side side, IAudioPlaybackService _audioPlaybackService);
+        void Init();
 
         IAudioPlaybackService GetAudioPlaybackService(Side side);
     }

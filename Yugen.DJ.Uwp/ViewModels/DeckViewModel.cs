@@ -17,25 +17,14 @@ namespace Yugen.DJ.Uwp.ViewModels
         private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         private bool _isSongLoaded;
-
         private bool _isPaused = true;
-
         private string _playPauseButton = "\uE768";
-
         private float _bpm;
-
-        private float _rms;
-
         private double _tempo;
-
         private string _artist;
-
         private string _title;
-
         private TimeSpan _naturalDuration = new TimeSpan();
-
         private TimeSpan _position = new TimeSpan();
-
         private List<(float min, float max)> _peakList;
 
         public DeckViewModel(IDockService dockService)
@@ -111,12 +100,6 @@ namespace Yugen.DJ.Uwp.ViewModels
             set => SetProperty(ref _bpm, value);
         }
 
-        public float Rms
-        {
-            get => _rms;
-            set => SetProperty(ref _rms, value);
-        }
-
         public List<(float min, float max)> PeakList
         {
             get => _peakList;
@@ -140,7 +123,6 @@ namespace Yugen.DJ.Uwp.ViewModels
             _dispatcherQueue.EnqueueAsync(() =>
             {
                 Position = e;
-                Rms = _dockService.GetRms();
             });
         }
 
