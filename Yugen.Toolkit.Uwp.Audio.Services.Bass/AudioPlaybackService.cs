@@ -18,6 +18,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
         private int _streamHandle;
         private int _primarySplitStream;
         private int _secondarySplitStream;
+        private bool _isPaused = true;
 
         public AudioPlaybackService(IAudioDeviceService audioDeviceService)
         {
@@ -25,6 +26,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
         }
 
         public event EventHandler<TimeSpan> PositionChanged;
+
+        public event EventHandler<float> RmsChanged;
 
         public TimeSpan NaturalDuration { get; private set; }
 
@@ -50,6 +53,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
             {
                 var position = TimeSpan.FromSeconds(ManagedBass.Bass.ChannelBytes2Seconds(_primarySplitStream, ManagedBass.Bass.ChannelGetPosition(_primarySplitStream)));
                 PositionChanged?.Invoke(this, position);
+                RmsChanged?.Invoke(this, GetRms());
             };
             _progressBarTimer.Start();
             return Task.CompletedTask;
@@ -57,7 +61,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public void IsHeadphones(bool isHeadphone)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public Task LoadSong(StorageFile audioFile) => throw new NotImplementedException();
@@ -88,6 +92,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public void TogglePlay(bool isPaused)
         {
+            _isPaused = isPaused;
             if (isPaused)
             {
                 ManagedBass.Bass.ChannelPause(_primarySplitStream);
@@ -98,9 +103,10 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
             }
         }
 
-        public float GetRms()
+        private float GetRms()
         {
-            if (_primarySplitStream == 0)
+            if (_primarySplitStream == 0 ||
+                _isPaused)
             {
                 return 0;
             }

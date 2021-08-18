@@ -1,4 +1,5 @@
-﻿using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
+﻿using System;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 {
@@ -15,7 +16,12 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
         public MixerService(IAudioPlaybackServiceProvider audioPlaybackServiceProvider)
         {
             _audioPlaybackServiceProvider = audioPlaybackServiceProvider;
+            _audioPlaybackServiceProvider.LeftAudioPlaybackService.RmsChanged += (sender, e) => LeftRmsChanged?.Invoke(sender, e);
+            _audioPlaybackServiceProvider.RightAudioPlaybackService.RmsChanged += (sender, e) => RightRmsChanged?.Invoke(sender, e);
         }
+
+        public event EventHandler<float> LeftRmsChanged;
+        public event EventHandler<float> RightRmsChanged;
 
         public void ChangeVolume(double volume, Side side)
         {

@@ -10,8 +10,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 {
     public class AudioGraphService : IAudioGraphService
     {
-        private Windows.Media.Audio.AudioGraph audioGraph;
-        private AudioDeviceOutputNode deviceOutput;
+        private Windows.Media.Audio.AudioGraph _audioGraph;
+        private AudioDeviceOutputNode _deviceOutput;
 
         public event EventHandler<TimeSpan> PositionChanged;
 
@@ -31,41 +31,41 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
             if (result.Status != AudioGraphCreationStatus.Success)
                 return;
 
-            audioGraph = result.Graph;
+            _audioGraph = result.Graph;
             if (isMaster)
             {
-                audioGraph.QuantumProcessed += OnQuantumProcessed;
+                _audioGraph.QuantumProcessed += OnQuantumProcessed;
             }
 
-            CreateAudioDeviceOutputNodeResult deviceOutputNodeResult = await audioGraph.CreateDeviceOutputNodeAsync();
+            CreateAudioDeviceOutputNodeResult deviceOutputNodeResult = await _audioGraph.CreateDeviceOutputNodeAsync();
             if (deviceOutputNodeResult.Status != AudioDeviceNodeCreationStatus.Success)
                 return;
 
-            deviceOutput = deviceOutputNodeResult.DeviceOutputNode;
+            _deviceOutput = deviceOutputNodeResult.DeviceOutputNode;
         }
 
         public async Task AddFileToDevice(StorageFile audioFile)
         {
-            if (audioGraph == null)
+            if (_audioGraph == null)
                 return;
 
-            CreateAudioFileInputNodeResult fileInputResult = await audioGraph.CreateFileInputNodeAsync(audioFile);
+            CreateAudioFileInputNodeResult fileInputResult = await _audioGraph.CreateFileInputNodeAsync(audioFile);
             if (AudioFileNodeCreationStatus.Success != fileInputResult.Status)
                 return;
 
             AudioFileInput = fileInputResult.FileInputNode;
-            AudioFileInput.AddOutgoingConnection(deviceOutput);
+            AudioFileInput.AddOutgoingConnection(_deviceOutput);
         }
 
         public void TogglePlay(bool isPaused)
         {
             if (isPaused)
             {
-                audioGraph?.Stop();
+                _audioGraph?.Stop();
             }
             else
             {
-                audioGraph?.Start();
+                _audioGraph?.Start();
             }
         }
 
@@ -79,17 +79,17 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         public void ChangeVolume(double volume)
         {
-            if (deviceOutput != null)
+            if (_deviceOutput != null)
             {
-                deviceOutput.OutgoingGain = volume;
+                _deviceOutput.OutgoingGain = volume;
             }
         }
 
         public void IsHeadphones(bool isHeadphone)
         {
-            if (deviceOutput != null)
+            if (_deviceOutput != null)
             {
-                deviceOutput.OutgoingGain = isHeadphone ? 1 : 0;
+                _deviceOutput.OutgoingGain = isHeadphone ? 1 : 0;
             }
         }
 
@@ -101,7 +101,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
         /// <returns></returns>
         public void DisposeFileInputs()
         {
-            audioGraph?.Stop();
+            _audioGraph?.Stop();
             AudioFileInput?.Dispose();
         }
 

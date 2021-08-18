@@ -4,20 +4,21 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 {
     public class AudioPlaybackServiceProvider : IAudioPlaybackServiceProvider
     {
+        public AudioPlaybackServiceProvider(
+            IAudioPlaybackService leftAudioPlaybackService,
+            IAudioPlaybackService rightAudioPlaybackService)
+        {
+            LeftAudioPlaybackService = leftAudioPlaybackService;
+            RightAudioPlaybackService = rightAudioPlaybackService;
+        }
         public IAudioPlaybackService LeftAudioPlaybackService { get; private set; }
 
         public IAudioPlaybackService RightAudioPlaybackService { get; private set; }
 
-        public void Init(Side side, IAudioPlaybackService _audioPlaybackService)
+        public void Init()
         {
-            if (side == Side.Left)
-            {
-                LeftAudioPlaybackService = _audioPlaybackService;
-            }
-            else
-            {
-                RightAudioPlaybackService = _audioPlaybackService;
-            }
+            LeftAudioPlaybackService.Init();
+            RightAudioPlaybackService.Init();
         }
 
         public IAudioPlaybackService GetAudioPlaybackService(Side side)

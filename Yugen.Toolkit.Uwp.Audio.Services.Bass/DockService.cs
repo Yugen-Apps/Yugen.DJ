@@ -9,20 +9,18 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 {
     public class DockService : IDockService
     {
-        private readonly IAudioPlaybackService _audioPlaybackService;
+        private IAudioPlaybackService _audioPlaybackService;
         private readonly IAudioPlaybackServiceProvider _audioPlaybackServiceProvider;
         private readonly IBPMService _bpmService;
         private readonly ITrackService _trackService;
         private readonly IWaveformService _waveformService;
 
         public DockService(
-            IAudioPlaybackService audioPlaybackService,
             IAudioPlaybackServiceProvider audioPlaybackServiceProvider,
             IBPMService bpmService,
             ITrackService trackService,
             IWaveformService waveformService)
         {
-            _audioPlaybackService = audioPlaybackService;
             _audioPlaybackServiceProvider = audioPlaybackServiceProvider;
             _bpmService = bpmService;
             _trackService = trackService;
@@ -43,10 +41,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public void Init(Side side)
         {
-            _audioPlaybackService.Init();
-
-            _audioPlaybackServiceProvider.Init(side, _audioPlaybackService);
-
+            _audioPlaybackService = _audioPlaybackServiceProvider.GetAudioPlaybackService(side);
             _audioPlaybackService.PositionChanged += (sender, e) => PositionChanged?.Invoke(sender, e);
         }
 
@@ -75,7 +70,5 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
         public void TogglePlay(bool isPaused) => _audioPlaybackService.TogglePlay(isPaused);
 
         public void ChangePitch(double pitch) => _audioPlaybackService.ChangePitch(pitch);
-
-        public float GetRms() => _audioPlaybackService.GetRms();
     }
 }
