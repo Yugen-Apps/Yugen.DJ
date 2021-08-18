@@ -21,6 +21,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
         private Compositor _compositor;
         private ContainerVisual _meterVisual;
         private CompositionBrush _unlitElementBrush;
+        private Color _maxColor;
 
         private SpriteVisual[] _elementVisuals = new SpriteVisual[23];
         private (float Level, Color Color)[] _levels = new (float Level, Color Color)[23];
@@ -36,7 +37,9 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             _meterVisual = _compositor.CreateContainerVisual();
             ElementCompositionPreview.SetElementChildVisual(this, _meterVisual);
 
-            _unlitElementBrush = _compositor.CreateColorBrush(Colors.Gray);
+            _maxColor = (Color)this.Resources["SystemAccentColor"];
+            var minColor = Color.FromArgb(50, _maxColor.R, _maxColor.G, _maxColor.B);
+            _unlitElementBrush = _compositor.CreateColorBrush(minColor); // Colors.Gray;
 
             InitializeDefaultLevels();
 
@@ -67,21 +70,24 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
 
         private void InitializeDefaultLevels()
         {
+            var mediumColor = Color.FromArgb(200, _maxColor.R, _maxColor.G, _maxColor.B);
+            var lowColor = Color.FromArgb(150, _maxColor.R, _maxColor.G, _maxColor.B);
+
             float level = -60;
             for (var i = 0; i < 23; i++, level += 3)
             {
                 _levels[i].Level = level;
                 if (level < -6)
                 {
-                    _levels[i].Color = Colors.Lime;
+                    _levels[i].Color = lowColor; // Colors.Lime;
                 }
                 else if (level <= 0)
                 {
-                    _levels[i].Color = Colors.Yellow;
+                    _levels[i].Color = mediumColor; // Colors.Yellow;
                 }
                 else
                 {
-                    _levels[i].Color = Colors.Red;
+                    _levels[i].Color = _maxColor; // Colors.Red;
                 }
             }
         }
@@ -95,7 +101,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
                 offset.Y -= 10;
 
                 var elementVisual = _compositor.CreateSpriteVisual();
-                elementVisual.Size = new Vector2(50, 10);
+                elementVisual.Size = new Vector2(50, 5);
                 elementVisual.Brush = _unlitElementBrush;
                 elementVisual.Offset = offset;
                 _meterVisual.Children.InsertAtBottom(elementVisual);

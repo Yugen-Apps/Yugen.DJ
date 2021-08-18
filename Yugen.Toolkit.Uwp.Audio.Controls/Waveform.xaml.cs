@@ -1,6 +1,7 @@
 ﻿using Microsoft.Graphics.Canvas.UI.Xaml;
 using System.Collections.Generic;
 using System.Windows.Input;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Yugen.Toolkit.Uwp.Audio.Controls.Renderers;
@@ -21,11 +22,14 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
                                         typeof(Waveform),
                                         new PropertyMetadata(null));
 
-        private WaveformRenderer _waveformRenderer = new WaveformRenderer();
+        private WaveformRenderer _waveformRenderer;
 
         public Waveform()
         {
             this.InitializeComponent();
+
+            var accentColor = (Color)this.Resources["SystemAccentColor"];
+            _waveformRenderer = new WaveformRenderer(accentColor);
         }
 
         public List<(float min, float max)> PeakList
