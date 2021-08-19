@@ -12,10 +12,11 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
 {
     public class VinylRenderer
     {
-        private const float _size = 400;
-        private const float _center = _size / 2;
-        private const float _lineLength = _size / 10;
-        private const float _radius = _size / 2 - _lineLength;
+        public const float Size = 400;
+
+        private const float _center = Size / 2;
+        private const float _lineLength = Size / 10;
+        private const float _radius = Size / 2 - _lineLength;
 
         private float _angle;
         private float _radians;

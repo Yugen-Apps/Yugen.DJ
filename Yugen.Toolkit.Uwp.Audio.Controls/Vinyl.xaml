@@ -1,4 +1,5 @@
 ﻿<UserControl x:Class="Yugen.Toolkit.Uwp.Audio.Controls.Vinyl"
+             x:Name="VinylControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -17,6 +18,8 @@
                                   PointerReleased="OnPointerReleased"
                                   PointerExited="OnPointerReleased"
                                   Update="OnUpdate"
-                                  Height="400"
-                                  Width="400" />
+                                  Height="{x:Bind VinylControl.Height}"
+                                  Width="{x:Bind VinylControl.Width}"
+                                  HorizontalContentAlignment="Center"
+                                  VerticalContentAlignment="Center" />
 </UserControl>

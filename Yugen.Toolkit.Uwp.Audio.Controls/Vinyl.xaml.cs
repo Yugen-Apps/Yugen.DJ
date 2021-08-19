@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Yugen.Toolkit.Uwp.Audio.Controls.Helpers;
 using Yugen.Toolkit.Uwp.Audio.Controls.Renderers;
 
 namespace Yugen.Toolkit.Uwp.Audio.Controls
@@ -17,10 +18,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
                 nameof(IsPaused),
                 typeof(bool),
                 typeof(Vinyl),
-                new PropertyMetadata(true, IsPausedCallback));
-
-        private const float _width = 400;
-        private const float _height = 400;
+                new PropertyMetadata(true, IsPausedPropertyChanged));
 
         private VinylRenderer _vinylRenderer;
         private TouchPointsRenderer _touchPointsRenderer = new TouchPointsRenderer();
@@ -39,7 +37,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
 
         public void StepClicked() => _vinylRenderer.StepClicked();
 
-        private static void IsPausedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void IsPausedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != null)
             {
@@ -62,10 +60,12 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             var ds = args.DrawingSession;
 
             // Pick layout
-            //LayoutHelper.CalculateLayout(sender.Size, _width, _height, out Matrix3x2 counterTransform);
+            LayoutHelper.CalculateLayout(sender.Size, VinylRenderer.Size, VinylRenderer.Size, out Matrix3x2 counterTransform);
+
+            // Transform
+            ds.Transform = counterTransform;
 
             // Draw
-            //ds.Transform = counterTransform;
             _vinylRenderer.Draw(sender, args.Timing, ds);
 
             if (_debug)

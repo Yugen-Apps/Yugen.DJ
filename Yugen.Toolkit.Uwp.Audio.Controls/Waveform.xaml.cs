@@ -14,7 +14,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             DependencyProperty.Register(nameof(PeakList),
                                         typeof(List<(float min, float max)>),
                                         typeof(Waveform),
-                                        new PropertyMetadata(null, IsGeneratedCallback));
+                                        new PropertyMetadata(null, PeakListPropertyChanged));
 
         public static readonly DependencyProperty GenerateCommandProperty =
             DependencyProperty.Register(nameof(GenerateCommand),
@@ -22,14 +22,21 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
                                         typeof(Waveform),
                                         new PropertyMetadata(null));
 
+        public static readonly DependencyProperty BarColorProperty =
+            DependencyProperty.Register(
+                nameof(BarColor),
+                typeof(Color),
+                typeof(Waveform),
+                new PropertyMetadata(Colors.Gray, BarColorPropertyChanged));
+
         private WaveformRenderer _waveformRenderer;
 
         public Waveform()
         {
             this.InitializeComponent();
 
-            var accentColor = (Color)this.Resources["SystemAccentColor"];
-            _waveformRenderer = new WaveformRenderer(accentColor);
+            //var accentColor = (Color)this.Resources["SystemAccentColor"];
+            _waveformRenderer = new WaveformRenderer(BarColor);
         }
 
         public List<(float min, float max)> PeakList
@@ -44,7 +51,21 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             set { SetValue(GenerateCommandProperty, value); }
         }
 
-        private static void IsGeneratedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public Color BarColor
+        {
+            get { return (Color)GetValue(BarColorProperty); }
+            set { SetValue(BarColorProperty, value); }
+        }
+
+        private static void BarColorPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is Waveform waveform)
+            {
+                waveform._waveformRenderer.UpdateColor(waveform.BarColor);
+            }
+        }
+
+        private static void PeakListPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != null)
             {
@@ -56,7 +77,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
         {
             if (PeakList != null)
             {
-                _waveformRenderer.DrawRealLine(sender, args.DrawingSession, (int)sender.Height, (int)sender.Width, PeakList);
+                _waveformRenderer.DrawRealLine(sender, args.DrawingSession, PeakList);
             }
             else
             {

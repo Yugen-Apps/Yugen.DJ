@@ -30,9 +30,9 @@
 
         <controls:VUBar Grid.Column="0"
                         Grid.Row="3"
+                        BarColor="{ThemeResource SystemAccentColor}"
                         Height="144"
-                        Margin="4"
-                        Width="50"
+                        Width="40"
                         Rms="{x:Bind ViewModel.LeftRms, Mode=OneWay}" />
 
         <!--Column 1 -->
@@ -66,9 +66,9 @@
 
         <controls:VUBar Grid.Column="2"
                         Grid.Row="3"
+                        BarColor="{ThemeResource SystemAccentColor}"
                         Height="144"
-                        Margin="4"
-                        Width="50"
+                        Width="40"
                         Rms="{x:Bind ViewModel.RightRms, Mode=OneWay}" />
     </Grid>
 </UserControl>
