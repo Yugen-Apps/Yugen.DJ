@@ -33,20 +33,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public AudioFileInputNode MasterFileInput => throw new NotImplementedException();
 
-        public void ChangePitch(double pitch)
-        {
-            ManagedBass.Bass.ChannelSetAttribute(_streamHandle, ChannelAttribute.Tempo, pitch);
-            // get => Bass.ChannelGetAttribute(_streamHandle, ChannelAttribute.Tempo);
-        }
-
-        public void ChangeVolume(double volume, double fader)
-        {
-            volume *= fader / 100;
-
-            ManagedBass.Bass.ChannelSetAttribute(_primarySplitStream, ChannelAttribute.Volume, volume);
-            //get => Bass.ChannelGetAttribute(_primarySplitStream, ChannelAttribute.Volume);
-        }
-
         public Task Init()
         {
             _progressBarTimer.Elapsed += (s, e) =>
@@ -59,9 +45,30 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
             return Task.CompletedTask;
         }
 
+        public void ChangePitch(double pitch)
+        {
+            ManagedBass.Bass.ChannelSetAttribute(_streamHandle, ChannelAttribute.Tempo, pitch);
+            // get => Bass.ChannelGetAttribute(_streamHandle, ChannelAttribute.Tempo);
+        }
+
+        public void ChangeVolume(double volume, double fader)
+        {
+            volume *= fader / 100;
+
+            ManagedBass.Bass.ChannelSetAttribute(_primarySplitStream, ChannelAttribute.Volume, volume);
+            // get => Bass.ChannelGetAttribute(_primarySplitStream, ChannelAttribute.Volume);
+        }
+
         public void IsHeadphones(bool isHeadphone)
         {
-            //throw new NotImplementedException();
+            if (isHeadphone)
+            {
+                ManagedBass.Bass.ChannelSetAttribute(_secondarySplitStream, ChannelAttribute.Volume, 1);
+            }
+            else
+            {
+                ManagedBass.Bass.ChannelSetAttribute(_secondarySplitStream, ChannelAttribute.Volume, 0);
+            }
         }
 
         public Task LoadSong(StorageFile audioFile) => throw new NotImplementedException();

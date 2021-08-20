@@ -47,23 +47,24 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public async Task LoadSong()
         {
-            await _trackService.LoadFile();
-
-            var audioBytes = await _trackService.AudioBytes;
-            await _audioPlaybackService.LoadSong(audioBytes);
-
-            AudioPropertiesLoaded?.Invoke(this, _trackService.MusicProperties);
-
-            if (audioBytes != null)
+            if (await _trackService.LoadFile())
             {
-                _ = Task.Run(() =>
-                {
-                    var bpm = _bpmService.Decoding(audioBytes);
-                    BpmGenerated?.Invoke(this, bpm);
+                var audioBytes = await _trackService.AudioBytes;
+                await _audioPlaybackService.LoadSong(audioBytes);
 
-                    var peakList = _waveformService.GenerateAudioData(audioBytes);
-                    WaveformGenerated?.Invoke(this, peakList);
-                });
+                AudioPropertiesLoaded?.Invoke(this, _trackService.MusicProperties);
+
+                if (audioBytes != null)
+                {
+                    _ = Task.Run(() =>
+                    {
+                        var bpm = _bpmService.Decoding(audioBytes);
+                        BpmGenerated?.Invoke(this, bpm);
+
+                        var peakList = _waveformService.GenerateAudioData(audioBytes);
+                        WaveformGenerated?.Invoke(this, peakList);
+                    });
+                }
             }
         }
 

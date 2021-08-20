@@ -50,24 +50,26 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         public async Task LoadSong()
         {
-            await _trackService.LoadFile();
-            await _audioPlaybackService.LoadSong(_trackService.AudioFile);
-
-            AudioPropertiesLoaded?.Invoke(this, _trackService.MusicProperties);
-
-            _ = Task.Run(async () =>
+            if (await _trackService.LoadFile())
             {
-                var stream = await _trackService.AudioFile.OpenStreamForReadAsync();
+                await _audioPlaybackService.LoadSong(_trackService.AudioFile);
 
-                MemoryStream waveformStream = new MemoryStream();
-                await stream.CopyToAsync(waveformStream);
-                await GenerateWaveForm(waveformStream);
-                stream.Position = 0;
+                AudioPropertiesLoaded?.Invoke(this, _trackService.MusicProperties);
 
-                MemoryStream bpmStream = new MemoryStream();
-                await stream.CopyToAsync(bpmStream);
-                DetectBpm(bpmStream);
-            });
+                _ = Task.Run(async () =>
+                {
+                    var stream = await _trackService.AudioFile.OpenStreamForReadAsync();
+
+                    MemoryStream waveformStream = new MemoryStream();
+                    await stream.CopyToAsync(waveformStream);
+                    await GenerateWaveForm(waveformStream);
+                    stream.Position = 0;
+
+                    MemoryStream bpmStream = new MemoryStream();
+                    await stream.CopyToAsync(bpmStream);
+                    DetectBpm(bpmStream);
+                });
+            }
         }
 
         public void TogglePlay(bool isPaused) => _audioPlaybackService.TogglePlay(isPaused);

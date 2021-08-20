@@ -7,7 +7,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
     {
         private readonly IAudioPlaybackServiceProvider _audioPlaybackServiceProvider;
 
-        //private double _fader = 0.5;
         private double _leftFader = 0.5;
         private double _rightFader = 0.5;
         private double _leftVolume = 100;

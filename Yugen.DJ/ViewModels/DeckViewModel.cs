@@ -19,23 +19,14 @@ namespace Yugen.DJ.ViewModels
         private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         private bool _isSongLoaded;
-
         private bool _isPaused = true;
-
         private string _playPauseButton = "\uE768";
-
         private double _pitch = 0;
-
         private string _artist;
-
         private string _title;
-
         private int _bpm;
-
         private TimeSpan _naturalDuration = new TimeSpan();
-
         private TimeSpan _position = new TimeSpan();
-
         private List<(float min, float max)> _peakList;
 
         public DeckViewModel(IDockService dockService)
@@ -44,13 +35,15 @@ namespace Yugen.DJ.ViewModels
 
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
 
-            _dockService.Init(_side);
+            _dockService.Init(Side);
 
             _dockService.AudioPropertiesLoaded += AudioServiceOnAudioPropertiesLoaded;
             _dockService.PositionChanged += AudioServiceOnPositionChanged;
             _dockService.BpmGenerated += OnBpmGenerated;
             _dockService.WaveformGenerated += OnWaveformGenerated;
         }
+
+        public virtual Side Side { get; }
 
         public VUBarVieModel VUBarVieModel { get; set; } = new VUBarVieModel();
 
@@ -102,7 +95,7 @@ namespace Yugen.DJ.ViewModels
             set { SetProperty(ref _title, value); }
         }
 
-        public int BPM
+        public int Bpm
         {
             get { return _bpm; }
             set { SetProperty(ref _bpm, value); }
@@ -127,8 +120,6 @@ namespace Yugen.DJ.ViewModels
         }
 
         public ICommand OpenCommand { get; }
-
-        protected virtual Side _side { get; }
 
         private async Task OpenCommandBehavior()
         {
@@ -171,7 +162,7 @@ namespace Yugen.DJ.ViewModels
         {
             _ = _dispatcherQueue.EnqueueAsync(() =>
               {
-                  BPM = (int)e;
+                  Bpm = (int)e;
               });
         }
 

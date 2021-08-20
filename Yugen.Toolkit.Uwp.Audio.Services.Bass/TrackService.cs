@@ -17,14 +17,17 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public MusicProperties MusicProperties { get; private set; }
 
-        public async Task LoadFile()
+        public async Task<bool> LoadFile()
         {
             AudioFile = await FilePickerHelper.OpenFile(".mp3", PickerLocationId.MusicLibrary);
 
             if (AudioFile != null)
             {
                 MusicProperties = await AudioFile.Properties.GetMusicPropertiesAsync();
+                return true;
             }
+
+            return false;
         }
     }
 }

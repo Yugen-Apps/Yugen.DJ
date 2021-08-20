@@ -46,8 +46,8 @@ namespace Yugen.DJ.Uwp.ViewModels
 
         public bool IsSongLoaded
         {
-            get { return _isSongLoaded; }
-            set { SetProperty(ref _isSongLoaded, value); }
+            get => _isSongLoaded;
+            set => SetProperty(ref _isSongLoaded, value);
         }
 
         public bool IsPaused
@@ -66,8 +66,8 @@ namespace Yugen.DJ.Uwp.ViewModels
 
         public string PlayPauseButton
         {
-            get { return _playPauseButton; }
-            set { SetProperty(ref _playPauseButton, value); }
+            get => _playPauseButton;
+            set => SetProperty(ref _playPauseButton, value);
         }
 
         public double Tempo
@@ -84,14 +84,14 @@ namespace Yugen.DJ.Uwp.ViewModels
 
         public string Artist
         {
-            get { return _artist; }
-            set { SetProperty(ref _artist, value); }
+            get => _artist;
+            set => SetProperty(ref _artist, value);
         }
 
         public string Title
         {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
+            get => _title;
+            set => SetProperty(ref _title, value);
         }
 
         public float Bpm
@@ -108,8 +108,8 @@ namespace Yugen.DJ.Uwp.ViewModels
 
         public TimeSpan NaturalDuration
         {
-            get { return _naturalDuration; }
-            set { SetProperty(ref _naturalDuration, value); }
+            get => _naturalDuration;
+            set => SetProperty(ref _naturalDuration, value);
         }
 
         public TimeSpan Position

@@ -7,15 +7,15 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="Yugen.DJ.Uwp"
-    Publisher="CN=emili"
+    Name="30978emiliano84.YugenDJ"
+    Publisher="CN=0259C6DD-5945-485D-962F-C84F7531D6C4"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="9d75ad67-5ea3-4cb9-8011-70a48f364801" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="e046ef6e-b1db-4cc1-baff-e512f1c6f9c1" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Yugen.DJ.Uwp</DisplayName>
-    <PublisherDisplayName>emili</PublisherDisplayName>
+    <DisplayName>Yugen DJ</DisplayName>
+    <PublisherDisplayName>PandaSharp</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -32,12 +32,12 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="Yugen.DJ.Uwp.App">
       <uap:VisualElements
-        DisplayName="Yugen.DJ.Uwp"
+        DisplayName="Yugen DJ"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="Yugen.DJ.Uwp"
         BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\SmallTile.png" Square310x310Logo="Assets\LargeTile.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>
     </Application>

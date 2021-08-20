@@ -8,6 +8,6 @@ namespace Yugen.DJ.ViewModels
         {
         }
 
-        protected override Side _side => Side.Left;
+        public override Side Side => Side.Left;
     }
 }

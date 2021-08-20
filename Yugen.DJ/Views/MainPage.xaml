@@ -15,9 +15,9 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <Border Grid.ColumnSpan="3"
@@ -31,7 +31,7 @@
 
         <!-- Column 0 -->
         <controls:Deck Grid.Column="0"
-                       Grid.RowSpan="3"
+                       Grid.RowSpan="2"
                        DataContext="{x:Bind ViewModel.LeftDeckViewModel}" />
 
         <!-- Column 1 -->
@@ -50,7 +50,7 @@
 
         <!-- Column 2 -->
         <controls:Deck Grid.Column="2"
-                       Grid.RowSpan="3"
+                       Grid.RowSpan="2"
                        DataContext="{x:Bind ViewModel.RightDeckViewModel}" />
     </Grid>
 </Page>

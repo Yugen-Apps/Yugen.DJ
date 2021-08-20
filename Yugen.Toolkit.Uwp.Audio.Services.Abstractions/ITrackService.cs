@@ -12,6 +12,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 
         Task<byte[]> AudioBytes { get; }
 
-        Task LoadFile();
+        Task<bool> LoadFile();
     }
 }

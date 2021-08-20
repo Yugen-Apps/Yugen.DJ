@@ -21,6 +21,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yugen.Toolkit.Uwp.Audio.Ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yugen.Toolkit.Uwp.Audio.Services.AudioGraph", "Yugen.Toolkit.Uwp.Audio.Services.AudioGraph\Yugen.Toolkit.Uwp.Audio.Services.AudioGraph.csproj", "{196CFD93-4D2F-4CA6-B927-D5C8B9566679}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{BC3C720D-F6C3-449E-8723-3B6F093BA11F}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\Info.md = Docs\Info.md
+		Docs\MockupDark.png = Docs\MockupDark.png
+		Docs\MockupLight.png = Docs\MockupLight.png
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|ARM64 = Debug|ARM64

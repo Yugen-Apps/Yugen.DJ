@@ -77,6 +77,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StateTriggers\SideStateTrigger.cs" />
     <Compile Include="ViewModels\DeckViewModel.cs" />
     <Compile Include="ViewModels\LeftDeckViewModel.cs" />
     <Compile Include="ViewModels\MixerViewModel.cs" />
@@ -108,7 +109,7 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\Images\Turntable.jpg" />
+    <Content Include="Assets\Images\Empty.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />

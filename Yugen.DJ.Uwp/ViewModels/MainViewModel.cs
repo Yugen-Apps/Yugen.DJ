@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Toolkit.Mvvm.Input;
+using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Yugen.DJ.Uwp.Views;
 using Yugen.Toolkit.Standard.Mvvm;
 
 namespace Yugen.DJ.Uwp.ViewModels
@@ -24,8 +26,8 @@ namespace Yugen.DJ.Uwp.ViewModels
 
         private async Task SettingsCommandBehavior()
         {
-            //var settingsDialog = new SettingsDialog();
-            //await settingsDialog.ShowAsync();
+            var settingsDialog = new SettingsDialog();
+            await settingsDialog.ShowAsync();
         }
     }
 }
