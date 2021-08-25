@@ -11,30 +11,22 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <ToggleButton IsChecked="{x:Bind ViewModel.IsHeadPhones, Mode=TwoWay}"
-                      Margin="0,32">
+                      Margin="0,8">
             <FontIcon FontSize="28"
                       Glyph="{StaticResource HeadPhonesIcon}" />
         </ToggleButton>
 
         <Slider Grid.Row="1"
                 Header="Volume"
-                Height="400"
                 HorizontalAlignment="Center"
                 Orientation="Vertical"
+                Margin="0,8"
                 TickFrequency="10"
                 TickPlacement="Outside"
                 Value="{x:Bind ViewModel.Volume, Mode=TwoWay}" />
-
-        <controls:VUBar Grid.Row="4"
-                        BarColor="{ThemeResource SystemAccentColor}"
-                        Height="144"
-                        Width="40"
-                        Rms="{x:Bind ViewModel.Rms, Mode=OneWay}" />
     </Grid>
 </UserControl>
