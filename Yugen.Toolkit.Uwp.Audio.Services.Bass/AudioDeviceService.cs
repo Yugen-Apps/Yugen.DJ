@@ -30,17 +30,17 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
                 _deviceList.Add(device);
             }
 
-            DeviceInfo? secondaryDevice = _deviceList.FirstOrDefault(x => !x.IsDefault && x.Driver != null);
-            if (secondaryDevice != null)
+            DeviceInfo secondaryDevice = _deviceList.FirstOrDefault(x => !x.IsDefault && x.Driver != null);
+            if (secondaryDevice.Driver != null)
             {
-                SecondaryDeviceId = _deviceList.IndexOf(secondaryDevice.Value);
+                SecondaryDeviceId = _deviceList.IndexOf(secondaryDevice);
             }
             var isSecondaryInitialized = ManagedBass.Bass.Init(SecondaryDeviceId);
 
-            DeviceInfo? primaryDevice = _deviceList.FirstOrDefault(x => x.IsDefault && x.Driver != null);
-            if(primaryDevice != null)
+            DeviceInfo primaryDevice = _deviceList.FirstOrDefault(x => x.IsDefault && x.Driver != null);
+            if(primaryDevice.Driver != null)
             {
-                PrimaryDeviceId = _deviceList.IndexOf(primaryDevice.Value);
+                PrimaryDeviceId = _deviceList.IndexOf(primaryDevice);
             }
             var isPrimaryInitialized = ManagedBass.Bass.Init(PrimaryDeviceId);
 
