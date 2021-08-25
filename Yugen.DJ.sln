@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31605.320
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yugen.DJ", "Yugen.DJ\Yugen.DJ.csproj", "{CF6D3F2C-B3C6-48F6-B08E-FB66CF453097}"
 EndProject
@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yugen.Toolkit.Uwp.Audio.Ser
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{BC3C720D-F6C3-449E-8723-3B6F093BA11F}"
 	ProjectSection(SolutionItems) = preProject
+		azure-pipelines.yml = azure-pipelines.yml
+		GitVersion.yml = GitVersion.yml
 		Docs\Info.md = Docs\Info.md
 		Docs\MockupDark.png = Docs\MockupDark.png
 		Docs\MockupLight.png = Docs\MockupLight.png
