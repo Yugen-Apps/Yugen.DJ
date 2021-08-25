@@ -72,7 +72,7 @@ namespace Yugen.Audio.Samples.ViewModels
 
             await Task.Run(() =>
             {
-                peakList = _waveformService.Render(audioStream);
+                peakList = _waveformService.GenerateAudioData(audioStream);
             });
 
             PeakList = peakList;
@@ -163,7 +163,6 @@ namespace Yugen.Audio.Samples.ViewModels
             Bass.StreamFree(stream);
 
             ////
-
 
             PeakList2 = peakList;
         }

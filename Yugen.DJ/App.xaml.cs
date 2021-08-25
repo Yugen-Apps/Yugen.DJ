@@ -3,20 +3,18 @@ using Serilog;
 using Serilog.Events;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using Yugen.DJ.Factories;
-using Yugen.DJ.Interfaces;
-using Yugen.DJ.Renderers;
-using Yugen.DJ.Services;
 using Yugen.DJ.ViewModels;
 using Yugen.DJ.Views;
-using Yugen.Toolkit.Standard.Extensions;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
+using Yugen.Toolkit.Uwp.Audio.Services.AudioGraph;
+using Yugen.Toolkit.Uwp.Audio.Services.Common;
 using Yugen.Toolkit.Uwp.Audio.Services.NAudio;
 
 namespace Yugen.DJ
@@ -47,13 +45,13 @@ namespace Yugen.DJ
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (!(Window.Current.Content is Frame rootFrame))
             {
-                InitializeServices();
+                await InitializeServices();
 
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
@@ -122,28 +120,22 @@ namespace Yugen.DJ
             //Log.Warning("Serilog started Warning!");
 
             return new ServiceCollection()
-                .AddSingleton<IAppService, AppService>()
                 .AddSingleton<IAudioDeviceService, AudioDeviceService>()
-                .AddSingleton<IMixerService, MixerService>()
-                .AddTransient<IDockService, DockService>()
-
-                .AddTransient<IAudioPlaybackFactory, AudioPlaybackFactory>()
-                .AddSingletonFactory<LeftAudioPlaybackService>()
-                .AddSingletonFactory<RightAudioPlaybackService>()
-                .AddTransient<IAudioGraphService, AudioGraphService>()
-
-                .AddTransient<IAudioVisualizerService, AudioVisualizerService>()
                 .AddTransient<IBPMService, BPMService>()
-                .AddTransient<ISongService, SongService>()
+                .AddTransient<IDockService, DockService>()
+                .AddTransient<IAudioPlaybackService, AudioPlaybackService>()
+                .AddTransient<IAudioGraphService, AudioGraphService>()
+                .AddSingleton<IAudioPlaybackServiceProvider, AudioPlaybackServiceProvider>()
+                .AddSingleton<IMixerService, MixerService>()
+                .AddTransient<ITrackService, TrackService>()
                 .AddTransient<IWaveformService, WaveformService>()
 
-                .AddTransient<DeckViewModel>()
+                .AddSingleton<LeftDeckViewModel>()
+                .AddSingleton<RightDeckViewModel>()
                 .AddSingleton<MainViewModel>()
                 .AddSingleton<MixerViewModel>()
                 .AddSingleton<SettingsViewModel>()
                 .AddTransient<VolumeViewModel>()
-
-                .AddTransient<VinylRenderer>()
 
                 .AddLogging(loggingBuilder =>
                 {
@@ -152,9 +144,10 @@ namespace Yugen.DJ
                 .BuildServiceProvider();
         }
 
-        private void InitializeServices()
+        private async Task InitializeServices()
         {
-            Services.GetService<IAudioDeviceService>().Init();
+            await Services.GetService<IAudioDeviceService>().Init();
+            Services.GetService<IAudioPlaybackServiceProvider>().Init();
         }
     }
 }

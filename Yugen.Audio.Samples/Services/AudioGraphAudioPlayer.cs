@@ -7,9 +7,9 @@ using Windows.Media.Audio;
 using Windows.Media.MediaProperties;
 using Windows.Media.Render;
 using Windows.Storage;
-using Yugen.Audio.Samples.Helpers;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Models;
+using Yugen.Toolkit.Uwp.Audio.Services.Common.Helpers;
 
 namespace Yugen.Audio.Samples.Services
 {
@@ -17,25 +17,31 @@ namespace Yugen.Audio.Samples.Services
     {
         private AudioGraph _audioGraph;
         private AudioDeviceOutputNode _deviceOutputNode;
-        public AudioFileInputNode FileInputNode { get; private set; }
-
         private double _theta = 0;
+
         private AudioFrameInputNode _frameInputNode;
 
         private AudioGraph _secondaryAudioGraph;
+
         private AudioDeviceOutputNode _secondaryDeviceOutputNode;
-        Stream fileStream;
-        
+
+        private Stream fileStream;
+
         private AudioFrameOutputNode _frameOutputNode;
 
+        public AudioFileInputNode FileInputNode { get; private set; }
+
         public TimeSpan Duration => throw new NotImplementedException();
+
         public bool IsRepeating { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public TimeSpan Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public AudioPlayerState State => throw new NotImplementedException();
-        
-        public double Volume 
-        { 
-            get => 0; 
+
+        public double Volume
+        {
+            get => 0;
             set => _deviceOutputNode.OutgoingGain = value;
         }
 
@@ -48,6 +54,52 @@ namespace Yugen.Audio.Samples.Services
             await CreateSecondaryDeviceOutputNode();
 
             InitFrameInputNode();
+        }
+
+        public async Task Load(StorageFile tmpAudioFile)
+        {
+            CreateAudioFileInputNodeResult result = await _audioGraph.CreateFileInputNodeAsync(tmpAudioFile);
+            if (result.Status == AudioFileNodeCreationStatus.Success)
+            {
+                FileInputNode = result.FileInputNode;
+                FileInputNode.AddOutgoingConnection(_deviceOutputNode);
+                FileInputNode.AddOutgoingConnection(_frameOutputNode);
+                FileInputNode.Stop();
+
+                var ras = await tmpAudioFile.OpenReadAsync();
+                fileStream = ras.AsStreamForRead();
+            }
+        }
+
+        public Task Load(Stream audioStream) => throw new NotImplementedException();
+
+        public Task Load(byte[] bytes) => throw new NotImplementedException();
+
+        public void Close() => throw new NotImplementedException();
+
+        public void Play()
+        {
+            FileInputNode.Start();
+            _frameInputNode.Start();
+        }
+
+        public void PlayWithoutStreaming()
+        {
+        }
+
+        public void Pause() => throw new NotImplementedException();
+
+        public void Stop()
+        {
+            //_audioGraph.Stop();
+            FileInputNode.Stop();
+            _frameInputNode.Stop();
+        }
+
+        public void Wait() => throw new NotImplementedException();
+
+        public void Record(StorageFile audioFile)
+        {
         }
 
         private async Task InitAudioGraph()
@@ -114,58 +166,11 @@ namespace Yugen.Audio.Samples.Services
 
             // Start the graph since we will only start/stop the frame input node
             _audioGraph.Start();
-            _secondaryAudioGraph.Start(); 
-            
+            _secondaryAudioGraph.Start();
+
             _frameOutputNode = _audioGraph.CreateFrameOutputNode();
             _frameOutputNode.Start();
         }
-
-        public async Task Load(StorageFile tmpAudioFile)
-        {
-            CreateAudioFileInputNodeResult result = await _audioGraph.CreateFileInputNodeAsync(tmpAudioFile);
-            if (result.Status == AudioFileNodeCreationStatus.Success)
-            {
-                FileInputNode = result.FileInputNode;
-                FileInputNode.AddOutgoingConnection(_deviceOutputNode);
-                FileInputNode.AddOutgoingConnection(_frameOutputNode);
-                FileInputNode.Stop();
-
-                var ras = await tmpAudioFile.OpenReadAsync();
-                fileStream = ras.AsStreamForRead();
-            }
-        }
-
-        public Task Load(Stream audioStream) => throw new NotImplementedException();
-
-        public Task Load(byte[] bytes) => throw new NotImplementedException();
-
-        public void Close() => throw new NotImplementedException();
-
-        public void Play()
-        {
-            FileInputNode.Start();
-            _frameInputNode.Start();
-        }
-
-        public void PlayWithoutStreaming()
-        {
-        }
-
-        public void Pause() => throw new NotImplementedException();
-
-        public void Stop()
-        {
-            //_audioGraph.Stop();
-            FileInputNode.Stop();
-            _frameInputNode.Stop();
-        }
-
-        public void Wait() => throw new NotImplementedException();
-
-        public void Record(StorageFile audioFile)
-        {
-        }
-
 
         private void FrameInputNodeOnQuantumStarted(AudioFrameInputNode sender, FrameInputNodeQuantumStartedEventArgs args)
         {
@@ -215,8 +220,6 @@ namespace Yugen.Audio.Samples.Services
 
             return frame;
         }
-
-
 
         private void OnAudioGraphQuantumStarted(AudioGraph sender, object args)
         {

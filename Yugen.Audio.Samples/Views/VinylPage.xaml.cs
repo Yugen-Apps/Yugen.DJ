@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 
 namespace Yugen.Audio.Samples.Views
 {
@@ -9,12 +8,6 @@ namespace Yugen.Audio.Samples.Views
         public VinylPage()
         {
             this.InitializeComponent();
-        }
-
-        private void OnPauseToggled(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            var button = (ToggleButton)sender;
-            Vinyl.PauseToggled(button.IsChecked.Value);
         }
 
         private void OnStepClicked(object sender, Windows.UI.Xaml.RoutedEventArgs e)

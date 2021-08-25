@@ -1,6 +1,5 @@
 ﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using System;
 using System.Numerics;
 using Windows.Foundation;
 using Windows.UI;
@@ -12,12 +11,6 @@ namespace Yugen.Audio.Samples.Views.Controls
 {
     public sealed class VuBarCustomControl : UserControl
     {
-        public float Rms
-        {
-            get { return (float)GetValue(RmsProperty); }
-            set { SetValue(RmsProperty, value); }
-        }
-
         public static readonly DependencyProperty RmsProperty =
             DependencyProperty.Register(
                 nameof(Rms),
@@ -31,6 +24,25 @@ namespace Yugen.Audio.Samples.Views.Controls
         {
             Loaded += UserControl_Loaded;
             Unloaded += UserControl_Unloaded;
+        }
+
+        public float Rms
+        {
+            get { return (float)GetValue(RmsProperty); }
+            set { SetValue(RmsProperty, value); }
+        }
+
+        private static void OnRmsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var instance = d as VuBarCustomControl;
+            if (d == null)
+                return;
+
+            if (instance.canvas != null)
+            {
+                instance.canvas.Invalidate();
+                instance.InvalidateMeasure();
+            }
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -50,19 +62,6 @@ namespace Yugen.Audio.Samples.Views.Controls
             }
         }
 
-        private static void OnRmsPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var instance = d as VuBarCustomControl;
-            if (d == null)
-                return;
-
-            if (instance.canvas != null)
-            {
-                instance.canvas.Invalidate();
-                instance.InvalidateMeasure();
-            }
-        }
-
         private void OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
         {
             Draw(args.DrawingSession, sender.Size);
@@ -75,9 +74,9 @@ namespace Yugen.Audio.Samples.Views.Controls
             var center = size2 / 2;
 
             ds.DrawCircle(center, radius, Colors.LightGray);
-            
+
             ds.DrawRectangle(0, 0, 100, 100, Colors.AliceBlue);
-            
+
             ds.DrawLine(0, 0, 0, 100, Colors.DarkGreen, 10);
         }
     }

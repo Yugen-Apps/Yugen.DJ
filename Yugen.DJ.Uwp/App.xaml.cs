@@ -1,11 +1,15 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Yugen.DJ.Uwp.ViewModels;
+using Yugen.DJ.Uwp.Views;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
+using Yugen.Toolkit.Uwp.Audio.Services.Bass;
 
 namespace Yugen.DJ.Uwp
 {
@@ -35,14 +39,14 @@ namespace Yugen.DJ.Uwp
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
-            Frame rootFrame = Window.Current.Content as Frame;
-
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
-            if (rootFrame == null)
+            if (!(Window.Current.Content is Frame rootFrame))
             {
+                await InitializeServices();
+
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
@@ -76,7 +80,7 @@ namespace Yugen.DJ.Uwp
         /// </summary>
         /// <param name="sender">The Frame which failed navigation</param>
         /// <param name="e">Details about the navigation failure</param>
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
@@ -98,8 +102,28 @@ namespace Yugen.DJ.Uwp
         private IServiceProvider ConfigureServices()
         {
             return new ServiceCollection()
+                .AddSingleton<IAudioDeviceService, AudioDeviceService>()
+                .AddSingleton<IBPMService, BPMService>()
+                .AddTransient<IDockService, DockService>()
+                .AddTransient<IAudioPlaybackService, AudioPlaybackService>()
+                .AddSingleton<IAudioPlaybackServiceProvider, AudioPlaybackServiceProvider>()
+                .AddSingleton<IMixerService, MixerService>()
+                .AddSingleton<ITrackService, TrackService>()
+                .AddSingleton<IWaveformService, WaveformService>()
+
+                .AddSingleton<LeftDeckViewModel>()
+                .AddSingleton<RightDeckViewModel>()
                 .AddSingleton<MainViewModel>()
+                .AddSingleton<MixerViewModel>()
+                .AddTransient<VolumeViewModel>()
+
                 .BuildServiceProvider();
+        }
+
+        private async Task InitializeServices()
+        {
+            await Services.GetService<IAudioDeviceService>().Init();
+            Services.GetService<IAudioPlaybackServiceProvider>().Init();
         }
     }
 }

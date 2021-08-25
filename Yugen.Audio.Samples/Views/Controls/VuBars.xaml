@@ -35,7 +35,5 @@
                                   ElementShadowBlurRadius="{x:Bind ViewModel.ElementShadowBlurRadius, Mode=OneWay}"
                                   ElementShadowOffset="{x:Bind ViewModel.ElementShadowOffset, Mode=OneWay}"
                                   Source="{x:Bind ViewModel.Source, Mode=OneWay}" />
-
     </Grid>
-
 </UserControl>

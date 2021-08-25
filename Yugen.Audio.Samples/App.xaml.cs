@@ -6,13 +6,13 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
-using Yugen.Audio.Samples.Helpers;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Services;
 using Yugen.Audio.Samples.ViewModels;
 using Yugen.Audio.Samples.ViewModels.Controls;
 using Yugen.Audio.Samples.Views;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
+using Yugen.Toolkit.Uwp.Audio.Services.Common.Helpers;
 using Yugen.Toolkit.Uwp.Audio.Services.NAudio;
 using Yugen.Toolkit.Uwp.Services;
 
@@ -45,7 +45,7 @@ namespace Yugen.Audio.Samples
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override async void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunchedAsync(LaunchActivatedEventArgs e)
         {
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active

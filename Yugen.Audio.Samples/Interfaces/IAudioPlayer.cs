@@ -9,22 +9,35 @@ namespace Yugen.Audio.Samples.Interfaces
     public interface IAudioPlayer
     {
         TimeSpan Duration { get; }
+
         bool IsRepeating { get; set; }
+
         TimeSpan Position { get; set; }
+
         AudioPlayerState State { get; }
+
         double Volume { get; set; }
 
         void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100);
+
         Task Load(StorageFile tmpAudioFile);
+
         Task Load(Stream audioStream);
+
         Task Load(byte[] bytes);
+
         void Close();
 
         void Play();
+
         void PlayWithoutStreaming();
+
         void Pause();
+
         void Stop();
+
         void Wait();
+
         void Record(StorageFile audioFile);
     }
 }

@@ -11,12 +11,33 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
 {
     public class VUBar : Control
     {
+        public static readonly DependencyProperty RmsProperty =
+            DependencyProperty.Register(
+                nameof(Rms),
+                typeof(float),
+                typeof(VUBar),
+                new PropertyMetadata(-100f));
+
+        public static readonly DependencyProperty BarColorProperty =
+            DependencyProperty.Register(
+                nameof(BarColor),
+                typeof(Color),
+                typeof(VUBar),
+                new PropertyMetadata(Colors.Gray, BarColorPropertyChanged));
+
+        private const int _barCount = 23;
+
         private Compositor _compositor;
         private ContainerVisual _meterVisual;
         private CompositionBrush _unlitElementBrush;
 
-        private SpriteVisual[] _elementVisuals = new SpriteVisual[23];
-        private (float Level, Color Color)[] _levels = new (float Level, Color Color)[23];
+        private Color _minColor = Colors.Gray;
+        private Color _lowColor = Colors.Lime;
+        private Color _mediumColor = Colors.Yellow;
+        private Color _maxColor = Colors.Red;
+
+        private SpriteVisual[] _elementVisuals = new SpriteVisual[_barCount];
+        private (float Level, Color Color)[] _levels = new (float Level, Color Color)[_barCount];
 
         public VUBar()
         {
@@ -29,7 +50,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             _meterVisual = _compositor.CreateContainerVisual();
             ElementCompositionPreview.SetElementChildVisual(this, _meterVisual);
 
-            _unlitElementBrush = _compositor.CreateColorBrush(Colors.Gray);
+            _unlitElementBrush = _compositor.CreateColorBrush(_minColor);
 
             InitializeDefaultLevels();
 
@@ -43,12 +64,23 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             set { SetValue(RmsProperty, value); }
         }
 
-        public static readonly DependencyProperty RmsProperty =
-            DependencyProperty.Register(
-                nameof(Rms),
-                typeof(float),
-                typeof(VUBar),
-                new PropertyMetadata(-100f));
+        public Color BarColor
+        {
+            get { return (Color)GetValue(BarColorProperty); }
+            set { SetValue(BarColorProperty, value); }
+        }
+
+        private static void BarColorPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is VUBar vubar)
+            {
+                vubar._minColor = Color.FromArgb(50, vubar.BarColor.R, vubar.BarColor.G, vubar.BarColor.B);
+                vubar._lowColor = Color.FromArgb(150, vubar.BarColor.R, vubar.BarColor.G, vubar.BarColor.B);
+                vubar._mediumColor = Color.FromArgb(200, vubar.BarColor.R, vubar.BarColor.G, vubar.BarColor.B);
+                vubar._maxColor = Color.FromArgb(255, vubar.BarColor.R, vubar.BarColor.G, vubar.BarColor.B);
+                vubar.InitializeDefaultLevels();
+            }
+        }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
@@ -68,34 +100,36 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
         private void InitializeDefaultLevels()
         {
             float level = -60;
-            for (var i = 0; i < 23; i++, level += 3)
+            for (var i = 0; i < _barCount; i++, level += 3)
             {
                 _levels[i].Level = level;
                 if (level < -6)
                 {
-                    _levels[i].Color = Colors.Lime;
+                    _levels[i].Color = _lowColor;
                 }
                 else if (level <= 0)
                 {
-                    _levels[i].Color = Colors.Yellow;
+                    _levels[i].Color = _mediumColor;
                 }
                 else
                 {
-                    _levels[i].Color = Colors.Red;
+                    _levels[i].Color = _maxColor;
                 }
             }
         }
 
         private void LayoutVisuals(Size size)
         {
-            var offset = new Vector3(0, 230, 0);
+            var cellSize = new Vector2((float)size.Width, (float)(size.Height / (_barCount * 2)));
+            var offset = new Vector3(0, (float)size.Height, 0);
+
             int level = -60;
-            for (var i = 0; i < 23; i++, level += 3)
+            for (var i = 0; i < _barCount; i++, level += 3)
             {
-                offset.Y -= 10;
+                offset.Y -= (cellSize.Y * 2);
 
                 var elementVisual = _compositor.CreateSpriteVisual();
-                elementVisual.Size = new Vector2(50, 10);
+                elementVisual.Size = cellSize;
                 elementVisual.Brush = _unlitElementBrush;
                 elementVisual.Offset = offset;
                 _meterVisual.Children.InsertAtBottom(elementVisual);
@@ -107,7 +141,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
         {
             int valueIndex = GetBarElementIndex(rmsValue);
 
-            for (int i = 0; i < 23; i++)
+            for (int i = 0; i < _barCount; i++)
             {
                 if (i <= valueIndex)
                 {

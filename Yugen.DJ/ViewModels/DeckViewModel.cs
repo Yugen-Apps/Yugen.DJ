@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+﻿using AudioVisualizer;
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.Helpers;
@@ -6,28 +7,24 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Storage.FileProperties;
 using Windows.System;
-using Yugen.DJ.Interfaces;
-using Yugen.DJ.Models;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.DJ.ViewModels
 {
     public class DeckViewModel : ObservableObject
     {
         private readonly IDockService _dockService;
-
-        private Side _side;
+        private readonly DispatcherQueue _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         private bool _isSongLoaded;
         private bool _isPaused = true;
         private string _playPauseButton = "\uE768";
         private double _pitch = 0;
-
         private string _artist;
         private string _title;
         private int _bpm;
-
-        private DispatcherQueue _dispatcherQueue;
         private TimeSpan _naturalDuration = new TimeSpan();
         private TimeSpan _position = new TimeSpan();
         private List<(float min, float max)> _peakList;
@@ -37,25 +34,18 @@ namespace Yugen.DJ.ViewModels
             _dockService = dockService;
 
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
+
+            _dockService.Init(Side);
+
+            _dockService.AudioPropertiesLoaded += AudioServiceOnAudioPropertiesLoaded;
+            _dockService.PositionChanged += AudioServiceOnPositionChanged;
+            _dockService.BpmGenerated += OnBpmGenerated;
+            _dockService.WaveformGenerated += OnWaveformGenerated;
         }
+
+        public virtual Side Side { get; }
 
         public VUBarVieModel VUBarVieModel { get; set; } = new VUBarVieModel();
-
-        public Side Side
-        {
-            get { return _side; }
-            set
-            {
-                SetProperty(ref _side, value);
-
-                _dockService.Init(_side);
-
-                _dockService.AudioPropertiesLoaded += AudioServiceOnAudioPropertiesLoaded;
-                _dockService.PositionChanged += AudioServiceOnPositionChanged;
-                _dockService.BpmGenerated += OnBpmGenerated;
-                _dockService.WaveformGenerated += OnWaveformGenerated;
-            }
-        }
 
         public bool IsSongLoaded
         {
@@ -105,7 +95,7 @@ namespace Yugen.DJ.ViewModels
             set { SetProperty(ref _title, value); }
         }
 
-        public int BPM
+        public int Bpm
         {
             get { return _bpm; }
             set { SetProperty(ref _bpm, value); }
@@ -133,24 +123,31 @@ namespace Yugen.DJ.ViewModels
 
         private async Task OpenCommandBehavior()
         {
-            _dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-
             IsPaused = true;
 
             await _dockService.LoadSong();
 
-            VUBarVieModel.Source = _dockService.PlaybackSource;
+            SetPlaybackSource();
+
             _dockService.TogglePlay(IsPaused);
         }
 
-        private void AudioServiceOnAudioPropertiesLoaded(object sender, EventArgs e)
+        private void SetPlaybackSource()
+        {
+            if (_dockService.MasterFileInput != null)
+            {
+                VUBarVieModel.Source = PlaybackSource.CreateFromAudioNode(_dockService.MasterFileInput)?.Source;
+            }
+        }
+
+        private void AudioServiceOnAudioPropertiesLoaded(object sender, MusicProperties e)
         {
             IsSongLoaded = true;
 
             NaturalDuration = _dockService.NaturalDuration;
 
-            Artist = _dockService.MusicProperties?.Artist;
-            Title = _dockService.MusicProperties?.Title;
+            Artist = e?.Artist;
+            Title = e?.Title;
         }
 
         private void AudioServiceOnPositionChanged(object sender, TimeSpan e)
@@ -161,19 +158,19 @@ namespace Yugen.DJ.ViewModels
             });
         }
 
-        private void OnBpmGenerated(object sender, double e)
+        private void OnBpmGenerated(object sender, float e)
         {
             _ = _dispatcherQueue.EnqueueAsync(() =>
               {
-                  BPM = (int)e;
+                  Bpm = (int)e;
               });
         }
 
-        private void OnWaveformGenerated(object sender, EventArgs e)
+        private void OnWaveformGenerated(object sender, List<(float min, float max)> e)
         {
             _ = _dispatcherQueue.EnqueueAsync(() =>
             {
-                PeakList = _dockService.PeakList;
+                PeakList = e;
             });
         }
     }

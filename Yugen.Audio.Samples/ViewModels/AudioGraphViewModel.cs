@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Storage;
 using Windows.Storage.Pickers;
-using Yugen.Audio.Samples.Helpers;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.ViewModels.Controls;
 using Yugen.Toolkit.Standard.Mvvm;
+using Yugen.Toolkit.Uwp.Audio.Services.Common.Helpers;
 using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.Audio.Samples.ViewModels
@@ -31,9 +31,9 @@ namespace Yugen.Audio.Samples.ViewModels
         }
 
         public ICommand OnLoadCommand { get; }
-        
+
         public ICommand OpenCommand { get; }
-        
+
         public ICommand PlayCommand { get; }
 
         public ICommand StopCommand { get; }

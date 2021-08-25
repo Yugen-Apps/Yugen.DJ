@@ -8,9 +8,9 @@ using System.Timers;
 using System.Windows.Input;
 using Windows.Storage.Pickers;
 using Windows.System;
-using Yugen.Audio.Samples.Helpers;
 using Yugen.Audio.Samples.Services;
 using Yugen.Toolkit.Standard.Mvvm;
+using Yugen.Toolkit.Uwp.Audio.Services.Common.Helpers;
 using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.Audio.Samples.ViewModels
@@ -91,7 +91,7 @@ namespace Yugen.Audio.Samples.ViewModels
             get => _pitch;
             set
             {
-                if (SetProperty(ref _pitch, value)) 
+                if (SetProperty(ref _pitch, value))
                 {
                     _audioPlayer.Pitch = value;
                 }

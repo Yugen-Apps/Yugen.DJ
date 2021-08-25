@@ -1,5 +1,4 @@
-﻿using NAudio.CoreAudioApi;
-using NAudio.Wave;
+﻿using NAudio.Wave;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -14,9 +13,13 @@ namespace Yugen.Audio.Samples.Services
         private WaveOutEvent outputDevice;
 
         public TimeSpan Duration => throw new NotImplementedException();
+
         public bool IsRepeating { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public TimeSpan Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public AudioPlayerState State => throw new NotImplementedException();
+
         public double Volume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100)
@@ -40,9 +43,7 @@ namespace Yugen.Audio.Samples.Services
             return Task.CompletedTask;
         }
 
-
         public Task Load(byte[] bytes) => throw new NotImplementedException();
-
 
         public void Close() => throw new NotImplementedException();
 
@@ -59,6 +60,6 @@ namespace Yugen.Audio.Samples.Services
 
         public void Wait() => throw new NotImplementedException();
 
-        public void Record(StorageFile audioFile) => throw new NotImplementedException(); 
+        public void Record(StorageFile audioFile) => throw new NotImplementedException();
     }
 }

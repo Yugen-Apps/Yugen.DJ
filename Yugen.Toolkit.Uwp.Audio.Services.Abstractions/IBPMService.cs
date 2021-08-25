@@ -1,17 +1,13 @@
 ﻿using System.IO;
-using System.Threading.Tasks;
-using Windows.Storage;
 
 namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 {
     public interface IBPMService
     {
-        double BPM { get; }
+        float BPM { get; }
 
-        double Detect(float[] buffer, int sampleRate, double totalMinutes);
+        float Decoding(Stream stream);
 
-        Task<double> Detect(IStorageFile file);
-
-        double Detect(Stream stream);
+        float Decoding(byte[] audioBytes);
     }
 }

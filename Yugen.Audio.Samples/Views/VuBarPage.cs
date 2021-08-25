@@ -1,7 +1,6 @@
 ﻿using AudioVisualizer;
-using System.ComponentModel;
 using System;
-using System.Linq;
+using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -9,6 +8,7 @@ namespace Yugen.Audio.Samples.Views
 {
     public sealed partial class VuBarPage : Page
     {
+        public FakeDataSource MainSource;
         private SourceConverter _source;
         private float rms = -100.0f;
         private float peak = -100.0f;
@@ -27,8 +27,6 @@ namespace Yugen.Audio.Samples.Views
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public FakeDataSource MainSource;
 
         public float RmsFake
         {

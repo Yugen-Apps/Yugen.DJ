@@ -6,21 +6,22 @@ using System;
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Input;
-using Yugen.Toolkit.Uwp.Audio.Helpers;
+using Yugen.Toolkit.Standard.Helpers;
 
 namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
 {
     public class VinylRenderer
     {
-        private const float _size = 400;
-        private const float _center = _size / 2;
-        private const float _lineLength = _size / 10;
-        private const float _radius = _size / 2 - _lineLength;
+        public const float Size = 400;
+
+        private const float _center = Size / 2;
+        private const float _lineLength = Size / 10;
+        private const float _radius = Size / 2 - _lineLength;
 
         private float _angle;
         private float _radians;
         private bool _isTouched;
-        private bool _isPaused;
+        private bool _isPaused = true;
 
         private Transform2DEffect _canvasImage;
         private Vector2 _currentCanvasImageSize;
@@ -28,9 +29,13 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
 
         public static async Task<VinylRenderer> Create(CanvasAnimatedControl sender)
         {
-            var bitmapTiger = await CanvasBitmap.LoadAsync(sender, "Yugen.Toolkit.Uwp.Audio.Controls/Images/Circle.png");
+#if DEBUG
+            var vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Yugen.Toolkit.Uwp.Audio.Controls/Images/VinylDebug.png");
+#else
+            var vinylBitmap = await CanvasBitmap.LoadAsync(sender, "Yugen.Toolkit.Uwp.Audio.Controls/Images/Vinyl.png");
+#endif
 
-            return new VinylRenderer(sender, bitmapTiger);
+            return new VinylRenderer(sender, vinylBitmap);
         }
 
         private VinylRenderer(CanvasAnimatedControl sender, CanvasBitmap canvasBitmap)

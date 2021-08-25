@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using Windows.Storage;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
@@ -14,15 +12,9 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
     /// </summary>
     public class BPMService : IBPMService
     {
-        public double BPM { get; private set; }
+        public float BPM { get; private set; }
 
-        public async Task<double> Detect(IStorageFile file)
-        {
-            var stream = await file.OpenStreamForReadAsync();
-            return Detect(stream);
-        }
-
-        public double Detect(Stream stream)
+        public float Decoding(Stream stream)
         {
             var buffer = new float[0];
             var sampleRate = 0;
@@ -52,7 +44,29 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
         // 0.1s window ... 0.1*44100 = 4410 samples (lets adjust this to 3600)
         //var sampleStep = 3600;
 
-        public double Detect(float[] buffer, int sampleRate, double totalMinutes)
+        public float Decoding(byte[] audioBytes) => throw new NotImplementedException();
+
+        private static double RangeQuadSum(float[] samples, int start, int stop)
+        {
+            double tmp = 0;
+            for (var i = start; i <= stop; i++)
+            {
+                tmp += Math.Pow(samples[i], 2);
+            }
+            return tmp;
+        }
+
+        private static double RangeSum(double[] data, int start, int stop)
+        {
+            double tmp = 0;
+            for (var i = start; i <= stop; i++)
+            {
+                tmp += data[i];
+            }
+            return tmp;
+        }
+
+        private float Detect(float[] buffer, int sampleRate, double totalMinutes)
         {
             // 0.1s window EG: 0.1*44100 = 4410 samples
             var sampleStep = (int)(0.1 * sampleRate);
@@ -97,27 +111,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
                     beats++;
             }
 
-            return BPM = beats / totalMinutes / 2;
-        }
-
-        private static double RangeQuadSum(float[] samples, int start, int stop)
-        {
-            double tmp = 0;
-            for (var i = start; i <= stop; i++)
-            {
-                tmp += Math.Pow(samples[i], 2);
-            }
-            return tmp;
-        }
-
-        private static double RangeSum(double[] data, int start, int stop)
-        {
-            double tmp = 0;
-            for (var i = start; i <= stop; i++)
-            {
-                tmp += data[i];
-            }
-            return tmp;
+            return BPM = (float)(beats / totalMinutes / 2);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.Xaml.Controls;
-using Yugen.DJ.Models;
 using Yugen.DJ.ViewModels;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.DJ.Views.Controls
 {

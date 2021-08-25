@@ -8,7 +8,7 @@ namespace Yugen.Audio.Samples.Views
     {
         public VisualizationDataFrame Frame;
 
-        public VisualizationDataFrame GetData() => Frame;
+        public event TypedEventHandler<IVisualizationSource, string> ConfigurationChanged;
 
         public uint? ActualChannelCount => 1;
 
@@ -30,7 +30,6 @@ namespace Yugen.Audio.Samples.Views
 
         public TimeSpan? PresentationTime => throw new NotImplementedException();
 
-        public event TypedEventHandler<IVisualizationSource, string> ConfigurationChanged;
+        public VisualizationDataFrame GetData() => Frame;
     }
-
 }

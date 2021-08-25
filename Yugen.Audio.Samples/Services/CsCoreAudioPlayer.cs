@@ -4,7 +4,6 @@ using CSCore.XAudio2;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using WASAPI.NET;
 using Windows.Storage;
 using Yugen.Audio.Samples.Interfaces;
 using Yugen.Audio.Samples.Models;
@@ -22,9 +21,13 @@ namespace Yugen.Audio.Samples.Services
         //private PitchShifter _pitchShifter;
 
         public TimeSpan Duration => throw new NotImplementedException();
+
         public bool IsRepeating { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public TimeSpan Position { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public AudioPlayerState State => throw new NotImplementedException();
+
         public double Volume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void Initialize(string deviceId, int inputChannels = 2, int inputSampleRate = 44100)
@@ -46,7 +49,7 @@ namespace Yugen.Audio.Samples.Services
 
         //private void SetupLoopbackCapture()
         //{
-        //    //open the default device 
+        //    //open the default device
         //    _soundIn = new WasapiLoopbackCapture();
         //    //Our loopback capture opens the default render device by default so the following is not needed
         //    //_soundIn.Device = MMDeviceEnumerator.DefaultAudioEndpoint(DataFlow.Render, Role.Console);
@@ -65,7 +68,6 @@ namespace Yugen.Audio.Samples.Services
         //            while ((read = waveSource.Read(buffer, 0, buffer.Length)) > 0) ;
         //        };
 
-
         //    //play the audio
         //    _soundIn.Start();
         //}
@@ -78,7 +80,7 @@ namespace Yugen.Audio.Samples.Services
         //        aSampleSource.WaveFormat.SampleRate, fftSize);
 
         //    //linespectrum and voiceprint3dspectrum used for rendering some fft data
-        //    //in oder to get some fft data, set the previously created spectrumprovider 
+        //    //in oder to get some fft data, set the previously created spectrumprovider
         //    _lineSpectrum = new LineSpectrum(fftSize)
         //    {
         //        SpectrumProvider = spectrumProvider,

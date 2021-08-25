@@ -27,7 +27,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
 
         public WaveformRendererSettings Settings { get; } = new WaveformRendererSettings();
 
-        public List<(float min, float max)> Render(Stream stream)
+        public List<(float min, float max)> GenerateAudioData(Stream stream)
         {
             ISampleProvider isp;
             long samples;
@@ -45,10 +45,12 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
                 //double totalMinutes = reader.TotalTime.TotalMinutes;
             }
 
-            return Render(isp, samples);
+            return GenerateAudioData(isp, samples);
         }
 
-        public List<(float min, float max)> Render(ISampleProvider isp, long samples)
+        public List<(float min, float max)> GenerateAudioData(byte[] audioBytes) => throw new System.NotImplementedException();
+
+        private List<(float min, float max)> GenerateAudioData(ISampleProvider isp, long samples)
         {
             var samplesPerPixel = (int)(samples / Settings.Width);
             var stepSize = Settings.PixelsPerPeak + Settings.SpacerPixels;
