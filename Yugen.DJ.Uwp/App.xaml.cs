@@ -116,6 +116,7 @@ namespace Yugen.DJ.Uwp
                 .AddSingleton<MainViewModel>()
                 .AddSingleton<MixerViewModel>()
                 .AddTransient<VolumeViewModel>()
+                .AddTransient<VuBarViewModel>()
 
                 .BuildServiceProvider();
         }
