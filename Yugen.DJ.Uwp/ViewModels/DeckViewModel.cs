@@ -152,6 +152,11 @@ namespace Yugen.DJ.Uwp.ViewModels
             });
         }
 
-        private Task OpenCommandBehavior() => _dockService.LoadSong();
+        private Task OpenCommandBehavior()
+        {
+            IsPaused = true;
+
+            return _dockService.LoadSong();
+        }
     }
 }

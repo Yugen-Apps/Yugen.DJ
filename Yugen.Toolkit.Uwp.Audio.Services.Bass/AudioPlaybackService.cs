@@ -75,6 +75,14 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public Task LoadSong(byte[] audioBytes)
         {
+            if(_streamHandle < 0)
+            {
+                ManagedBass.Bass.ChannelStop(_primarySplitStream);
+                //var isFreed1 = ManagedBass.Bass.StreamFree(_primarySplitStream);
+                //var isFreed2 = ManagedBass.Bass.StreamFree(_secondarySplitStream);
+                //var isFreed3 = ManagedBass.Bass.StreamFree(_streamHandle);
+            }
+
             if (audioBytes != null)
             {
                 var streamHandle = ManagedBass.Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode); // create decoder for 1st file
