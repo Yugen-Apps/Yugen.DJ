@@ -46,10 +46,9 @@ namespace Yugen.DJ.Uwp.Views
 
         private MainViewModel ViewModel => (MainViewModel)DataContext;
 
-        private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
+        private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar bar, object args)
         {
-            var bar = sender as CoreApplicationViewTitleBar;
-            TitleBarButton.Margin = new Thickness(0, 0, bar.SystemOverlayRightInset, 0);
+            TitleBarButtons.Margin = new Thickness(0, 0, bar.SystemOverlayRightInset, 0);
         }
     }
 }

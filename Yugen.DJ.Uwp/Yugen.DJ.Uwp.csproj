@@ -80,6 +80,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AboutViewModel.cs" />
     <Compile Include="ViewModels\MixerViewModel.cs" />
     <Compile Include="StateTriggers\SideStateTrigger.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -90,6 +91,9 @@
     </Compile>
     <Compile Include="Views\Controls\VuBar.xaml.cs">
       <DependentUpon>VuBar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AboutDialog.cs">
+      <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
@@ -212,6 +216,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Controls\VuBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\AboutDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
