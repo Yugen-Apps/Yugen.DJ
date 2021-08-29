@@ -8,24 +8,25 @@
                SecondaryButtonText="Close">
 
     <StackPanel Spacing="4">
-        <Image Margin="0,16,0,0"
-               Source="ms-appx:///Assets/Images/UWPCommunity.gif"
-               Stretch="Uniform"
-               Width="60" />
 
-        <TextBlock x:Uid="DefaultLaunch2020TextBlock"
+        <TextBlock x:Uid="SettingsHeaderTextBlock"
                    HorizontalAlignment="Center"
                    FontWeight="Bold"
-                   Margin="0,8,0,0"/>
+                   Margin="0,8,0,0"
+                   TextWrapping="WrapWholeWords"/>
 
-        <HyperlinkButton x:Uid="DefaultUwpCommunityHyperlink"
-                         HorizontalAlignment="Center"/>
+        <ComboBox x:Uid="SettingsMasterAudioDevice"
+                  ItemsSource="{x:Bind ViewModel.AudioDeviceInformationCollection, Mode=OneWay}"
+                  IsEnabled="False"
+                  Margin="4"
+                  SelectedItem="{x:Bind ViewModel.MasterAudioDeviceInformation, Mode=TwoWay}"
+                  Width="200" />
 
-        <HyperlinkButton x:Uid="DefaultDevelopedByHyperlink"
-                         FontStyle="Italic" />
-
-        <HyperlinkButton x:Uid="SettingsUIHyperlink"
-                         FontStyle="Italic"
-                         Margin="0,-4,0,0" />
+        <ComboBox x:Uid="SettingsHeadphonesAudioDevice"
+                  ItemsSource="{x:Bind ViewModel.AudioDeviceInformationCollection, Mode=OneWay}"
+                  IsEnabled="False"
+                  Margin="4"
+                  SelectedItem="{x:Bind ViewModel.HeadphonesAudioDeviceInformation, Mode=TwoWay}"
+                  Width="200" />
     </StackPanel>
 </ContentDialog>

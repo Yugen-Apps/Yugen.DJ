@@ -37,15 +37,32 @@
                            Width="1" />
             </Grid>
 
-            <Button x:Name="TitleBarButton"
-                    Background="Transparent"
-                    BorderThickness="0"
+            <Grid x:Name="TitleBarButtons"
                     Canvas.ZIndex="1"
-                    Command="{x:Bind ViewModel.SettingsCommand}"
-                    Foreground="{StaticResource SystemColorHighlightBrush}"
                     HorizontalAlignment="Right">
-                <FontIcon Glyph="{StaticResource SettingsIcon}" />
-            </Button>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0" 
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Command="{x:Bind ViewModel.SettingsCommand}"
+                        Foreground="{StaticResource SystemColorHighlightBrush}">
+                    <FontIcon Glyph="{StaticResource SettingsIcon}" />
+                </Button>
+
+                <Button Grid.Column="1" 
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Command="{x:Bind ViewModel.HelpCommand}"
+                        Foreground="{StaticResource SystemColorHighlightBrush}">
+                    <FontIcon Glyph="{StaticResource HelpIcon}" />
+                </Button>
+
+            </Grid>
+
         </Grid>
 
         <!-- Bottom Panel -->

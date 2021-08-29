@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.Xaml.Controls;
-using Yugen.DJ.ViewModels;
+using Yugen.DJ.Uwp.ViewModels;
 
 namespace Yugen.DJ.Uwp.Views
 {
