@@ -22,7 +22,12 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
 
         private VinylRenderer _vinylRenderer;
         private TouchPointsRenderer _touchPointsRenderer = new TouchPointsRenderer();
+
+#if DEBUG
         private bool _debug = true;
+#else
+        private bool _debug = false;
+#endif
 
         public Vinyl()
         {
