@@ -8,14 +8,35 @@
                SecondaryButtonText="Close">
 
     <StackPanel Spacing="4">
+
+        <TextBlock x:Uid="AboutHeaderTextBlock"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,8,0,0"
+                   TextWrapping="WrapWholeWords"/>
+        
+        <TextBlock x:Uid="AboutSubHeaderTextBlock"
+                   HorizontalAlignment="Center"
+                   Margin="0,4,0,0"
+                   TextWrapping="WrapWholeWords"/>
+        
+        <TextBlock x:Uid="AboutStatusTextBlock"
+                   HorizontalAlignment="Center"
+                   Margin="0,8,0,0"
+                   TextWrapping="WrapWholeWords"/>
+
+        <HyperlinkButton x:Uid="AboutGitHubHyperlink"
+                         FontStyle="Italic"
+                         Margin="0,-4,0,0" />
+        
         <Image Margin="0,16,0,0"
                Source="ms-appx:///Assets/Images/UWPCommunity.gif"
                Stretch="Uniform"
                Width="60" />
 
         <TextBlock x:Uid="AboutLaunch2021TextBlock"
-                   HorizontalAlignment="Center"
                    FontWeight="Bold"
+                   HorizontalAlignment="Center"
                    Margin="0,8,0,0"/>
 
         <HyperlinkButton x:Uid="AboutUwpCommunityHyperlink"
@@ -25,10 +46,6 @@
                          FontStyle="Italic" />
 
         <HyperlinkButton x:Uid="AboutDesignHyperlink"
-                         FontStyle="Italic"
-                         Margin="0,-4,0,0" />
-
-        <HyperlinkButton x:Uid="AboutGitHubHyperlink"
                          FontStyle="Italic"
                          Margin="0,-4,0,0" />
     </StackPanel>

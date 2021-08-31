@@ -117,6 +117,21 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
+	<data name="AboutHeaderTextBlock.Text" xml:space="preserve">
+		<value>Getting Started</value>
+	</data>
+	<data name="AboutSubHeaderTextBlock.Text" xml:space="preserve">
+		<value>Click the Eject button to load an mp3, if you have a second sound card you can hear a song clicking the headphones button, enjoy!</value>
+	</data>
+	<data name="AboutStatusTextBlock.Text" xml:space="preserve">
+		<value>The app is still not complete, for example it miss the scratch effect when you rotate the vinyl.</value>
+	</data>
+	<data name="AboutGitHubHyperlink.Content" xml:space="preserve">
+		<value>Feel free to help and collaborate, the project is open source on GH</value>
+	</data>
+	<data name="AboutGitHubHyperlink.NavigateUri" xml:space="preserve">
+		<value>https://github.com/Panda-Sharp/Yugen.DJ</value>
+	</data>
 	<data name="AboutLaunch2021TextBlock.Text" xml:space="preserve">
 		<value>Proudly part of Launch 2021</value>
 	</data>
@@ -127,7 +142,7 @@
 		<value>https://uwpcommunity.com/</value>
 	</data>
 	<data name="AboutDevelopedByHyperlink.Content" xml:space="preserve">
-		<value>Developed by PandaSharp</value>
+		<value>Developed By PandaSharp</value>
 	</data>
 	<data name="AboutDevelopedByHyperlink.NavigateUri" xml:space="preserve">
 		<value>http://www.yugenapps.com</value>
@@ -137,12 +152,6 @@
 	</data>
 	<data name="AboutDesignHyperlink.NavigateUri" xml:space="preserve">
 		<value>https://twitter.com/zeealeid</value>
-	</data>
-	<data name="AboutGitHubHyperlink.Content" xml:space="preserve">
-		<value>Feel free to help and collaborate, the project is open source on GH</value>
-	</data>
-	<data name="AboutGitHubHyperlink.NavigateUri" xml:space="preserve">
-		<value>https://github.com/Panda-Sharp/Yugen.DJ</value>
 	</data>
 	<data name="SettingsHeaderTextBlock.Text" xml:space="preserve">
 		<value>The app already support 2 audio cards, but the option to change them will come soon!</value>
