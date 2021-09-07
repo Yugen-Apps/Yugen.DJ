@@ -153,9 +153,6 @@
 	<data name="HelpSubHeaderTextBlock.Text" xml:space="preserve">
 		<value>Click the Eject button to load an mp3, if you have a second sound card you can hear a song clicking the headphones button, enjoy!</value>
 	</data>
-	<data name="SettingsHeaderTextBlock.Text" xml:space="preserve">
-		<value>The app already support 2 audio cards, but the option to change them will come soon!</value>
-	</data>
 	<data name="SettingsMasterAudioDevice.Header" xml:space="preserve">
 		<value>Master Audio Device:</value>
 	</data>

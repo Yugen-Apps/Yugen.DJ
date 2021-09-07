@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Media.Audio;
@@ -17,8 +18,12 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         public AudioFileInputNode AudioFileInput { get; private set; }
 
-        public async Task InitDevice(DeviceInformation audioDeviceInformation, bool isMaster)
+        public async Task InitDevice(string id, bool isMaster)
         {
+            var deviceInfoList = await DeviceInformation.FindAllAsync(DeviceClass.AudioRender);
+
+            DeviceInformation audioDeviceInformation = deviceInfoList.First(x => x.Id == id);
+
             if (audioDeviceInformation == null)
                 return;
 

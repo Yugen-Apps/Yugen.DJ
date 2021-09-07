@@ -34,8 +34,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         public async Task Init()
         {
-            await _masterAudioGraphService.InitDevice(_audioDeviceService.MasterAudioDeviceInformation, true);
-            await _headphonesAudioGraphService.InitDevice(_audioDeviceService.HeadphonesAudioDeviceInformation, false);
+            await _masterAudioGraphService.InitDevice(_audioDeviceService.PrimaryDevice.Driver, true);
+            await _headphonesAudioGraphService.InitDevice(_audioDeviceService.SecondaryDevice.Driver, false);
         }
 
         public async Task LoadSong(StorageFile audioFile)

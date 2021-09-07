@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Windows.Devices.Enumeration;
 using Windows.Media.Audio;
 using Windows.Storage;
 
@@ -20,7 +19,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 
         void DisposeFileInputs();
 
-        Task InitDevice(DeviceInformation audioDeviceInformation, bool isMaster);
+        Task InitDevice(string id, bool isMaster);
 
         void IsHeadphones(bool isHeadphone);
 

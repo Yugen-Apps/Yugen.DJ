@@ -9,22 +9,16 @@
 
     <StackPanel Spacing="4">
 
-        <TextBlock x:Uid="SettingsHeaderTextBlock"
-                   HorizontalAlignment="Center"
-                   FontWeight="Bold"
-                   Margin="0,8,0,0"
-                   TextWrapping="WrapWholeWords" />
-
         <ComboBox x:Uid="SettingsMasterAudioDevice"
+                  DisplayMemberPath="Name"
                   ItemsSource="{x:Bind ViewModel.AudioDeviceInformationCollection, Mode=OneWay}"
-                  IsEnabled="False"
                   Margin="4"
                   SelectedItem="{x:Bind ViewModel.MasterAudioDeviceInformation, Mode=TwoWay}"
                   Width="200" />
 
         <ComboBox x:Uid="SettingsHeadphonesAudioDevice"
+                  DisplayMemberPath="Name"
                   ItemsSource="{x:Bind ViewModel.AudioDeviceInformationCollection, Mode=OneWay}"
-                  IsEnabled="False"
                   Margin="4"
                   SelectedItem="{x:Bind ViewModel.HeadphonesAudioDeviceInformation, Mode=TwoWay}"
                   Width="200" />

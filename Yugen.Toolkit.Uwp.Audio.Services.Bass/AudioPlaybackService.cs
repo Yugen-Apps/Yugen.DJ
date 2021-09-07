@@ -94,10 +94,10 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
                 NaturalDuration = TimeSpan.FromSeconds(lengthSeconds);
 
                 _primarySplitStream = BassMix.CreateSplitStream(_streamHandle, 0, null); // create splitter for mixer
-                var isSet1 = ManagedBass.Bass.ChannelSetDevice(_primarySplitStream, _audioDeviceService.PrimaryDeviceId); // set device for separate playback splitter
+                var isSet1 = ManagedBass.Bass.ChannelSetDevice(_primarySplitStream, _audioDeviceService.PrimaryDevice.Id); // set device for separate playback splitter
 
                 _secondarySplitStream = BassMix.CreateSplitStream(_streamHandle, 0, null); // create splitter for separate playback
-                var isSet2 = ManagedBass.Bass.ChannelSetDevice(_secondarySplitStream, _audioDeviceService.SecondaryDeviceId); // set device for separate playback splitter
+                var isSet2 = ManagedBass.Bass.ChannelSetDevice(_secondarySplitStream, _audioDeviceService.SecondaryDevice.Id); // set device for separate playback splitter
 
                 ManagedBass.Bass.ChannelSetLink(_primarySplitStream, _secondarySplitStream);
             }

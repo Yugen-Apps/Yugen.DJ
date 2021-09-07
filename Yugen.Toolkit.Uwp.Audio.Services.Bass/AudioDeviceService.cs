@@ -1,48 +1,45 @@
-﻿using ManagedBass;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Devices.Enumeration;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 {
     public class AudioDeviceService : IAudioDeviceService
     {
-        private readonly List<DeviceInfo> _deviceList = new List<DeviceInfo>();
+        public List<AudioDevice> AudioDeviceList { get; } = new List<AudioDevice>();
 
-        public DeviceInformationCollection DeviceInfoCollection => throw new NotImplementedException();
+        public AudioDevice PrimaryDevice { get; set; } = new AudioDevice{ Id = -1 };
 
-        public DeviceInformation MasterAudioDeviceInformation { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public DeviceInformation HeadphonesAudioDeviceInformation { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        public int PrimaryDeviceId { get; private set; } = -1;
-
-        public int SecondaryDeviceId { get; private set; } = 0;
+        public AudioDevice SecondaryDevice { get; set; } = new AudioDevice { Id = 0 };
 
         public Task Init()
         {
-            for (int i = 0; i < ManagedBass.Bass.DeviceCount; i++)
+            for (var i = 0; YugenBass.GetDeviceInfo(i, out var deviceInfo); ++i)
             {
-                var device = ManagedBass.Bass.GetDeviceInfo(i);
-                _deviceList.Add(device);
+                if (!string.IsNullOrEmpty(deviceInfo.Driver))
+                {
+                    AudioDeviceList.Add(new AudioDevice
+                    {
+                        Driver = deviceInfo.Driver,
+                        Id = i,
+                        IsDefault = deviceInfo.IsDefault,
+                        Name = deviceInfo.Name
+                    });
+                }
             }
 
-            DeviceInfo secondaryDevice = _deviceList.FirstOrDefault(x => !x.IsDefault && x.Driver != null);
-            if (secondaryDevice.Driver != null)
+            SecondaryDevice = AudioDeviceList.FirstOrDefault(x => !x.IsDefault && x.Driver != null);
+            if (SecondaryDevice.Id != 0)
             {
-                SecondaryDeviceId = _deviceList.IndexOf(secondaryDevice);
+                var isSecondaryInitialized = ManagedBass.Bass.Init(SecondaryDevice.Id);
             }
-            var isSecondaryInitialized = ManagedBass.Bass.Init(SecondaryDeviceId);
 
-            DeviceInfo primaryDevice = _deviceList.FirstOrDefault(x => x.IsDefault && x.Driver != null);
-            if(primaryDevice.Driver != null)
+            PrimaryDevice = AudioDeviceList.FirstOrDefault(x => x.IsDefault && x.Driver != null);
+            if (PrimaryDevice.Id != 0)
             {
-                PrimaryDeviceId = _deviceList.IndexOf(primaryDevice);
+                var isPrimaryInitialized = ManagedBass.Bass.Init(PrimaryDevice.Id);
             }
-            var isPrimaryInitialized = ManagedBass.Bass.Init(PrimaryDeviceId);
 
             return Task.CompletedTask;
         }
