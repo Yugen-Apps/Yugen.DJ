@@ -9,17 +9,6 @@
 
     <StackPanel Spacing="4">
 
-        <TextBlock x:Uid="AboutHeaderTextBlock"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center"
-                   Margin="0,8,0,0"
-                   TextWrapping="WrapWholeWords" />
-
-        <TextBlock x:Uid="AboutSubHeaderTextBlock"
-                   HorizontalAlignment="Center"
-                   Margin="0,4,0,0"
-                   TextWrapping="WrapWholeWords" />
-
         <TextBlock x:Uid="AboutStatusTextBlock"
                    HorizontalAlignment="Center"
                    Margin="0,8,0,0"
