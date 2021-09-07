@@ -3,7 +3,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Yugen.DJ.Uwp.Views;
+using Yugen.DJ.Uwp.Views.Dialogs;
 using Yugen.Toolkit.Standard.Mvvm;
 
 namespace Yugen.DJ.Uwp.ViewModels

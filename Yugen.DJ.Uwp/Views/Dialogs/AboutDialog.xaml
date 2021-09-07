@@ -1,11 +1,11 @@
-﻿<ContentDialog x:Class="Yugen.DJ.Uwp.Views.AboutDialog"
-               xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-               xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-               mc:Ignorable="d"
-               Title="About"
-               SecondaryButtonText="Close">
+﻿<dialogs:YugenDialog x:Class="Yugen.DJ.Uwp.Views.Dialogs.AboutDialog"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:dialogs="using:Yugen.Toolkit.Uwp.Controls.Dialogs"
+                     mc:Ignorable="d"
+                     Title="About">
 
     <StackPanel Spacing="4">
 
@@ -13,22 +13,22 @@
                    FontWeight="Bold"
                    HorizontalAlignment="Center"
                    Margin="0,8,0,0"
-                   TextWrapping="WrapWholeWords"/>
-        
+                   TextWrapping="WrapWholeWords" />
+
         <TextBlock x:Uid="AboutSubHeaderTextBlock"
                    HorizontalAlignment="Center"
                    Margin="0,4,0,0"
-                   TextWrapping="WrapWholeWords"/>
-        
+                   TextWrapping="WrapWholeWords" />
+
         <TextBlock x:Uid="AboutStatusTextBlock"
                    HorizontalAlignment="Center"
                    Margin="0,8,0,0"
-                   TextWrapping="WrapWholeWords"/>
+                   TextWrapping="WrapWholeWords" />
 
         <HyperlinkButton x:Uid="AboutGitHubHyperlink"
                          FontStyle="Italic"
                          Margin="0,-4,0,0" />
-        
+
         <Image Margin="0,16,0,0"
                Source="ms-appx:///Assets/Images/UWPCommunity.gif"
                Stretch="Uniform"
@@ -37,10 +37,10 @@
         <TextBlock x:Uid="AboutLaunch2021TextBlock"
                    FontWeight="Bold"
                    HorizontalAlignment="Center"
-                   Margin="0,8,0,0"/>
+                   Margin="0,8,0,0" />
 
         <HyperlinkButton x:Uid="AboutUwpCommunityHyperlink"
-                         HorizontalAlignment="Center"/>
+                         HorizontalAlignment="Center" />
 
         <HyperlinkButton x:Uid="AboutDevelopedByHyperlink"
                          FontStyle="Italic" />
@@ -49,4 +49,4 @@
                          FontStyle="Italic"
                          Margin="0,-4,0,0" />
     </StackPanel>
-</ContentDialog>
+</dialogs:YugenDialog>

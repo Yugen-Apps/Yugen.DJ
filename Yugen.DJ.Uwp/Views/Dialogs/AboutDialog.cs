@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Windows.UI.Xaml.Controls;
 using Yugen.DJ.Uwp.ViewModels;
 
-namespace Yugen.DJ.Uwp.Views
+namespace Yugen.DJ.Uwp.Views.Dialogs
 {
-    public sealed partial class AboutDialog : ContentDialog
+    public sealed partial class AboutDialog
     {
         public AboutDialog()
         {
