@@ -17,6 +17,7 @@
                     <x:String x:Key="AboutIcon">&#xE897;</x:String>
                     <x:String x:Key="HelpIcon">&#xE736;</x:String>
                     <x:String x:Key="SettingsIcon">&#xE713;</x:String>
+                    <x:String x:Key="WhatsNewIcon">&#xE789;</x:String>
 
                     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 

@@ -6,6 +6,8 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Yugen.DJ.Uwp.Interfaces;
+using Yugen.DJ.Uwp.StateTriggers;
 using Yugen.DJ.Uwp.ViewModels;
 using Yugen.DJ.Uwp.Views;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
@@ -72,6 +74,8 @@ namespace Yugen.DJ.Uwp
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
+
+                await Services.GetService<IWhatsNewDisplayService>().ShowIfAppropriateAsync();
             }
         }
 
@@ -110,6 +114,7 @@ namespace Yugen.DJ.Uwp
                 .AddSingleton<IMixerService, MixerService>()
                 .AddSingleton<ITrackService, TrackService>()
                 .AddSingleton<IWaveformService, WaveformService>()
+                .AddSingleton<IWhatsNewDisplayService, WhatsNewDisplayService>()
 
                 .AddSingleton<LeftDeckViewModel>()
                 .AddSingleton<RightDeckViewModel>()
@@ -117,7 +122,6 @@ namespace Yugen.DJ.Uwp
                 .AddSingleton<MixerViewModel>()
                 .AddTransient<VolumeViewModel>()
                 .AddTransient<VuBarViewModel>()
-                .AddTransient<AboutViewModel>()
                 .AddTransient<SettingsViewModel>()
 
                 .BuildServiceProvider();

@@ -1,8 +1,8 @@
 ﻿namespace Yugen.DJ.Uwp.Views.Dialogs
 {
-    public sealed partial class HelpDialog
+    public sealed partial class WhatsNewDialog
     {
-        public HelpDialog()
+        public WhatsNewDialog()
         {
             this.InitializeComponent();
         }

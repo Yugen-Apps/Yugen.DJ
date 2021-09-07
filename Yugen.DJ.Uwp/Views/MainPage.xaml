@@ -50,6 +50,14 @@
                                           Glyph="{StaticResource HelpIcon}" />
                             </MenuFlyoutItem.Icon>
                         </MenuFlyoutItem>
+                        <MenuFlyoutItem Command="{x:Bind ViewModel.WhatsNewCommand}"
+                                        Foreground="{StaticResource SystemColorHighlightBrush}"
+                                        Text="Whats New">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                                          Glyph="{StaticResource WhatsNewIcon}" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
                         <MenuFlyoutSeparator />
                         <MenuFlyoutItem Command="{x:Bind ViewModel.AboutCommand}"
                                         Foreground="{StaticResource SystemColorHighlightBrush}"

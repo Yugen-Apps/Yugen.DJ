@@ -15,6 +15,7 @@ namespace Yugen.DJ.Uwp.ViewModels
             AboutCommand = new AsyncRelayCommand(AboutCommandBehavior);
             HelpCommand = new AsyncRelayCommand(HelpCommandBehavior);
             SettingsCommand = new AsyncRelayCommand(SettingsCommandBehavior);
+            WhatsNewCommand = new AsyncRelayCommand(WhatsNewCommandBehavior);
 
             LeftDeckViewModel = App.Current.Services.GetService<LeftDeckViewModel>();
             RightDeckViewModel = App.Current.Services.GetService<RightDeckViewModel>();
@@ -25,6 +26,8 @@ namespace Yugen.DJ.Uwp.ViewModels
         public ICommand HelpCommand { get; }
 
         public ICommand SettingsCommand { get; }
+
+        public ICommand WhatsNewCommand { get; }
 
         public LeftDeckViewModel LeftDeckViewModel { get; }
 
@@ -46,6 +49,12 @@ namespace Yugen.DJ.Uwp.ViewModels
         {
             var settingsDialog = new SettingsDialog();
             await settingsDialog.ShowAsync();
+        }
+
+        private async Task WhatsNewCommandBehavior()
+        {
+            var whatsNewDialog = new WhatsNewDialog();
+            await whatsNewDialog.ShowAsync();
         }
     }
 }
