@@ -78,5 +78,10 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
         public Task LoadSong(byte[] audioBytes) => throw new NotImplementedException();
 
         private void OnPositionChanged(object sender, TimeSpan e) => PositionChanged?.Invoke(sender, e);
+
+        public Task Scratch()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

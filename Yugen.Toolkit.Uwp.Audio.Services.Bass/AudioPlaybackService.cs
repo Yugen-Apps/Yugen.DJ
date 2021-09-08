@@ -75,18 +75,20 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public Task LoadSong(byte[] audioBytes)
         {
-            if(_streamHandle < 0)
+            if (_streamHandle < 0)
             {
                 ManagedBass.Bass.ChannelStop(_primarySplitStream);
-                //var isFreed1 = ManagedBass.Bass.StreamFree(_primarySplitStream);
-                //var isFreed2 = ManagedBass.Bass.StreamFree(_secondarySplitStream);
-                //var isFreed3 = ManagedBass.Bass.StreamFree(_streamHandle);
+                var isFreed1 = ManagedBass.Bass.StreamFree(_primarySplitStream);
+                var isFreed2 = ManagedBass.Bass.StreamFree(_secondarySplitStream);
+                var isFreed3 = ManagedBass.Bass.StreamFree(_streamHandle);
             }
 
             if (audioBytes != null)
             {
-                var streamHandle = ManagedBass.Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode); // create decoder for 1st file
-                _streamHandle = BassFx.TempoCreate(streamHandle, BassFlags.Decode | BassFlags.FxFreeSource);
+                _streamHandle = ManagedBass.Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode); // create decoder for 1st file
+                _streamHandle = BassFx.TempoCreate(_streamHandle, BassFlags.Decode | BassFlags.FxFreeSource);
+                _streamHandle = BassFx.ReverseCreate(_streamHandle, 2, BassFlags.Decode | BassFlags.FxFreeSource);
+                ManagedBass.Bass.ChannelSetAttribute(_streamHandle, ChannelAttribute.ReverseDirection, 1);
 
                 var channelInfo = ManagedBass.Bass.ChannelGetInfo(_streamHandle);
                 var length = ManagedBass.Bass.ChannelGetLength(_streamHandle);
@@ -116,6 +118,37 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
             {
                 ManagedBass.Bass.ChannelPlay(_primarySplitStream);
             }
+        }
+
+        public Task Scratch(bool isTouched, bool isClockwise, float crossProduct)
+        {
+            crossProduct = (crossProduct < 0) ? -crossProduct : crossProduct;
+
+            float scratchVelocity = 44100 + (crossProduct * 100);
+            //int initialScratchPos = 10;
+            //int angleAccum = 10;
+
+            if (isTouched)
+            {
+                int direction = isClockwise ? 1 : -1;
+                //ManagedBass.Bass.ChannelStop(_primarySplitStream);
+                //ManagedBass.Bass.ChannelSetPosition(_primarySplitStream, initialScratchPos + angleAccum, PositionFlags.Bytes | PositionFlags.Decode);
+                ManagedBass.Bass.ChannelSetAttribute(_streamHandle, ChannelAttribute.ReverseDirection, direction);
+                //ManagedBass.Bass.ChannelPlay(_primarySplitStream);
+                ManagedBass.Bass.ChannelSlideAttribute(_primarySplitStream, ChannelAttribute.Frequency, scratchVelocity, 100);
+                ManagedBass.Bass.ChannelSlideAttribute(_secondarySplitStream, ChannelAttribute.Frequency, scratchVelocity, 100);
+            }
+            else
+            {
+
+                //ManagedBass.Bass.ChannelStop(_primarySplitStream);
+                //ManagedBass.Bass.ChannelPlay(_primarySplitStream);
+                ManagedBass.Bass.ChannelSetAttribute(_streamHandle, ChannelAttribute.ReverseDirection, 1);
+                ManagedBass.Bass.ChannelSlideAttribute(_primarySplitStream, ChannelAttribute.Frequency, 44100, 100);
+                ManagedBass.Bass.ChannelSlideAttribute(_secondarySplitStream, ChannelAttribute.Frequency, 44100, 100);
+            }
+
+            return Task.CompletedTask;
         }
 
         private float GetRms()
@@ -153,5 +186,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
             return (float)dB;
         }
+
     }
 }

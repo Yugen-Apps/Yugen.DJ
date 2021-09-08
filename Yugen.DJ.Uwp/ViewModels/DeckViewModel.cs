@@ -7,6 +7,7 @@ using System.Windows.Input;
 using Windows.Storage.FileProperties;
 using Windows.System;
 using Yugen.Toolkit.Standard.Mvvm;
+using Yugen.Toolkit.Uwp.Audio.Controls;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.DJ.Uwp.ViewModels
@@ -31,6 +32,7 @@ namespace Yugen.DJ.Uwp.ViewModels
         {
             _dockService = dockService;
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
+            ScratchCommand = new AsyncRelayCommand<VinylEventArgs>(ScratchCommandBehavior);
 
             _dockService.Init(Side);
 
@@ -43,6 +45,8 @@ namespace Yugen.DJ.Uwp.ViewModels
         public virtual Side Side { get; }
 
         public ICommand OpenCommand { get; }
+
+        public ICommand ScratchCommand { get; }
 
         public bool IsSongLoaded
         {
@@ -157,6 +161,11 @@ namespace Yugen.DJ.Uwp.ViewModels
             IsPaused = true;
 
             return _dockService.LoadSong();
+        }
+
+        private Task ScratchCommandBehavior(VinylEventArgs e)
+        {
+            return _dockService.Scratch(e.IsTouched, e.IsClockwise, e.CrossProduct);
         }
     }
 }

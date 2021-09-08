@@ -27,5 +27,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
         void TogglePlay(bool isPaused);
 
         void ChangePitch(double pitch);
+
+        Task Scratch(bool isTouched, bool isClockwise, float crossProduct);
     }
 }

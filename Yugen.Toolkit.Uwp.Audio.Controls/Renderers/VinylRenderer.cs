@@ -25,6 +25,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
 
         private Transform2DEffect _canvasImage;
         private Vector2 _currentCanvasImageSize;
+        private bool _isClockwise;
+        private float _crossProduct;
         private Vector2 _previousPosition;
 
         public static async Task<VinylRenderer> Create(CanvasAnimatedControl sender)
@@ -103,18 +105,45 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
 
                 _radians += (float)(currentRadians - previousRadians);
 
-                _previousPosition = e.GetCurrentPoint(canvasAnimatedControl).Position.ToVector2();
+                _isClockwise = IsClockwise(_previousPosition, centerPosition, currentPosition);
+                _crossProduct = CrossProduct(currentPosition, _previousPosition);
+
+                _previousPosition = currentPosition;
             }
         }
 
-        public void PauseToggled(bool isChecked) => _isPaused = isChecked;
-
         public void PointerReleased(object sender, PointerRoutedEventArgs e) => _isTouched = false;
+
+        public VinylEventArgs Update(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
+        {
+            return new VinylEventArgs(_isTouched, _isClockwise, _crossProduct);
+        }
+
+        public void PauseToggled(bool isChecked) => _isPaused = isChecked;
 
         public void StepClicked()
         {
             _angle += 90;
             _radians = (float)MathHelper.ConvertAngleToRadians(_angle);
         }
+
+        private bool IsClockwise(Vector2 previousPosition, Vector2 centerPosition, Vector2 currentPosition)
+        {
+            Vector2 se = new Vector2(previousPosition.X - centerPosition.X, previousPosition.Y - centerPosition.Y);
+            Vector2 sm = new Vector2(currentPosition.X - centerPosition.X, currentPosition.Y - centerPosition.Y);
+            double cp = se.X * sm.Y - se.Y * sm.X;
+
+            return cp > 0;
+        }
+
+        /// <summary>
+        /// Returns the z-value of the cross product of two vectors.
+        /// Since the Vector2 is in the x-y plane, a 3D cross product
+        /// only produces the z-value
+        /// </summary>
+        /// <param name="v1"></param>
+        /// <param name="v2"></param>
+        /// <returns></returns>
+        private float CrossProduct(Vector2 v1, Vector2 v2) => (v1.X * v2.Y) - (v1.Y * v2.X);
     }
 }

@@ -96,6 +96,7 @@
     <Compile Include="Services\SharpDXAudioPlayer.cs" />
     <Compile Include="System\Windows\Threading.cs" />
     <Compile Include="ViewModels\BassViewModel.cs" />
+    <Compile Include="ViewModels\VinylViewModel.cs" />
     <Compile Include="ViewModels\WaveformViewModel.cs" />
     <Compile Include="ViewModels\DeckViewModel.cs" />
     <Compile Include="ViewModels\AudioFrameInputNodeViewModel.cs" />
@@ -287,7 +288,7 @@
       <Version>7.0.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.6.1</Version>
+      <Version>2.6.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
       <Version>2.0.1</Version>
@@ -314,7 +315,7 @@
       <Version>1.0.38</Version>
     </PackageReference>
     <PackageReference Include="Vortice.XAudio2">
-      <Version>1.9.87</Version>
+      <Version>1.9.143</Version>
     </PackageReference>
     <PackageReference Include="Win2D.uwp">
       <Version>1.26.0</Version>

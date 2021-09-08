@@ -27,5 +27,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
         void ChangeVolume(double volume, double fader);
 
         void IsHeadphones(bool isHeadphone);
+
+        Task Scratch(bool isTouched, bool isClockwise, float crossProduct);
     }
 }

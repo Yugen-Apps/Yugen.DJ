@@ -12,6 +12,7 @@ using Yugen.DJ.Uwp.ViewModels;
 using Yugen.DJ.Uwp.Views;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 using Yugen.Toolkit.Uwp.Audio.Services.Bass;
+using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.DJ.Uwp
 {
@@ -48,6 +49,11 @@ namespace Yugen.DJ.Uwp
             if (!(Window.Current.Content is Frame rootFrame))
             {
                 await InitializeServices();
+
+                // Initial UI styling
+                //var accentColor = (Color)this.Resources["SystemAccentColor"];
+                TitleBarHelper.ExpandViewIntoTitleBar();
+                TitleBarHelper.StyleTitleBar();
 
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();

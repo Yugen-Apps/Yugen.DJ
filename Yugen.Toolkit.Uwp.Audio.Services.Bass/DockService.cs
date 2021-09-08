@@ -49,13 +49,14 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
         {
             if (await _trackService.LoadFile())
             {
-                var audioBytes = await _trackService.AudioBytes;
-                await _audioPlaybackService.LoadSong(audioBytes);
-
-                AudioPropertiesLoaded?.Invoke(this, _trackService.MusicProperties);
+                var audioBytes = await _trackService.GetAudioBytes();
 
                 if (audioBytes != null)
                 {
+                    await _audioPlaybackService.LoadSong(audioBytes);
+
+                    AudioPropertiesLoaded?.Invoke(this, _trackService.MusicProperties);
+
                     _ = Task.Run(() =>
                     {
                         var bpm = _bpmService.Decoding(audioBytes);
@@ -71,5 +72,10 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
         public void TogglePlay(bool isPaused) => _audioPlaybackService.TogglePlay(isPaused);
 
         public void ChangePitch(double pitch) => _audioPlaybackService.ChangePitch(pitch);
+
+        public Task Scratch(bool isTouched, bool isClockwise, float crossProduct)
+        {
+            return _audioPlaybackService.Scratch(isTouched, isClockwise, crossProduct);
+        }
     }
 }

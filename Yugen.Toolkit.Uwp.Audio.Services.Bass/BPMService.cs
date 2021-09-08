@@ -8,19 +8,28 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 {
     public class BPMService : IBPMService
     {
+        private int _bpmchan;
+
         public float BPM { get; private set; }
 
         public float Decoding(byte[] audioBytes)
         {
-            var bpmchan = ManagedBass.Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode);
+            // free decode bpm stream and resources
+            BassFx.BPMFree(_bpmchan);
+            //BassFx.BPMBeatFree(_bpmchan);
+
+            // free tempo, stream, music & bpm/beat callbacks
+            //ManagedBass.Bass.StreamFree(_chan);
+
+            _bpmchan = ManagedBass.Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode);
 
             // create bpmChan stream and get bpm value for BpmPeriod seconds from current position
-            var positon = ManagedBass.Bass.ChannelGetPosition(bpmchan);
-            var positionSeconds = ManagedBass.Bass.ChannelBytes2Seconds(bpmchan, positon);
-            var length = ManagedBass.Bass.ChannelGetLength(bpmchan);
-            var lengthSeconds = ManagedBass.Bass.ChannelBytes2Seconds(bpmchan, length);
+            var positon = ManagedBass.Bass.ChannelGetPosition(_bpmchan);
+            var positionSeconds = ManagedBass.Bass.ChannelBytes2Seconds(_bpmchan, positon);
+            var length = ManagedBass.Bass.ChannelGetLength(_bpmchan);
+            var lengthSeconds = ManagedBass.Bass.ChannelBytes2Seconds(_bpmchan, length);
 
-            BPM = BassFx.BPMDecodeGet(bpmchan, 0, lengthSeconds, 0,
+            BPM = BassFx.BPMDecodeGet(_bpmchan, 0, lengthSeconds, 0,
                                       BassFlags.FxBpmBackground | BassFlags.FXBpmMult2 | BassFlags.FxFreeSource,
                                       null);
 

@@ -60,14 +60,14 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
 
         public float Rms
         {
-            get { return (float)GetValue(RmsProperty); }
-            set { SetValue(RmsProperty, value); }
+            get => (float)GetValue(RmsProperty);
+            set => SetValue(RmsProperty, value);
         }
 
         public Color BarColor
         {
-            get { return (Color)GetValue(BarColorProperty); }
-            set { SetValue(BarColorProperty, value); }
+            get => (Color)GetValue(BarColorProperty);
+            set => SetValue(BarColorProperty, value);
         }
 
         private static void BarColorPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
