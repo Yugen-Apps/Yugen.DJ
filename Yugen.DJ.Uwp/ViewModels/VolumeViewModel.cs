@@ -10,7 +10,7 @@ namespace Yugen.DJ.Uwp.ViewModels
 
         private Side _side;
         private double _volume = 100;
-        private bool _isHeadPhones;
+        private bool _isHeadPhones = true;
 
         public VolumeViewModel(IMixerService mixerService)
         {
@@ -20,14 +20,7 @@ namespace Yugen.DJ.Uwp.ViewModels
         public Side Side
         {
             get => _side;
-            set
-            {
-                _side = value;
-                if (_side == Side.Left)
-                {
-                    IsHeadPhones = true;
-                }
-            }
+            set => _side = value;
         }
 
         public bool IsHeadPhones
