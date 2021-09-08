@@ -75,6 +75,14 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public Task LoadSong(byte[] audioBytes)
         {
+            if(_streamHandle < 0)
+            {
+                ManagedBass.Bass.ChannelStop(_primarySplitStream);
+                //var isFreed1 = ManagedBass.Bass.StreamFree(_primarySplitStream);
+                //var isFreed2 = ManagedBass.Bass.StreamFree(_secondarySplitStream);
+                //var isFreed3 = ManagedBass.Bass.StreamFree(_streamHandle);
+            }
+
             if (audioBytes != null)
             {
                 var streamHandle = ManagedBass.Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode); // create decoder for 1st file
@@ -86,10 +94,10 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
                 NaturalDuration = TimeSpan.FromSeconds(lengthSeconds);
 
                 _primarySplitStream = BassMix.CreateSplitStream(_streamHandle, 0, null); // create splitter for mixer
-                var isSet1 = ManagedBass.Bass.ChannelSetDevice(_primarySplitStream, _audioDeviceService.PrimaryDeviceId); // set device for separate playback splitter
+                var isSet1 = ManagedBass.Bass.ChannelSetDevice(_primarySplitStream, _audioDeviceService.PrimaryDevice.Id); // set device for separate playback splitter
 
                 _secondarySplitStream = BassMix.CreateSplitStream(_streamHandle, 0, null); // create splitter for separate playback
-                var isSet2 = ManagedBass.Bass.ChannelSetDevice(_secondarySplitStream, _audioDeviceService.SecondaryDeviceId); // set device for separate playback splitter
+                var isSet2 = ManagedBass.Bass.ChannelSetDevice(_secondarySplitStream, _audioDeviceService.SecondaryDevice.Id); // set device for separate playback splitter
 
                 ManagedBass.Bass.ChannelSetLink(_primarySplitStream, _secondarySplitStream);
             }

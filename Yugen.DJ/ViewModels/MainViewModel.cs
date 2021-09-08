@@ -4,7 +4,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Yugen.DJ.Views;
+using Yugen.DJ.Views.Dialogs;
 
 namespace Yugen.DJ.ViewModels
 {

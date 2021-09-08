@@ -11,10 +11,9 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="160" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -25,13 +24,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <!-- Column 0 -->
-        <local:Volume Grid.Column="1"
-                      Grid.Row="1"
-                      Grid.RowSpan="4"
-                      Side="Left" />
-
-        <!--Column 1 -->
+        <!-- Row 0 -->
         <Slider Grid.Column="0"
                 Grid.ColumnSpan="5"
                 Grid.Row="0"
@@ -44,22 +37,26 @@
                 Value="{x:Bind ViewModel.MasterVolume, Mode=TwoWay}"
                 Width="220" />
 
+        <!--Row 1 -->
+        <local:Volume Grid.Column="1"
+                      Grid.Row="1"
+                      Side="Left" />
+        
+        <local:Volume Grid.Column="3"
+                      Grid.Row="1"
+                      Side="Right" />
+
+        <!-- Row 2 -->
         <Slider Grid.Column="0"
                 Grid.ColumnSpan="5"
-                Grid.Row="3"
+                Grid.Row="2"
                 Header="Fader"
-                Margin="0,0,0,26"
+                Margin="0,0,0,8"
                 Minimum="-10"
                 Maximum="+10"
                 TickFrequency="5"
                 TickPlacement="Outside"
                 Value="{x:Bind ViewModel.CrossFader, Mode=TwoWay}"
                 Width="220" />
-
-        <!-- Column 2 -->
-        <local:Volume Grid.Column="3"
-                      Grid.Row="1"
-                      Grid.RowSpan="4"
-                      Side="Right" />
     </Grid>
 </UserControl>

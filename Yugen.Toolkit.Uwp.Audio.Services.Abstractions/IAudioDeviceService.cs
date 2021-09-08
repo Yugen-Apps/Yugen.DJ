@@ -1,19 +1,15 @@
-﻿using System.Threading.Tasks;
-using Windows.Devices.Enumeration;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 {
     public interface IAudioDeviceService
     {
-        DeviceInformationCollection DeviceInfoCollection { get; }
+        List<AudioDevice> AudioDeviceList { get; }
 
-        DeviceInformation MasterAudioDeviceInformation { get; set; }
+        AudioDevice PrimaryDevice { get; set; }
 
-        DeviceInformation HeadphonesAudioDeviceInformation { get; set; }
-
-        int PrimaryDeviceId { get; }
-
-        int SecondaryDeviceId { get; }
+        AudioDevice SecondaryDevice { get; set; }
 
         double GetMasterVolume();
 

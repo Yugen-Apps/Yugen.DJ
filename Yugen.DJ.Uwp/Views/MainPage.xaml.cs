@@ -37,19 +37,9 @@ namespace Yugen.DJ.Uwp.Views
             // Set XAML element as a draggable region.
             Window.Current.SetTitleBar(AppTitleBar);
 
-            // Register a handler for when the size of the overlaid caption control changes.
-            // For example, when the app moves to a screen with a different DPI.
-            coreTitleBar.LayoutMetricsChanged += CoreTitleBar_LayoutMetricsChanged;
-
             DataContext = App.Current.Services.GetService<MainViewModel>();
         }
 
         private MainViewModel ViewModel => (MainViewModel)DataContext;
-
-        private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
-        {
-            var bar = sender as CoreApplicationViewTitleBar;
-            TitleBarButton.Margin = new Thickness(0, 0, bar.SystemOverlayRightInset, 0);
-        }
     }
 }

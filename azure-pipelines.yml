@@ -1,0 +1,52 @@
+trigger:
+- release/*
+pr: none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/Yugen.DJ.sln'
+  buildPlatform: 'x64|ARM64'
+  buildConfiguration: 'Release'
+  appxPackageDir: '$(build.artifactStagingDirectory)\AppxPackages\\'
+  appxmanifest: '**/*.appxmanifest'
+  versionNumber: 'Set dynamically below in a task'
+  
+name: $(GITVERSION_AssemblySemFileVer)
+
+steps:
+
+- task: gitversion/setup@0
+  inputs:
+    versionSpec: '5.x'
+
+- task: gitversion/execute@0
+
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VersionAPPX@2
+  inputs:
+    VersionNumber: '$(GitVersion.AssemblySemFileVer)'
+
+- task: VSBuild@1
+  inputs:
+    platform: 'x64'
+    solution: '$(solution)'
+    configuration: '$(buildConfiguration)'
+    msbuildArgs: '/p:AppxBundlePlatforms="$(buildPlatform)" 
+                  /p:AppxPackageDir="$(appxPackageDir)" 
+                  /p:AppxBundle=Always 
+                  /p:UapAppxPackageBuildMode=StoreUpload 
+                  /p:AppxPackageSigningEnabled=false'
+    msbuildArchitecture: 'x64'
+    maximumCpuCount: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\AppxPackages'
+    ArtifactName: 'drop'

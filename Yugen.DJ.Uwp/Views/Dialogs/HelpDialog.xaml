@@ -1,0 +1,23 @@
+﻿<dialogs:YugenDialog x:Class="Yugen.DJ.Uwp.Views.Dialogs.HelpDialog"
+                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                     xmlns:dialogs="using:Yugen.Toolkit.Uwp.Controls.Dialogs"
+                     mc:Ignorable="d"
+                     Title="Help">
+
+    <StackPanel Spacing="4">
+
+        <TextBlock x:Uid="HelpHeaderTextBlock"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   Margin="0,8,0,0"
+                   TextWrapping="WrapWholeWords" />
+
+        <TextBlock x:Uid="HelpSubHeaderTextBlock"
+                   HorizontalAlignment="Center"
+                   Margin="0,4,0,0"
+                   TextWrapping="WrapWholeWords" />
+    </StackPanel>
+</dialogs:YugenDialog>
