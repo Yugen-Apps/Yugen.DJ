@@ -1,4 +1,4 @@
-﻿<ContentDialog x:Class="Yugen.DJ.Uwp.Views.SettingsDialog"
+﻿<ContentDialog x:Class="Yugen.DJ.Views.Dialogs.SettingsDialog"
                xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,26 +7,27 @@
                Title="Settings"
                SecondaryButtonText="Close">
 
-    <StackPanel Spacing="4">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
 
-        <TextBlock x:Uid="SettingsHeaderTextBlock"
-                   HorizontalAlignment="Center"
-                   FontWeight="Bold"
-                   Margin="0,8,0,0"
-                   TextWrapping="WrapWholeWords"/>
-
-        <ComboBox x:Uid="SettingsMasterAudioDevice"
+        <ComboBox Grid.Row="0"
+                  Header="Master Audio Device:"
                   ItemsSource="{x:Bind ViewModel.AudioDeviceInformationCollection, Mode=OneWay}"
-                  IsEnabled="False"
-                  Margin="4"
                   SelectedItem="{x:Bind ViewModel.MasterAudioDeviceInformation, Mode=TwoWay}"
+                  DisplayMemberPath="Name"
+                  Margin="5"
                   Width="200" />
 
-        <ComboBox x:Uid="SettingsHeadphonesAudioDevice"
+        <ComboBox Grid.Row="1"
+                  Header="Headphones Audio Device:"
                   ItemsSource="{x:Bind ViewModel.AudioDeviceInformationCollection, Mode=OneWay}"
-                  IsEnabled="False"
-                  Margin="4"
                   SelectedItem="{x:Bind ViewModel.HeadphonesAudioDeviceInformation, Mode=TwoWay}"
+                  DisplayMemberPath="Name"
+                  Margin="5"
                   Width="200" />
-    </StackPanel>
+    </Grid>
 </ContentDialog>

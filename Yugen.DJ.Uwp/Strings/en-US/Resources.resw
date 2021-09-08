@@ -117,12 +117,6 @@
 	<resheader name="writer">
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
-	<data name="AboutHeaderTextBlock.Text" xml:space="preserve">
-		<value>Getting Started</value>
-	</data>
-	<data name="AboutSubHeaderTextBlock.Text" xml:space="preserve">
-		<value>Click the Eject button to load an mp3, if you have a second sound card you can hear a song clicking the headphones button, enjoy!</value>
-	</data>
 	<data name="AboutStatusTextBlock.Text" xml:space="preserve">
 		<value>The app is still not complete, for example it miss the scratch effect when you rotate the vinyl.</value>
 	</data>
@@ -153,8 +147,11 @@
 	<data name="AboutDesignHyperlink.NavigateUri" xml:space="preserve">
 		<value>https://twitter.com/zeealeid</value>
 	</data>
-	<data name="SettingsHeaderTextBlock.Text" xml:space="preserve">
-		<value>The app already support 2 audio cards, but the option to change them will come soon!</value>
+	<data name="HelpHeaderTextBlock.Text" xml:space="preserve">
+		<value>Getting Started</value>
+	</data>
+	<data name="HelpSubHeaderTextBlock.Text" xml:space="preserve">
+		<value>Click the Eject button to load an mp3, if you have a second sound card you can hear a song clicking the headphones button, enjoy!</value>
 	</data>
 	<data name="SettingsMasterAudioDevice.Header" xml:space="preserve">
 		<value>Master Audio Device:</value>
@@ -162,4 +159,9 @@
 	<data name="SettingsHeadphonesAudioDevice.Header" xml:space="preserve">
 		<value>Headphones Audio Device:</value>
 	</data>
+	<data name="WhatsNewBodyTextBlock.Text" xml:space="preserve">
+    <value>v1.1
+- We added a new menu
+- We added an option to choose the primary and seconday sound card in Settings</value>
+  </data>
 </root>

@@ -80,7 +80,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\AboutViewModel.cs" />
+    <Compile Include="Interfaces\IWhatsNewDisplayService.cs" />
+    <Compile Include="Services\WhatsNewDisplayService.cs" />
     <Compile Include="ViewModels\MixerViewModel.cs" />
     <Compile Include="StateTriggers\SideStateTrigger.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -92,10 +93,16 @@
     <Compile Include="Views\Controls\VuBar.xaml.cs">
       <DependentUpon>VuBar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\AboutDialog.cs">
+    <Compile Include="Views\Dialogs\WhatsNewDialog.cs">
+      <DependentUpon>WhatsNewDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\HelpDialog.cs">
+      <DependentUpon>HelpDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Dialogs\AboutDialog.cs">
       <DependentUpon>AboutDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SettingsDialog.xaml.cs">
+    <Compile Include="Views\Dialogs\SettingsDialog.xaml.cs">
       <DependentUpon>SettingsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\Volume.xaml.cs">
@@ -219,11 +226,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\AboutDialog.xaml">
+    <Page Include="Views\Dialogs\WhatsNewDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SettingsDialog.xaml">
+    <Page Include="Views\Dialogs\HelpDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Dialogs\AboutDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Dialogs\SettingsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -248,9 +263,12 @@
       <Version>7.0.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.6.1</Version>
+      <Version>2.6.2</Version>
     </PackageReference>
     <PackageReference Include="Yugen.Toolkit.Uwp">
+      <Version>1.0.46</Version>
+    </PackageReference>
+    <PackageReference Include="Yugen.Toolkit.Uwp.Controls">
       <Version>1.0.46</Version>
     </PackageReference>
   </ItemGroup>

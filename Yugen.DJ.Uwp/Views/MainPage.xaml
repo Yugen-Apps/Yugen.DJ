@@ -21,48 +21,63 @@
         </Grid.ColumnDefinitions>
 
         <!-- Title Bar -->
-        <Grid x:Name="TopBar"
+        <Grid x:Name="TopTitleBar"
               Grid.ColumnSpan="3">
+
+            <Button Background="Transparent"
+                    BorderThickness="0"
+                    Canvas.ZIndex="1"
+                    Foreground="{StaticResource SystemColorHighlightBrush}"
+                    HorizontalAlignment="Left">
+                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                          Glyph="{StaticResource HamburgerMenuIcon}" />
+
+                <Button.Flyout>
+                    <MenuFlyout Placement="BottomEdgeAlignedLeft">
+                        <MenuFlyoutItem Command="{x:Bind ViewModel.SettingsCommand}"
+                                        Foreground="{StaticResource SystemColorHighlightBrush}"
+                                        Text="Settings">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                                          Glyph="{StaticResource SettingsIcon}" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem Command="{x:Bind ViewModel.HelpCommand}"
+                                        Foreground="{StaticResource SystemColorHighlightBrush}"
+                                        Text="Help">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                                          Glyph="{StaticResource HelpIcon}" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutItem Command="{x:Bind ViewModel.WhatsNewCommand}"
+                                        Foreground="{StaticResource SystemColorHighlightBrush}"
+                                        Text="Whats New">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                                          Glyph="{StaticResource WhatsNewIcon}" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem Command="{x:Bind ViewModel.AboutCommand}"
+                                        Foreground="{StaticResource SystemColorHighlightBrush}"
+                                        Text="About">
+                            <MenuFlyoutItem.Icon>
+                                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                                          Glyph="{StaticResource AboutIcon}" />
+                            </MenuFlyoutItem.Icon>
+                        </MenuFlyoutItem>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>
+
             <Grid x:Name="AppTitleBar"
                   Background="Transparent"
                   HorizontalAlignment="Stretch">
                 <TextBlock Text="Yugen DJ"
                            Style="{StaticResource CaptionTextBlockStyle}"
-                           Margin="16,8,0,0" />
-
-                <Rectangle Fill="{StaticResource SystemAccentColor}"
-                           Height="20"
-                           HorizontalAlignment="Right"
-                           Margin="0,0,160,0"
-                           Width="1" />
+                           Margin="44,8,0,0" />
             </Grid>
-
-            <Grid x:Name="TitleBarButtons"
-                    Canvas.ZIndex="1"
-                    HorizontalAlignment="Right">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <Button Grid.Column="0" 
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Command="{x:Bind ViewModel.SettingsCommand}"
-                        Foreground="{StaticResource SystemColorHighlightBrush}">
-                    <FontIcon Glyph="{StaticResource SettingsIcon}" />
-                </Button>
-
-                <Button Grid.Column="1" 
-                        Background="Transparent"
-                        BorderThickness="0"
-                        Command="{x:Bind ViewModel.HelpCommand}"
-                        Foreground="{StaticResource SystemColorHighlightBrush}">
-                    <FontIcon Glyph="{StaticResource HelpIcon}" />
-                </Button>
-
-            </Grid>
-
         </Grid>
 
         <!-- Bottom Panel -->
@@ -77,7 +92,7 @@
                        Grid.Row="1"
                        Grid.RowSpan="2"
                        DataContext="{x:Bind ViewModel.LeftDeckViewModel}"
-                       Margin="8"/>
+                       Margin="8" />
 
         <!-- Column 1 -->
         <controls:Mixer Grid.Column="1"
@@ -99,10 +114,10 @@
             </Grid.ColumnDefinitions>
 
             <controls:VuBar Grid.Column="1"
-                            Side="Left"/>
+                            Side="Left" />
 
             <controls:VuBar Grid.Column="3"
-                            Side="Right"/>
+                            Side="Right" />
 
         </Grid>
 
@@ -111,6 +126,6 @@
                        Grid.Row="1"
                        Grid.RowSpan="2"
                        DataContext="{x:Bind ViewModel.RightDeckViewModel}"
-                       Margin="8"/>
+                       Margin="8" />
     </Grid>
 </Page>

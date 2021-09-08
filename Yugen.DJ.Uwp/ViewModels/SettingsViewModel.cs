@@ -1,39 +1,51 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
-using Windows.Devices.Enumeration;
-using Yugen.Toolkit.Standard.Extensions;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.DJ.Uwp.ViewModels
 {
     public class SettingsViewModel : ObservableObject
     {
-        private string _masterAudioDeviceInformation;
-        private string _headphonesAudioDeviceInformation;
+        private IAudioDeviceService _audioDeviceService;
+        private AudioDevice _masterAudioDeviceInformation;
+        private AudioDevice _headphonesAudioDeviceInformation;
 
-        public SettingsViewModel()
+        public SettingsViewModel(IAudioDeviceService audioDeviceService)
         {
+            _audioDeviceService = audioDeviceService;
+
+            AudioDeviceInformationCollection.Add(_audioDeviceService.PrimaryDevice);
+            AudioDeviceInformationCollection.Add(_audioDeviceService.SecondaryDevice);
+
             MasterAudioDeviceInformation = AudioDeviceInformationCollection[0];
             HeadphonesAudioDeviceInformation = AudioDeviceInformationCollection[1];
         }
 
-        public ObservableCollection<string> AudioDeviceInformationCollection { get; set; } =
-            new ObservableCollection<string>()
-            {
-                "Primary",
-                "Secondary"
-            };
+        public ObservableCollection<AudioDevice> AudioDeviceInformationCollection { get; set; } =
+            new ObservableCollection<AudioDevice>();
 
-        public string MasterAudioDeviceInformation
+        public AudioDevice MasterAudioDeviceInformation
         {
             get => _masterAudioDeviceInformation;
-            set => SetProperty(ref _masterAudioDeviceInformation, value);
+            set
+            {
+                if (SetProperty(ref _masterAudioDeviceInformation, value))
+                {
+                    _audioDeviceService.PrimaryDevice = _masterAudioDeviceInformation;
+                }
+            }
         }
 
-        public string HeadphonesAudioDeviceInformation
+        public AudioDevice HeadphonesAudioDeviceInformation
         {
             get => _headphonesAudioDeviceInformation;
-            set => SetProperty(ref _headphonesAudioDeviceInformation, value);
+            set
+            {
+                if (SetProperty(ref _headphonesAudioDeviceInformation, value))
+                {
+                    _audioDeviceService.SecondaryDevice = _headphonesAudioDeviceInformation;
+                }
+            }
         }
     }
 }

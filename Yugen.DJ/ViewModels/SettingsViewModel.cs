@@ -9,8 +9,8 @@ namespace Yugen.DJ.ViewModels
     public class SettingsViewModel : ObservableObject
     {
         private readonly IAudioDeviceService _audioDeviceService;
-        private DeviceInformation _masterAudioDeviceInformation;
-        private DeviceInformation _headphonesAudioDeviceInformation;
+        private AudioDevice _masterAudioDeviceInformation;
+        private AudioDevice _headphonesAudioDeviceInformation;
 
         public SettingsViewModel(IAudioDeviceService audioDeviceService)
         {
@@ -19,36 +19,37 @@ namespace Yugen.DJ.ViewModels
             LoadAudioDevces();
         }
 
-        public ObservableCollection<DeviceInformation> AudioDeviceInformationCollection { get; set; } = new ObservableCollection<DeviceInformation>();
+        public ObservableCollection<AudioDevice> AudioDeviceInformationCollection { get; set; } = 
+            new ObservableCollection<AudioDevice>();
 
-        public DeviceInformation MasterAudioDeviceInformation
+        public AudioDevice MasterAudioDeviceInformation
         {
             get { return _masterAudioDeviceInformation; }
             set
             {
                 SetProperty(ref _masterAudioDeviceInformation, value);
 
-                _audioDeviceService.MasterAudioDeviceInformation = _masterAudioDeviceInformation;
+                _audioDeviceService.PrimaryDevice = _masterAudioDeviceInformation;
             }
         }
 
-        public DeviceInformation HeadphonesAudioDeviceInformation
+        public AudioDevice HeadphonesAudioDeviceInformation
         {
             get { return _headphonesAudioDeviceInformation; }
             set
             {
                 SetProperty(ref _headphonesAudioDeviceInformation, value);
 
-                _audioDeviceService.HeadphonesAudioDeviceInformation = _headphonesAudioDeviceInformation;
+                _audioDeviceService.SecondaryDevice = _headphonesAudioDeviceInformation;
             }
         }
 
         public void LoadAudioDevces()
         {
-            AudioDeviceInformationCollection.AddRange(_audioDeviceService.DeviceInfoCollection);
+            AudioDeviceInformationCollection.AddRange(_audioDeviceService.AudioDeviceList);
 
-            MasterAudioDeviceInformation = _audioDeviceService.MasterAudioDeviceInformation;
-            HeadphonesAudioDeviceInformation = _audioDeviceService.HeadphonesAudioDeviceInformation;
+            MasterAudioDeviceInformation = _audioDeviceService.PrimaryDevice;
+            HeadphonesAudioDeviceInformation = _audioDeviceService.SecondaryDevice;
         }
     }
 }

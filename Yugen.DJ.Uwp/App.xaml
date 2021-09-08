@@ -11,10 +11,13 @@
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
 
                 <ResourceDictionary>
-                    <x:String x:Key="HeadPhonesIcon">&#xE7F6;</x:String>
                     <x:String x:Key="EjectIcon">&#xF847;</x:String>
+                    <x:String x:Key="HamburgerMenuIcon">&#xE700;</x:String>
+                    <x:String x:Key="HeadPhonesIcon">&#xE7F6;</x:String>
+                    <x:String x:Key="AboutIcon">&#xE897;</x:String>
+                    <x:String x:Key="HelpIcon">&#xE736;</x:String>
                     <x:String x:Key="SettingsIcon">&#xE713;</x:String>
-                    <x:String x:Key="HelpIcon">&#xE897;</x:String>
+                    <x:String x:Key="WhatsNewIcon">&#xE789;</x:String>
 
                     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
 

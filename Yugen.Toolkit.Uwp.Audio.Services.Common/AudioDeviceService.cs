@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
@@ -10,15 +11,11 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Common
 {
     public class AudioDeviceService : IAudioDeviceService
     {
-        public DeviceInformationCollection DeviceInfoCollection { get; private set; }
+        public List<AudioDevice> AudioDeviceList { get; } = new List<AudioDevice>();
 
-        public DeviceInformation MasterAudioDeviceInformation { get; set; }
+        public AudioDevice PrimaryDevice { get; set; }
 
-        public DeviceInformation HeadphonesAudioDeviceInformation { get; set; }
-
-        public int PrimaryDeviceId => throw new NotImplementedException();
-
-        public int SecondaryDeviceId => throw new NotImplementedException();
+        public AudioDevice SecondaryDevice { get; set; }
 
         public double GetMasterVolume() => SystemVolumeHelper.GetVolume();
 
@@ -26,14 +23,24 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Common
 
         public async Task Init()
         {
-            var defaultAudioDeviceId = MediaDevice.GetDefaultAudioRenderId(AudioDeviceRole.Default);
-            DeviceInfoCollection = await DeviceInformation.FindAllAsync(DeviceClass.AudioRender);
+            var defaultAudioDeviceDriver = MediaDevice.GetDefaultAudioRenderId(AudioDeviceRole.Default);
+            var deviceInfoList = await DeviceInformation.FindAllAsync(DeviceClass.AudioRender);
 
-            MasterAudioDeviceInformation = DeviceInfoCollection.FirstOrDefault(
-                x => x.Id.Equals(defaultAudioDeviceId));
+            foreach (var deviceInfo in deviceInfoList)
+            {
+                AudioDeviceList.Add(new AudioDevice
+                {
+                    Driver = deviceInfo.Id,
+                    IsDefault = deviceInfo.IsDefault,
+                    Name = deviceInfo.Name
+                });
+            }
 
-            HeadphonesAudioDeviceInformation = DeviceInfoCollection.FirstOrDefault(
-                x => !x.Id.Equals(defaultAudioDeviceId));
+            PrimaryDevice = AudioDeviceList.FirstOrDefault(
+                x => x.Driver.Equals(defaultAudioDeviceDriver));
+
+            SecondaryDevice = AudioDeviceList.FirstOrDefault(
+                x => !x.Driver.Equals(defaultAudioDeviceDriver));
         }
     }
 }

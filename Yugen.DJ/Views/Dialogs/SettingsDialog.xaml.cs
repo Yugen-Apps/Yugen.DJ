@@ -2,7 +2,7 @@
 using Windows.UI.Xaml.Controls;
 using Yugen.DJ.ViewModels;
 
-namespace Yugen.DJ.Views
+namespace Yugen.DJ.Views.Dialogs
 {
     public sealed partial class SettingsDialog : ContentDialog
     {
