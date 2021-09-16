@@ -1,5 +1,6 @@
-﻿using Microsoft.Toolkit.Uwp.Helpers;
-using System;
+﻿using System;
+using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
@@ -13,7 +14,25 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
     {
         public StorageFile AudioFile { get; private set; }
 
-        public Task<byte[]> AudioBytes => AudioFile?.ReadBytesAsync() ?? null;
+        public async Task<byte[]> GetAudioBytes()
+        {
+            if (AudioFile == null)
+            {
+                return null;
+            }
+
+            byte[] audioBytes;
+            using (Stream stream = await AudioFile.OpenStreamForReadAsync())
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    stream.CopyTo(ms);
+                    audioBytes = ms.ToArray();
+                }
+            }
+
+            return audioBytes;
+        }
 
         public MusicProperties MusicProperties { get; private set; }
 

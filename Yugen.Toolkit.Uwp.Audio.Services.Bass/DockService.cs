@@ -45,17 +45,20 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
             _audioPlaybackService.PositionChanged += (sender, e) => PositionChanged?.Invoke(sender, e);
         }
 
-        public async Task LoadSong()
+        public async Task<bool> LoadSong()
         {
+            bool isLoaded = false;
+
             if (await _trackService.LoadFile())
             {
-                var audioBytes = await _trackService.AudioBytes;
-                await _audioPlaybackService.LoadSong(audioBytes);
-
-                AudioPropertiesLoaded?.Invoke(this, _trackService.MusicProperties);
+                var audioBytes = await _trackService.GetAudioBytes();
 
                 if (audioBytes != null)
                 {
+                    await _audioPlaybackService.LoadSong(audioBytes);
+
+                    AudioPropertiesLoaded?.Invoke(this, _trackService.MusicProperties);
+
                     _ = Task.Run(() =>
                     {
                         var bpm = _bpmService.Decoding(audioBytes);
@@ -64,12 +67,21 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
                         var peakList = _waveformService.GenerateAudioData(audioBytes);
                         WaveformGenerated?.Invoke(this, peakList);
                     });
+
+                    isLoaded = true;
                 }
             }
+
+            return isLoaded;
         }
 
         public void TogglePlay(bool isPaused) => _audioPlaybackService.TogglePlay(isPaused);
 
         public void ChangePitch(double pitch) => _audioPlaybackService.ChangePitch(pitch);
+
+        public Task Scratch(bool isTouched, bool isClockwise, float crossProduct)
+        {
+            return _audioPlaybackService.Scratch(isTouched, isClockwise, crossProduct);
+        }
     }
 }

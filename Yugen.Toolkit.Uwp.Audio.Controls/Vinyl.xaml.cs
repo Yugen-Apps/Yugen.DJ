@@ -20,6 +20,20 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
                 typeof(Vinyl),
                 new PropertyMetadata(true, IsPausedPropertyChanged));
 
+        public static readonly DependencyProperty IsStepProperty =
+            DependencyProperty.Register(
+                nameof(IsStep),
+                typeof(bool),
+                typeof(Vinyl),
+                new PropertyMetadata(false, IsStepPropertyChanged));
+
+        //public static readonly DependencyProperty StepProperty =
+        //    DependencyProperty.Register(
+        //        nameof(Step),
+        //        typeof(ICommand),
+        //        typeof(Vinyl),
+        //        new PropertyMetadata(null));
+
         private VinylRenderer _vinylRenderer;
         private TouchPointsRenderer _touchPointsRenderer = new TouchPointsRenderer();
 
@@ -34,19 +48,39 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             this.InitializeComponent();
         }
 
+        public event Action<VinylEventArgs> Update;
+
         public bool IsPaused
         {
-            get { return (bool)GetValue(IsPausedProperty); }
-            set { SetValue(IsPausedProperty, value); }
+            get => (bool)GetValue(IsPausedProperty);
+            set => SetValue(IsPausedProperty, value);
         }
 
-        public void StepClicked() => _vinylRenderer.StepClicked();
+        public bool IsStep
+        {
+            get => (bool)GetValue(IsStepProperty);
+            set => SetValue(IsStepProperty, value);
+        }
+
+        //public ICommand Step
+        //{
+        //    get { return (ICommand)GetValue(StepProperty); }
+        //    set { SetValue(StepProperty, value); }
+        //}
 
         private static void IsPausedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != null)
             {
                 ((Vinyl)d)._vinylRenderer?.PauseToggled((bool)e.NewValue);
+            }
+        }
+
+        private static void IsStepPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (e.NewValue != null)
+            {
+                ((Vinyl)d)._vinylRenderer.StepClicked();
             }
         }
 
@@ -85,6 +119,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
 
         private void OnUpdate(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
         {
+            var vinylEventArgs = _vinylRenderer.Update(sender, args);
+            Update?.Invoke(vinylEventArgs);
         }
 
         private void OnPointerPressed(object sender, PointerRoutedEventArgs e)

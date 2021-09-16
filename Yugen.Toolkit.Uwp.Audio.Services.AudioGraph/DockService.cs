@@ -93,5 +93,10 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
             var bmp = _bpmService.Decoding(stream);
             BpmGenerated?.Invoke(this, bmp);
         }
+
+        public Task Scratch()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
