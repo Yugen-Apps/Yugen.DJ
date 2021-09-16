@@ -16,9 +16,12 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
         private readonly Timer _progressBarTimer = new Timer(100);
 
         private int _streamHandle;
+        private int _tempoStreamHandle;
         private int _primarySplitStream;
         private int _secondarySplitStream;
         private bool _isPaused = true;
+        private double _volume = 1;
+        private double _headphonesVolume = 1;
 
         public AudioPlaybackService(IAudioDeviceService audioDeviceService)
         {
@@ -47,28 +50,23 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public void ChangePitch(double pitch)
         {
-            ManagedBass.Bass.ChannelSetAttribute(_streamHandle, ChannelAttribute.Tempo, pitch);
-            // get => Bass.ChannelGetAttribute(_streamHandle, ChannelAttribute.Tempo);
+            ManagedBass.Bass.ChannelSetAttribute(_tempoStreamHandle, ChannelAttribute.Tempo, pitch);
+            // get => ManagedBass.Bass.ChannelGetAttribute(_tempoStreamHandle, ChannelAttribute.Tempo);
         }
 
         public void ChangeVolume(double volume, double fader)
         {
-            volume *= fader / 100;
+            _volume = volume * fader / 100;
 
-            ManagedBass.Bass.ChannelSetAttribute(_primarySplitStream, ChannelAttribute.Volume, volume);
-            // get => Bass.ChannelGetAttribute(_primarySplitStream, ChannelAttribute.Volume);
+            ManagedBass.Bass.ChannelSetAttribute(_primarySplitStream, ChannelAttribute.Volume, _volume);
+            // get => ManagedBass.Bass.ChannelGetAttribute(_primarySplitStream, ChannelAttribute.Volume);
         }
 
-        public void IsHeadphones(bool isHeadphone)
+        public void IsHeadphones(bool isHeadphones)
         {
-            if (isHeadphone)
-            {
-                ManagedBass.Bass.ChannelSetAttribute(_secondarySplitStream, ChannelAttribute.Volume, 1);
-            }
-            else
-            {
-                ManagedBass.Bass.ChannelSetAttribute(_secondarySplitStream, ChannelAttribute.Volume, 0);
-            }
+            _headphonesVolume = isHeadphones ? 1 : 0;
+
+            ManagedBass.Bass.ChannelSetAttribute(_secondarySplitStream, ChannelAttribute.Volume, _headphonesVolume);
         }
 
         public Task LoadSong(StorageFile audioFile) => throw new NotImplementedException();
@@ -78,6 +76,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
             if (_streamHandle < 0)
             {
                 ManagedBass.Bass.ChannelStop(_primarySplitStream);
+                // free tempo, stream, music & bpm/beat callbacks
                 var isFreed1 = ManagedBass.Bass.StreamFree(_primarySplitStream);
                 var isFreed2 = ManagedBass.Bass.StreamFree(_secondarySplitStream);
                 var isFreed3 = ManagedBass.Bass.StreamFree(_streamHandle);
@@ -85,21 +84,28 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
             if (audioBytes != null)
             {
-                _streamHandle = ManagedBass.Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode); // create decoder for 1st file
-                _streamHandle = BassFx.TempoCreate(_streamHandle, BassFlags.Decode | BassFlags.FxFreeSource);
-                _streamHandle = BassFx.ReverseCreate(_streamHandle, 2, BassFlags.Decode | BassFlags.FxFreeSource);
-                ManagedBass.Bass.ChannelSetAttribute(_streamHandle, ChannelAttribute.ReverseDirection, 1);
+                // create decoder for 1st file
+                _streamHandle = ManagedBass.Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode);
+                _tempoStreamHandle = BassFx.TempoCreate(_streamHandle, BassFlags.Decode | BassFlags.FxFreeSource);
+                _streamHandle = BassFx.ReverseCreate(_tempoStreamHandle, 2, BassFlags.Decode | BassFlags.FxFreeSource);
+                ManagedBass.Bass.ChannelSetAttribute(_tempoStreamHandle, ChannelAttribute.ReverseDirection, 1);
 
                 var channelInfo = ManagedBass.Bass.ChannelGetInfo(_streamHandle);
                 var length = ManagedBass.Bass.ChannelGetLength(_streamHandle);
                 var lengthSeconds = ManagedBass.Bass.ChannelBytes2Seconds(_streamHandle, length);
                 NaturalDuration = TimeSpan.FromSeconds(lengthSeconds);
 
-                _primarySplitStream = BassMix.CreateSplitStream(_streamHandle, 0, null); // create splitter for mixer
-                var isSet1 = ManagedBass.Bass.ChannelSetDevice(_primarySplitStream, _audioDeviceService.PrimaryDevice.Id); // set device for separate playback splitter
+                // create splitter for mixer
+                _primarySplitStream = BassMix.CreateSplitStream(_streamHandle, 0, null);
+                // set device for separate playback splitter
+                var isSet1 = ManagedBass.Bass.ChannelSetDevice(_primarySplitStream, _audioDeviceService.PrimaryDevice.Id);
+                ManagedBass.Bass.ChannelSetAttribute(_primarySplitStream, ChannelAttribute.Volume, _volume);
 
-                _secondarySplitStream = BassMix.CreateSplitStream(_streamHandle, 0, null); // create splitter for separate playback
-                var isSet2 = ManagedBass.Bass.ChannelSetDevice(_secondarySplitStream, _audioDeviceService.SecondaryDevice.Id); // set device for separate playback splitter
+                // create splitter for separate playback
+                _secondarySplitStream = BassMix.CreateSplitStream(_streamHandle, 0, null);
+                // set device for separate playback splitter
+                var isSet2 = ManagedBass.Bass.ChannelSetDevice(_secondarySplitStream, _audioDeviceService.SecondaryDevice.Id);
+                ManagedBass.Bass.ChannelSetAttribute(_secondarySplitStream, ChannelAttribute.Volume, _headphonesVolume);
 
                 ManagedBass.Bass.ChannelSetLink(_primarySplitStream, _secondarySplitStream);
             }
@@ -110,6 +116,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
         public void TogglePlay(bool isPaused)
         {
             _isPaused = isPaused;
+
             if (isPaused)
             {
                 ManagedBass.Bass.ChannelPause(_primarySplitStream);

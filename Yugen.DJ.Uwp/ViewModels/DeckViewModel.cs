@@ -156,11 +156,14 @@ namespace Yugen.DJ.Uwp.ViewModels
             });
         }
 
-        private Task OpenCommandBehavior()
+        private async Task OpenCommandBehavior()
         {
             IsPaused = true;
 
-            return _dockService.LoadSong();
+            if (await _dockService.LoadSong())
+            {
+                Tempo = 0;
+            }
         }
 
         private Task ScratchCommandBehavior(VinylEventArgs e)

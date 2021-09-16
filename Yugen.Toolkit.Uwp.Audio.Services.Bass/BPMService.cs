@@ -14,12 +14,14 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public float Decoding(byte[] audioBytes)
         {
-            // free decode bpm stream and resources
-            BassFx.BPMFree(_bpmchan);
-            //BassFx.BPMBeatFree(_bpmchan);
-
-            // free tempo, stream, music & bpm/beat callbacks
-            //ManagedBass.Bass.StreamFree(_chan);
+            if (_bpmchan < 0)
+            {
+                // free decode bpm stream and resources
+                var isFreed1 = BassFx.BPMFree(_bpmchan);
+                // var isFreed2 = BassFx.BPMBeatFree(_bpmchan);
+                // free tempo, stream, music & bpm/beat callbacks
+                // var isFreed3 = ManagedBass.Bass.StreamFree(_chan);
+            }
 
             _bpmchan = ManagedBass.Bass.CreateStream(audioBytes, 0, audioBytes.Length, BassFlags.Decode);
 

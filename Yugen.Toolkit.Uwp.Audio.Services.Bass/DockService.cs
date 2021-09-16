@@ -45,8 +45,10 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
             _audioPlaybackService.PositionChanged += (sender, e) => PositionChanged?.Invoke(sender, e);
         }
 
-        public async Task LoadSong()
+        public async Task<bool> LoadSong()
         {
+            bool isLoaded = false;
+
             if (await _trackService.LoadFile())
             {
                 var audioBytes = await _trackService.GetAudioBytes();
@@ -65,8 +67,12 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
                         var peakList = _waveformService.GenerateAudioData(audioBytes);
                         WaveformGenerated?.Invoke(this, peakList);
                     });
+
+                    isLoaded = true;
                 }
             }
+
+            return isLoaded;
         }
 
         public void TogglePlay(bool isPaused) => _audioPlaybackService.TogglePlay(isPaused);

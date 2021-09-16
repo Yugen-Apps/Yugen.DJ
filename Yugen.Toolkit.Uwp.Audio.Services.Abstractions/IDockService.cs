@@ -22,7 +22,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 
         void Init(Side side);
 
-        Task LoadSong();
+        Task<bool> LoadSong();
 
         void TogglePlay(bool isPaused);
 
