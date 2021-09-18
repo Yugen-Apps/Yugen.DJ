@@ -67,11 +67,12 @@
   <ItemGroup>
     <Compile Include="AudioDeviceService.cs" />
     <Compile Include="AudioPlaybackService.cs" />
-    <Compile Include="AudioPlaybackServiceProvider.cs" />
+    <Compile Include="Providers\AudioPlaybackServiceProvider.cs" />
     <Compile Include="BPMService.cs" />
     <Compile Include="DockService.cs" />
     <Compile Include="MixerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\DockServiceProvider.cs" />
     <Compile Include="TrackService.cs" />
     <Compile Include="WaveformService.cs" />
     <Compile Include="YugenBass.cs" />

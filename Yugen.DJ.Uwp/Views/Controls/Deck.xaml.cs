@@ -1,8 +1,10 @@
-﻿using Microsoft.Toolkit.Uwp;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Uwp;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
 using Yugen.DJ.Uwp.ViewModels;
 using Yugen.Toolkit.Uwp.Audio.Controls;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 
 namespace Yugen.DJ.Uwp.Views.Controls
 {
@@ -13,6 +15,13 @@ namespace Yugen.DJ.Uwp.Views.Controls
         public Deck()
         {
             this.InitializeComponent();
+
+            DataContext = App.Current.Services.GetService<DeckViewModel>();
+        }
+
+        public Side Side
+        {
+            set => ViewModel.Side = value;
         }
 
         private DeckViewModel ViewModel => (DeckViewModel)DataContext;

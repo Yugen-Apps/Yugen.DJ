@@ -15,6 +15,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 
         void SetVolume(double volume);
 
-        Task Init();
+        Task Initialize();
     }
 }

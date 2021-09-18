@@ -14,7 +14,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 
         AudioFileInputNode MasterFileInput { get; }
 
-        Task Init();
+        Task Initialize();
 
         Task LoadSong(StorageFile audioFile);
 

@@ -1,9 +1,9 @@
 ﻿namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 {
-    public interface IAudioPlaybackServiceProvider
+    public interface IDockServiceProvider
     {
         void Initialize();
 
-        IAudioPlaybackService Get(Side side);
+        IDockService Get(Side side);
     }
 }

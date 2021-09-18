@@ -36,7 +36,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public AudioFileInputNode MasterFileInput => throw new NotImplementedException();
 
-        public Task Init()
+        public Task Initialize()
         {
             _progressBarTimer.Elapsed += (s, e) =>
             {

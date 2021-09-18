@@ -85,10 +85,14 @@
     <Compile Include="ViewModels\MixerViewModel.cs" />
     <Compile Include="StateTriggers\SideStateTrigger.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
+    <Compile Include="ViewModels\TrackDetailsViewModel.cs" />
     <Compile Include="ViewModels\VuBarViewModel.cs" />
     <Compile Include="ViewModels\VolumeViewModel.cs" />
     <Compile Include="Views\Controls\Mixer.xaml.cs">
       <DependentUpon>Mixer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\TrackDetails.xaml.cs">
+      <DependentUpon>TrackDetails.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Controls\VuBar.xaml.cs">
       <DependentUpon>VuBar.xaml</DependentUpon>
@@ -113,9 +117,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\DeckViewModel.cs" />
-    <Compile Include="ViewModels\LeftDeckViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\RightDeckViewModel.cs" />
     <Compile Include="Views\Controls\Deck.xaml.cs">
       <DependentUpon>Deck.xaml</DependentUpon>
     </Compile>
@@ -218,6 +220,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Views\Controls\Mixer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Controls\TrackDetails.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

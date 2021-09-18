@@ -34,14 +34,12 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
-            <ColumnDefinition Width="500" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <!-- Row 0 -->
@@ -97,59 +95,12 @@
         <Slider Grid.Column="1"
                 Grid.Row="2"
                 Header="Tempo"
-                Margin="0,0,0,40"
+                Margin="4,0"
                 Minimum="-95"
                 Maximum="+95"
                 TickFrequency="10"
                 TickPlacement="Outside"
-                Value="{x:Bind ViewModel.Tempo, Mode=TwoWay}"
-                Width="500" />
+                Value="{x:Bind ViewModel.Tempo, Mode=TwoWay}" />
 
-        <!-- Row 3 -->
-        <Grid Grid.Column="1"
-              Grid.Row="3"
-              Padding="4">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-
-            <TextBlock Grid.Column="0"
-                       FontWeight="Bold"
-                       Text="{x:Bind ViewModel.Title, Mode=OneWay}" />
-
-            <TextBlock Grid.Column="2"
-                       TextAlignment="Right">
-                <Run Text="{x:Bind ViewModel.Position.ToString('hh\\\\:mm\\\\:ss\\\\.ff'), Mode=OneWay}" />
-                <Run Text="/" />
-                <Run Text="{x:Bind ViewModel.NaturalDuration.ToString('hh\\\\:mm\\\\:ss\\\\.ff'), Mode=OneWay}" />
-            </TextBlock>
-
-            <TextBlock Grid.Column="0"
-                       Grid.Row="1"
-                       Text="{x:Bind ViewModel.Artist, Mode=OneWay}" />
-
-            <TextBlock Grid.Column="2"
-                       Grid.Row="1"
-                       TextAlignment="Right">
-                <Run Text="BPM: " />
-                <Run Text="{x:Bind ViewModel.Bpm, Mode=OneWay}" />
-            </TextBlock>
-        </Grid>
-
-        <!-- Row 4 -->
-        <controls:Waveform x:Name="WaveFormControl"
-                           Grid.Column="1"
-                           Grid.Row="4"
-                           BarColor="{ThemeResource SystemAccentColor}"
-                           Height="100"
-                           Width="500"
-                           PeakList="{x:Bind ViewModel.PeakList, Mode=OneWay}" />
     </Grid>
 </UserControl>

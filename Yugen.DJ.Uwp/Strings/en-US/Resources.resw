@@ -160,7 +160,11 @@
 		<value>Headphones Audio Device:</value>
 	</data>
 	<data name="WhatsNewBodyTextBlock.Text" xml:space="preserve">
-    <value>v1.1
+    <value>
+v1.2
+- We added a vinyl scratch audio effect (beta)
+- We fixed some UI glitches
+v1.1
 - We added a new menu
 - We added an option to choose the primary and seconday sound card in Settings</value>
   </data>

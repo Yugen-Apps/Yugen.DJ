@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Toolkit.Mvvm.Input;
+﻿using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -16,9 +15,6 @@ namespace Yugen.DJ.Uwp.ViewModels
             HelpCommand = new AsyncRelayCommand(HelpCommandBehavior);
             SettingsCommand = new AsyncRelayCommand(SettingsCommandBehavior);
             WhatsNewCommand = new AsyncRelayCommand(WhatsNewCommandBehavior);
-
-            LeftDeckViewModel = App.Current.Services.GetService<LeftDeckViewModel>();
-            RightDeckViewModel = App.Current.Services.GetService<RightDeckViewModel>();
         }
 
         public ICommand AboutCommand { get; }
@@ -28,10 +24,6 @@ namespace Yugen.DJ.Uwp.ViewModels
         public ICommand SettingsCommand { get; }
 
         public ICommand WhatsNewCommand { get; }
-
-        public LeftDeckViewModel LeftDeckViewModel { get; }
-
-        public RightDeckViewModel RightDeckViewModel { get; }
 
         private async Task AboutCommandBehavior()
         {
