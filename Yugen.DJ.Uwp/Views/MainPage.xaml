@@ -3,7 +3,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:controls="using:Yugen.DJ.Uwp.Views.Controls"
+      xmlns:controls="using:Yugen.DJ.Uwp.Views.Controls" xmlns:muxc="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       mc:Ignorable="d"
       Background="{ThemeResource TopBackgroundBrush}">
 
@@ -33,41 +33,43 @@
                           Glyph="{StaticResource HamburgerMenuIcon}" />
 
                 <Button.Flyout>
-                    <MenuFlyout Placement="BottomEdgeAlignedLeft">
-                        <MenuFlyoutItem Command="{x:Bind ViewModel.SettingsCommand}"
+                    <muxc:CommandBarFlyout Placement="BottomEdgeAlignedLeft">
+                        <muxc:CommandBarFlyout.SecondaryCommands>
+                            <AppBarButton Command="{x:Bind ViewModel.SettingsCommand}"
                                         Foreground="{StaticResource SystemColorHighlightBrush}"
-                                        Text="Settings">
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                                        Label="Settings">
+                                <AppBarButton.Icon>
+                                    <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
                                           Glyph="{StaticResource SettingsIcon}" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                        <MenuFlyoutItem Command="{x:Bind ViewModel.HelpCommand}"
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton Command="{x:Bind ViewModel.HelpCommand}"
                                         Foreground="{StaticResource SystemColorHighlightBrush}"
-                                        Text="Help">
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                                        Label="Help">
+                                <AppBarButton.Icon>
+                                    <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
                                           Glyph="{StaticResource HelpIcon}" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                        <MenuFlyoutItem Command="{x:Bind ViewModel.WhatsNewCommand}"
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton Command="{x:Bind ViewModel.WhatsNewCommand}"
                                         Foreground="{StaticResource SystemColorHighlightBrush}"
-                                        Text="Whats New">
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                                        Label="Whats New">
+                                <AppBarButton.Icon>
+                                    <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
                                           Glyph="{StaticResource WhatsNewIcon}" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                        <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Command="{x:Bind ViewModel.AboutCommand}"
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarSeparator />
+                            <AppBarButton Command="{x:Bind ViewModel.AboutCommand}"
                                         Foreground="{StaticResource SystemColorHighlightBrush}"
-                                        Text="About">
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                                        Label="About">
+                                <AppBarButton.Icon>
+                                    <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
                                           Glyph="{StaticResource AboutIcon}" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                    </MenuFlyout>
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                        </muxc:CommandBarFlyout.SecondaryCommands>
+                    </muxc:CommandBarFlyout>
                 </Button.Flyout>
             </Button>
 
