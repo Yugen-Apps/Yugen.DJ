@@ -12,6 +12,7 @@ using Yugen.DJ.Uwp.ViewModels;
 using Yugen.DJ.Uwp.Views;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
 using Yugen.Toolkit.Uwp.Audio.Services.Bass;
+using Yugen.Toolkit.Uwp.Audio.Services.Bass.Providers;
 using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.DJ.Uwp
@@ -114,6 +115,7 @@ namespace Yugen.DJ.Uwp
             return new ServiceCollection()
                 .AddSingleton<IAudioDeviceService, AudioDeviceService>()
                 .AddSingleton<IBPMService, BPMService>()
+                .AddSingleton<IDockServiceProvider, DockServiceProvider>()
                 .AddTransient<IDockService, DockService>()
                 .AddTransient<IAudioPlaybackService, AudioPlaybackService>()
                 .AddSingleton<IAudioPlaybackServiceProvider, AudioPlaybackServiceProvider>()
@@ -122,21 +124,26 @@ namespace Yugen.DJ.Uwp
                 .AddSingleton<IWaveformService, WaveformService>()
                 .AddSingleton<IWhatsNewDisplayService, WhatsNewDisplayService>()
 
-                .AddSingleton<LeftDeckViewModel>()
-                .AddSingleton<RightDeckViewModel>()
+                .AddTransient<DeckViewModel>()
                 .AddSingleton<MainViewModel>()
                 .AddSingleton<MixerViewModel>()
+                .AddSingleton<SettingsViewModel>()
+                .AddTransient<TrackDetailsViewModel>()
                 .AddTransient<VolumeViewModel>()
                 .AddTransient<VuBarViewModel>()
-                .AddTransient<SettingsViewModel>()
 
                 .BuildServiceProvider();
         }
 
         private async Task InitializeServices()
         {
-            await Services.GetService<IAudioDeviceService>().Init();
-            Services.GetService<IAudioPlaybackServiceProvider>().Init();
+            var audioDeviceService = Services.GetService<IAudioDeviceService>();
+            var audioPlaybackServiceProvider = Services.GetService<IAudioPlaybackServiceProvider>();
+            var dockServiceProvider = Services.GetService<IDockServiceProvider>();
+
+            await audioDeviceService.Initialize();
+            audioPlaybackServiceProvider.Initialize();
+            dockServiceProvider.Initialize();
         }
     }
 }

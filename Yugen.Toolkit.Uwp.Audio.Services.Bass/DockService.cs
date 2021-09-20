@@ -9,11 +9,11 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 {
     public class DockService : IDockService
     {
-        private IAudioPlaybackService _audioPlaybackService;
         private readonly IAudioPlaybackServiceProvider _audioPlaybackServiceProvider;
         private readonly IBPMService _bpmService;
         private readonly ITrackService _trackService;
         private readonly IWaveformService _waveformService;
+        private IAudioPlaybackService _audioPlaybackService;
 
         public DockService(
             IAudioPlaybackServiceProvider audioPlaybackServiceProvider,
@@ -39,9 +39,9 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public AudioFileInputNode MasterFileInput => null;
 
-        public void Init(Side side)
+        public void Initialize(Side side)
         {
-            _audioPlaybackService = _audioPlaybackServiceProvider.GetAudioPlaybackService(side);
+            _audioPlaybackService = _audioPlaybackServiceProvider.Get(side);
             _audioPlaybackService.PositionChanged += (sender, e) => PositionChanged?.Invoke(sender, e);
         }
 
