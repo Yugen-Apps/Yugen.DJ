@@ -9,11 +9,11 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 {
     public class DockService : IDockService
     {
-        private IAudioPlaybackService _audioPlaybackService;
         private readonly IAudioPlaybackServiceProvider _audioPlaybackServiceProvider;
         private readonly IBPMService _bpmService;
         private readonly ITrackService _trackService;
         private readonly IWaveformService _waveformService;
+        private IAudioPlaybackService _audioPlaybackService;
 
         public DockService(
             IAudioPlaybackServiceProvider audioPlaybackServiceProvider,
@@ -39,23 +39,26 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public AudioFileInputNode MasterFileInput => null;
 
-        public void Init(Side side)
+        public void Initialize(Side side)
         {
-            _audioPlaybackService = _audioPlaybackServiceProvider.GetAudioPlaybackService(side);
+            _audioPlaybackService = _audioPlaybackServiceProvider.Get(side);
             _audioPlaybackService.PositionChanged += (sender, e) => PositionChanged?.Invoke(sender, e);
         }
 
-        public async Task LoadSong()
+        public async Task<bool> LoadSong()
         {
+            bool isLoaded = false;
+
             if (await _trackService.LoadFile())
             {
-                var audioBytes = await _trackService.AudioBytes;
-                await _audioPlaybackService.LoadSong(audioBytes);
-
-                AudioPropertiesLoaded?.Invoke(this, _trackService.MusicProperties);
+                var audioBytes = await _trackService.GetAudioBytes();
 
                 if (audioBytes != null)
                 {
+                    await _audioPlaybackService.LoadSong(audioBytes);
+
+                    AudioPropertiesLoaded?.Invoke(this, _trackService.MusicProperties);
+
                     _ = Task.Run(() =>
                     {
                         var bpm = _bpmService.Decoding(audioBytes);
@@ -64,12 +67,21 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
                         var peakList = _waveformService.GenerateAudioData(audioBytes);
                         WaveformGenerated?.Invoke(this, peakList);
                     });
+
+                    isLoaded = true;
                 }
             }
+
+            return isLoaded;
         }
 
         public void TogglePlay(bool isPaused) => _audioPlaybackService.TogglePlay(isPaused);
 
         public void ChangePitch(double pitch) => _audioPlaybackService.ChangePitch(pitch);
+
+        public Task Scratch(bool isTouched, bool isClockwise, float crossProduct)
+        {
+            return _audioPlaybackService.Scratch(isTouched, isClockwise, crossProduct);
+        }
     }
 }

@@ -19,6 +19,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
 
         public void OnPointerMoved(IList<PointerPoint> intermediatePoints)
         {
+            var count = intermediatePoints.Count;
+
             foreach (var point in intermediatePoints)
             {
                 if (point.IsInContact)

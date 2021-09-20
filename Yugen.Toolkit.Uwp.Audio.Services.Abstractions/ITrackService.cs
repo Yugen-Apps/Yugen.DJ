@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 
@@ -10,7 +11,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 
         MusicProperties MusicProperties { get; }
 
-        Task<byte[]> AudioBytes { get; }
+        Task<byte[]> GetAudioBytes();
 
         Task<bool> LoadFile();
     }

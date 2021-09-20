@@ -1,5 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Windows.UI.Xaml.Controls;
+using Yugen.Audio.Samples.ViewModels;
 
 namespace Yugen.Audio.Samples.Views
 {
@@ -8,26 +9,10 @@ namespace Yugen.Audio.Samples.Views
         public VinylPage()
         {
             this.InitializeComponent();
+
+            DataContext = App.Current.Services.GetService<VinylViewModel>();
         }
 
-        private void OnStepClicked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            Vinyl.StepClicked();
-        }
-
-        private async void OnTaskClicked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            await Task.Delay(1000);
-            System.Diagnostics.Debug.WriteLine("Bello!");
-        }
-
-        private void OnBackgroundTaskClicked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-        {
-            Task.Run(async () =>
-            {
-                await Task.Delay(1000);
-                System.Diagnostics.Debug.WriteLine("Bello!");
-            });
-        }
+        private VinylViewModel ViewModel => (VinylViewModel)DataContext;
     }
 }

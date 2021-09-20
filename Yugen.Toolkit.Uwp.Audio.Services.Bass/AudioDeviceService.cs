@@ -13,7 +13,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public AudioDevice SecondaryDevice { get; set; } = new AudioDevice { Id = 0 };
 
-        public Task Init()
+        public Task Initialize()
         {
             for (var i = 0; YugenBass.GetDeviceInfo(i, out var deviceInfo); ++i)
             {

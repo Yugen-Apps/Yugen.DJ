@@ -6,6 +6,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
     public class MixerService : IMixerService
     {
         private readonly IAudioPlaybackServiceProvider _audioPlaybackServiceProvider;
+        private readonly IAudioPlaybackService _leftAudioPlaybackService;
+        private readonly IAudioPlaybackService _rightAudioPlaybackService;
 
         private double _leftFader = 0.5;
         private double _rightFader = 0.5;
@@ -15,8 +17,11 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
         public MixerService(IAudioPlaybackServiceProvider audioPlaybackServiceProvider)
         {
             _audioPlaybackServiceProvider = audioPlaybackServiceProvider;
-            _audioPlaybackServiceProvider.LeftAudioPlaybackService.RmsChanged += (sender, e) => LeftRmsChanged?.Invoke(sender, e);
-            _audioPlaybackServiceProvider.RightAudioPlaybackService.RmsChanged += (sender, e) => RightRmsChanged?.Invoke(sender, e);
+            _leftAudioPlaybackService = audioPlaybackServiceProvider.Get(Side.Left);
+            _rightAudioPlaybackService = audioPlaybackServiceProvider.Get(Side.Right);
+
+            _leftAudioPlaybackService.RmsChanged += (sender, e) => LeftRmsChanged?.Invoke(sender, e);
+            _rightAudioPlaybackService.RmsChanged += (sender, e) => RightRmsChanged?.Invoke(sender, e);
         }
 
         public event EventHandler<float> LeftRmsChanged;
@@ -38,7 +43,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public void IsHeadphones(bool isHeadPhones, Side side)
         {
-            _audioPlaybackServiceProvider.GetAudioPlaybackService(side)?.IsHeadphones(isHeadPhones);
+            _audioPlaybackServiceProvider.Get(side)?.IsHeadphones(isHeadPhones);
         }
 
         public void SetFader(double crossFader)
@@ -56,8 +61,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         private void UpdateVolume()
         {
-            _audioPlaybackServiceProvider.LeftAudioPlaybackService?.ChangeVolume(_leftVolume, _leftFader);
-            _audioPlaybackServiceProvider.RightAudioPlaybackService?.ChangeVolume(_rightVolume, _rightFader);
+            _leftAudioPlaybackService?.ChangeVolume(_leftVolume, _leftFader);
+            _rightAudioPlaybackService?.ChangeVolume(_rightVolume, _rightFader);
         }
     }
 }

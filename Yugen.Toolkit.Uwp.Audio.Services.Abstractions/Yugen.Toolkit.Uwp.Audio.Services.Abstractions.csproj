@@ -68,6 +68,7 @@
     <Compile Include="IAudioPlaybackServiceProvider.cs" />
     <Compile Include="IBPMService.cs" />
     <Compile Include="IDockService.cs" />
+    <Compile Include="IDockServiceProvider.cs" />
     <Compile Include="IMixerService.cs" />
     <Compile Include="ITrackService.cs" />
     <Compile Include="IWaveformService.cs" />

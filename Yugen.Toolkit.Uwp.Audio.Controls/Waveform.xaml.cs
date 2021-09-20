@@ -41,20 +41,20 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
 
         public List<(float min, float max)> PeakList
         {
-            get { return (List<(float min, float max)>)GetValue(PeakListProperty); }
-            set { SetValue(PeakListProperty, value); }
+            get => (List<(float min, float max)>)GetValue(PeakListProperty);
+            set => SetValue(PeakListProperty, value);
         }
 
         public ICommand GenerateCommand
         {
-            get { return (ICommand)GetValue(GenerateCommandProperty); }
-            set { SetValue(GenerateCommandProperty, value); }
+            get => (ICommand)GetValue(GenerateCommandProperty);
+            set => SetValue(GenerateCommandProperty, value);
         }
 
         public Color BarColor
         {
-            get { return (Color)GetValue(BarColorProperty); }
-            set { SetValue(BarColorProperty, value); }
+            get => (Color)GetValue(BarColorProperty);
+            set => SetValue(BarColorProperty, value);
         }
 
         private static void BarColorPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

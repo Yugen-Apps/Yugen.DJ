@@ -3,7 +3,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:controls="using:Yugen.DJ.Uwp.Views.Controls"
+      xmlns:controls="using:Yugen.DJ.Uwp.Views.Controls" xmlns:muxc="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       mc:Ignorable="d"
       Background="{ThemeResource TopBackgroundBrush}">
 
@@ -20,6 +20,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
+        <!-- Row 0 -->
         <!-- Title Bar -->
         <Grid x:Name="TopTitleBar"
               Grid.ColumnSpan="3">
@@ -33,41 +34,43 @@
                           Glyph="{StaticResource HamburgerMenuIcon}" />
 
                 <Button.Flyout>
-                    <MenuFlyout Placement="BottomEdgeAlignedLeft">
-                        <MenuFlyoutItem Command="{x:Bind ViewModel.SettingsCommand}"
+                    <muxc:CommandBarFlyout Placement="BottomEdgeAlignedLeft">
+                        <muxc:CommandBarFlyout.SecondaryCommands>
+                            <AppBarButton Command="{x:Bind ViewModel.SettingsCommand}"
                                         Foreground="{StaticResource SystemColorHighlightBrush}"
-                                        Text="Settings">
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                                        Label="Settings">
+                                <AppBarButton.Icon>
+                                    <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
                                           Glyph="{StaticResource SettingsIcon}" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                        <MenuFlyoutItem Command="{x:Bind ViewModel.HelpCommand}"
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton Command="{x:Bind ViewModel.HelpCommand}"
                                         Foreground="{StaticResource SystemColorHighlightBrush}"
-                                        Text="Help">
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                                        Label="Help">
+                                <AppBarButton.Icon>
+                                    <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
                                           Glyph="{StaticResource HelpIcon}" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                        <MenuFlyoutItem Command="{x:Bind ViewModel.WhatsNewCommand}"
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarButton Command="{x:Bind ViewModel.WhatsNewCommand}"
                                         Foreground="{StaticResource SystemColorHighlightBrush}"
-                                        Text="Whats New">
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                                        Label="Whats New">
+                                <AppBarButton.Icon>
+                                    <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
                                           Glyph="{StaticResource WhatsNewIcon}" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                        <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Command="{x:Bind ViewModel.AboutCommand}"
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                            <AppBarSeparator />
+                            <AppBarButton Command="{x:Bind ViewModel.AboutCommand}"
                                         Foreground="{StaticResource SystemColorHighlightBrush}"
-                                        Text="About">
-                            <MenuFlyoutItem.Icon>
-                                <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
+                                        Label="About">
+                                <AppBarButton.Icon>
+                                    <FontIcon Foreground="{StaticResource SystemColorHighlightBrush}"
                                           Glyph="{StaticResource AboutIcon}" />
-                            </MenuFlyoutItem.Icon>
-                        </MenuFlyoutItem>
-                    </MenuFlyout>
+                                </AppBarButton.Icon>
+                            </AppBarButton>
+                        </muxc:CommandBarFlyout.SecondaryCommands>
+                    </muxc:CommandBarFlyout>
                 </Button.Flyout>
             </Button>
 
@@ -80,6 +83,23 @@
             </Grid>
         </Grid>
 
+        <!-- Row 1 -->
+        <controls:Deck Grid.Column="0"
+                       Grid.Row="1"
+                       Margin="8"
+                       Side="Left" />
+        
+        <controls:Mixer Grid.Column="1"
+                        Grid.Row="1"
+                        Margin="8"
+                        Width="240" />
+        
+        <controls:Deck Grid.Column="2"
+                       Grid.Row="1"
+                       Margin="8"
+                       Side="Right" />
+
+        <!-- Row 2 -->
         <!-- Bottom Panel -->
         <Rectangle Grid.ColumnSpan="3"
                    Grid.Row="2"
@@ -87,24 +107,14 @@
                    Height="178"
                    VerticalAlignment="Bottom" />
 
-        <!-- Column 0 -->
-        <controls:Deck Grid.Column="0"
-                       Grid.Row="1"
-                       Grid.RowSpan="2"
-                       DataContext="{x:Bind ViewModel.LeftDeckViewModel}"
-                       Margin="8" />
-
-        <!-- Column 1 -->
-        <controls:Mixer Grid.Column="1"
-                        Grid.Row="1"
-                        Margin="8"
-                        Width="240" />
+        <controls:TrackDetails Grid.Column="0"
+                               Grid.Row="2"
+                               Side="Left" />
 
         <Grid Grid.Column="1"
               Grid.Row="2"
               Margin="8"
               VerticalAlignment="Bottom">
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
                 <ColumnDefinition Width="Auto" />
@@ -121,11 +131,8 @@
 
         </Grid>
 
-        <!-- Column 2 -->
-        <controls:Deck Grid.Column="2"
-                       Grid.Row="1"
-                       Grid.RowSpan="2"
-                       DataContext="{x:Bind ViewModel.RightDeckViewModel}"
-                       Margin="8" />
+        <controls:TrackDetails Grid.Column="2"
+                               Grid.Row="2"
+                               Side="Right" />
     </Grid>
 </Page>

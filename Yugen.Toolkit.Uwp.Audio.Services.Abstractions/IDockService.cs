@@ -20,12 +20,14 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
 
         AudioFileInputNode MasterFileInput { get; }
 
-        void Init(Side side);
+        void Initialize(Side side);
 
-        Task LoadSong();
+        Task<bool> LoadSong();
 
         void TogglePlay(bool isPaused);
 
         void ChangePitch(double pitch);
+
+        Task Scratch(bool isTouched, bool isClockwise, float crossProduct);
     }
 }
