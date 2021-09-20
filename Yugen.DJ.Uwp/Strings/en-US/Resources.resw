@@ -118,10 +118,10 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
 	</resheader>
 	<data name="AboutStatusTextBlock.Text" xml:space="preserve">
-		<value>The app is still not complete, for example it miss the scratch effect when you rotate the vinyl.</value>
+		<value>The app is still under active development, it can contain bugs and missing features.</value>
 	</data>
 	<data name="AboutGitHubHyperlink.Content" xml:space="preserve">
-		<value>Feel free to help and collaborate, the project is open source on GH</value>
+		<value>Feel free to help and collaborate, the project is open source on GitHub</value>
 	</data>
 	<data name="AboutGitHubHyperlink.NavigateUri" xml:space="preserve">
 		<value>https://github.com/Panda-Sharp/Yugen.DJ</value>
