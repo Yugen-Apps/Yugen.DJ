@@ -109,6 +109,7 @@
 
         <controls:TrackDetails Grid.Column="0"
                                Grid.Row="2"
+                               Margin="8"
                                Side="Left" />
 
         <Grid Grid.Column="1"
@@ -133,6 +134,7 @@
 
         <controls:TrackDetails Grid.Column="2"
                                Grid.Row="2"
+                               Margin="8"
                                Side="Right" />
     </Grid>
 </Page>
