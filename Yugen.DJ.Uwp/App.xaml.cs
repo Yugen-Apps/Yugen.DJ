@@ -1,8 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -32,6 +36,9 @@ namespace Yugen.DJ.Uwp
 
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            AppCenter.Start("587a824e-742c-42a7-ae73-89ec2942b9bf",
+                   typeof(Analytics), typeof(Crashes));
         }
 
         public new static App Current => (App)Application.Current;
@@ -45,6 +52,11 @@ namespace Yugen.DJ.Uwp
         /// <param name="e">Details about the launch request and process.</param>
         protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
+            var size = new Windows.Foundation.Size(1280, 800);
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(size);
+            ApplicationView.PreferredLaunchViewSize = size;
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
             if (!(Window.Current.Content is Frame rootFrame))

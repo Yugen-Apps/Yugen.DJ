@@ -14,7 +14,7 @@
         </Grid.RowDefinitions>
 
         <!-- Row 3 -->
-        <Grid Padding="4">
+        <Grid Margin="0,4">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -54,7 +54,6 @@
                            Grid.Row="1"
                            BarColor="{ThemeResource SystemAccentColor}"
                            Height="100"
-                           Width="500"
                            PeakList="{x:Bind ViewModel.PeakList, Mode=OneWay}" />
 
     </Grid>
