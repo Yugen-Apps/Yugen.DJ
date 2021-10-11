@@ -27,17 +27,17 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
 
         private const int _barCount = 23;
 
-        private Compositor _compositor;
-        private ContainerVisual _meterVisual;
-        private CompositionBrush _unlitElementBrush;
+        private readonly Compositor _compositor;
+        private readonly ContainerVisual _meterVisual;
+        private readonly CompositionBrush _unlitElementBrush;
+
+        private readonly SpriteVisual[] _elementVisuals = new SpriteVisual[_barCount];
+        private readonly (float Level, Color Color)[] _levels = new (float Level, Color Color)[_barCount];
 
         private Color _minColor = Colors.Gray;
         private Color _lowColor = Colors.Lime;
         private Color _mediumColor = Colors.Yellow;
         private Color _maxColor = Colors.Red;
-
-        private SpriteVisual[] _elementVisuals = new SpriteVisual[_barCount];
-        private (float Level, Color Color)[] _levels = new (float Level, Color Color)[_barCount];
 
         public VUBar()
         {
