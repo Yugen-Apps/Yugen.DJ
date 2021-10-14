@@ -82,6 +82,7 @@
     </Compile>
     <Compile Include="Interfaces\IWhatsNewDisplayService.cs" />
     <Compile Include="Services\WhatsNewDisplayService.cs" />
+    <Compile Include="ObservableObjects\EqualizerBandObservableOject.cs" />
     <Compile Include="ViewModels\MixerViewModel.cs" />
     <Compile Include="StateTriggers\SideStateTrigger.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />
@@ -300,6 +301,7 @@
       <Name>Yugen.Toolkit.Uwp.Audio.Services.Bass</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
