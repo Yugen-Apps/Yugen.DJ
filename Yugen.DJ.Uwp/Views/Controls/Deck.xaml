@@ -8,6 +8,7 @@
              xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
              xmlns:core="using:Microsoft.Xaml.Interactions.Core"
              xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+             xmlns:observableobjects="using:Yugen.DJ.Uwp.ObservableObjects"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="400">
@@ -75,57 +76,33 @@
 
             <Button x:Name="EqualizerButton"
                     Grid.Column="2"
-                    Command="{x:Bind ViewModel.EqualizerCommand}"
                     Background="Transparent"
                     Foreground="{StaticResource SystemColorHighlightBrush}"
                     Margin="4,8">
                 <FontIcon FontSize="28"
                           Glyph="{StaticResource EqualizerIcon}" />
+                <Button.Flyout>
+                    <Flyout>
+                        <GridView ItemsSource="{x:Bind ViewModel.Equalizer, Mode=OneWay}">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="observableobjects:EqualizerBandObservableOject">
+                                    <Slider FontSize="10" 
+                                        Header="{x:Bind Label}"
+                                        Height="200"
+                                        Margin="4"
+                                        Minimum="-15"
+                                        Maximum="+15"
+                                        Orientation="Vertical"
+                                        TickFrequency="3"
+                                        TickPlacement="Outside" 
+                                        Value="{x:Bind Gain, Mode=TwoWay}"/>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </Flyout> 
+                </Button.Flyout>
             </Button>
 
-            <muxc:TeachingTip x:Name="EqualizerTeachingTip"
-                              IsOpen="{x:Bind ViewModel.IsEqualizerOpen, Mode=OneWay}"
-                              Target="{x:Bind EqualizerButton}">
-                <muxc:TeachingTip.Content>
-                    <Grid Height="200">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-
-                        <Slider Grid.Column="0"
-                                Header="Low"
-                                Margin="4"
-                                Minimum="-15"
-                                Maximum="+15"
-                                Orientation="Vertical"
-                                TickFrequency="3"
-                                TickPlacement="Outside"
-                                Value="{x:Bind ViewModel.LowEQ, Mode=TwoWay}" />
-
-                        <Slider Grid.Column="1"
-                                Header="Mid"
-                                Margin="4"
-                                Minimum="-15"
-                                Maximum="+15"
-                                Orientation="Vertical"
-                                TickFrequency="3"
-                                TickPlacement="Outside"
-                                Value="{x:Bind ViewModel.MidEQ, Mode=TwoWay}" />
-
-                        <Slider Grid.Column="2"
-                                Header="High"
-                                Margin="4"
-                                Minimum="-15"
-                                Maximum="+15"
-                                Orientation="Vertical"
-                                TickFrequency="3"
-                                TickPlacement="Outside"
-                                Value="{x:Bind ViewModel.HighEQ, Mode=TwoWay}" />
-                    </Grid>
-                </muxc:TeachingTip.Content>
-            </muxc:TeachingTip>
         </Grid>
 
         <!-- Row 1 -->

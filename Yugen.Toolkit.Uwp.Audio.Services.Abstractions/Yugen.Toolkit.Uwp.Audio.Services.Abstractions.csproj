@@ -61,7 +61,10 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AudioDevice.cs" />
+    <Compile Include="Helpers\EqualizerBand.cs" />
+    <Compile Include="Helpers\EqualizerConfig.cs" />
+    <Compile Include="Helpers\EqualizerHelper.cs" />
+    <Compile Include="Models\AudioDevice.cs" />
     <Compile Include="IAudioDeviceService.cs" />
     <Compile Include="IAudioGraphService.cs" />
     <Compile Include="IAudioPlaybackService.cs" />
@@ -73,7 +76,7 @@
     <Compile Include="ITrackService.cs" />
     <Compile Include="IWaveformService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Side.cs" />
+    <Compile Include="Models\Side.cs" />
     <EmbeddedResource Include="Properties\Yugen.Toolkit.Uwp.Audio.Services.Abstractions.rd.xml" />
   </ItemGroup>
   <ItemGroup>
