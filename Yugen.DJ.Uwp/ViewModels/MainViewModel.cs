@@ -1,7 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Yugen.DJ.Uwp.Views.Dialogs;
 using Yugen.Toolkit.Standard.Mvvm;
 
@@ -17,13 +16,13 @@ namespace Yugen.DJ.Uwp.ViewModels
             WhatsNewCommand = new AsyncRelayCommand(WhatsNewCommandBehavior);
         }
 
-        public ICommand AboutCommand { get; }
+        public IAsyncRelayCommand AboutCommand { get; }
 
-        public ICommand HelpCommand { get; }
+        public IAsyncRelayCommand HelpCommand { get; }
 
-        public ICommand SettingsCommand { get; }
+        public IAsyncRelayCommand SettingsCommand { get; }
 
-        public ICommand WhatsNewCommand { get; }
+        public IAsyncRelayCommand WhatsNewCommand { get; }
 
         private async Task AboutCommandBehavior()
         {

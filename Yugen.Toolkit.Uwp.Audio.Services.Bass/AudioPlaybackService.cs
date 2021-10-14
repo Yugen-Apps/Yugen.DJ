@@ -62,6 +62,13 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
             // get => ManagedBass.Bass.ChannelGetAttribute(_primarySplitStream, ChannelAttribute.Volume);
         }
 
+        public PeakEQ PeakEQ { get; private set; }
+
+        public void ChangeEq(int band, double gain)
+        {
+            PeakEQ.UpdateBand(band, gain);
+        }
+
         public void IsHeadphones(bool isHeadphones)
         {
             _headphonesVolume = isHeadphones ? 1 : 0;
@@ -108,6 +115,11 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
                 ManagedBass.Bass.ChannelSetAttribute(_secondarySplitStream, ChannelAttribute.Volume, _headphonesVolume);
 
                 ManagedBass.Bass.ChannelSetLink(_primarySplitStream, _secondarySplitStream);
+
+                PeakEQ = new PeakEQ(_primarySplitStream);
+                int band = PeakEQ.AddBand(80);
+                int band2 = PeakEQ.AddBand(800);
+                int band3 = PeakEQ.AddBand(8000);
             }
 
             return Task.CompletedTask;

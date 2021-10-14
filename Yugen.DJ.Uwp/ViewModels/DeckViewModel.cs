@@ -1,6 +1,6 @@
 ﻿using Microsoft.Toolkit.Mvvm.Input;
+using System;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Yugen.Toolkit.Standard.Mvvm;
 using Yugen.Toolkit.Uwp.Audio.Controls;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
@@ -15,14 +15,19 @@ namespace Yugen.DJ.Uwp.ViewModels
         private Side _side;
         private bool _isSongLoaded;
         private bool _isPaused = true;
+        private bool _isEqualizerOpen;
         private string _playPauseButton = "\uE768";
         private double _tempo;
+        private double _lowEQ;
+        private double _midEQ;
+        private double _highEQ;
 
         public DeckViewModel(IDockServiceProvider dockServiceProvider)
         {
             _dockServiceProvider = dockServiceProvider;
 
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
+            EqualizerCommand = new RelayCommand(EqualizerCommandBehavior);
             ScratchCommand = new AsyncRelayCommand<VinylEventArgs>(ScratchCommandBehavior);
         }
 
@@ -36,9 +41,11 @@ namespace Yugen.DJ.Uwp.ViewModels
             }
         }
 
-        public ICommand OpenCommand { get; }
+        public IAsyncRelayCommand OpenCommand { get; }
 
-        public ICommand ScratchCommand { get; }
+        public IRelayCommand EqualizerCommand { get; }
+
+        public IAsyncRelayCommand ScratchCommand { get; }
 
         public bool IsSongLoaded
         {
@@ -60,6 +67,12 @@ namespace Yugen.DJ.Uwp.ViewModels
             }
         }
 
+        public bool IsEqualizerOpen
+        {
+            get => _isEqualizerOpen;
+            set => SetProperty(ref _isEqualizerOpen, value);
+        }
+
         public string PlayPauseButton
         {
             get => _playPauseButton;
@@ -78,6 +91,42 @@ namespace Yugen.DJ.Uwp.ViewModels
             }
         }
 
+        public double LowEQ
+        {
+            get => _lowEQ;
+            set
+            {
+                if (SetProperty(ref _lowEQ, value))
+                {
+                    _dockService.ChangeEQ(0, _lowEQ);
+                }
+            }
+        }
+
+        public double MidEQ
+        {
+            get => _midEQ;
+            set
+            {
+                if (SetProperty(ref _midEQ, value))
+                {
+                    _dockService.ChangeEQ(1, _midEQ);
+                }
+            }
+        }
+
+        public double HighEQ
+        {
+            get => _highEQ;
+            set
+            {
+                if (SetProperty(ref _highEQ, value))
+                {
+                    _dockService.ChangeEQ(2, _highEQ);
+                }
+            }
+        }
+
         private async Task OpenCommandBehavior()
         {
             IsPaused = true;
@@ -87,6 +136,11 @@ namespace Yugen.DJ.Uwp.ViewModels
                 IsSongLoaded = true;
                 Tempo = 0;
             }
+        }
+
+        private void EqualizerCommandBehavior()
+        {
+            IsEqualizerOpen = !IsEqualizerOpen;
         }
 
         private Task ScratchCommandBehavior(VinylEventArgs e)

@@ -29,5 +29,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
         void IsHeadphones(bool isHeadphone);
 
         Task Scratch(bool isTouched, bool isClockwise, float crossProduct);
+
+        void ChangeEq(int band, double gain);
     }
 }
