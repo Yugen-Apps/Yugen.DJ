@@ -1,6 +1,5 @@
 ﻿using Microsoft.Graphics.Canvas.UI.Xaml;
 using System.Collections.Generic;
-using System.Windows.Input;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -16,12 +15,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
                                         typeof(Waveform),
                                         new PropertyMetadata(null, PeakListPropertyChanged));
 
-        public static readonly DependencyProperty GenerateCommandProperty =
-            DependencyProperty.Register(nameof(GenerateCommand),
-                                        typeof(ICommand),
-                                        typeof(Waveform),
-                                        new PropertyMetadata(null));
-
         public static readonly DependencyProperty BarColorProperty =
             DependencyProperty.Register(
                 nameof(BarColor),
@@ -29,7 +22,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
                 typeof(Waveform),
                 new PropertyMetadata(Colors.Gray, BarColorPropertyChanged));
 
-        private WaveformRenderer _waveformRenderer;
+        private readonly WaveformRenderer _waveformRenderer;
 
         public Waveform()
         {
@@ -43,12 +36,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
         {
             get => (List<(float min, float max)>)GetValue(PeakListProperty);
             set => SetValue(PeakListProperty, value);
-        }
-
-        public ICommand GenerateCommand
-        {
-            get => (ICommand)GetValue(GenerateCommandProperty);
-            set => SetValue(GenerateCommandProperty, value);
         }
 
         public Color BarColor

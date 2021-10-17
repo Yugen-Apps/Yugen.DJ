@@ -29,5 +29,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions
         void ChangePitch(double pitch);
 
         Task Scratch(bool isTouched, bool isClockwise, float crossProduct);
+
+        void ChangeEQ(int band, double gain);
     }
 }

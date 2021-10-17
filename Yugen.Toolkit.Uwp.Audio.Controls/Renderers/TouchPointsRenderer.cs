@@ -10,7 +10,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
     {
         private const int _maxPoints = 100;
 
-        private Queue<Vector2> _points = new Queue<Vector2>();
+        private readonly Queue<Vector2> _points = new Queue<Vector2>();
 
         public void OnPointerPressed()
         {
@@ -19,7 +19,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
 
         public void OnPointerMoved(IList<PointerPoint> intermediatePoints)
         {
-            var count = intermediatePoints.Count;
+            //var count = intermediatePoints.Count;
 
             foreach (var point in intermediatePoints)
             {

@@ -1,9 +1,13 @@
 ﻿using Microsoft.Toolkit.Mvvm.Input;
+using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Threading.Tasks;
-using System.Windows.Input;
+using Yugen.DJ.Uwp.ObservableObjects;
 using Yugen.Toolkit.Standard.Mvvm;
 using Yugen.Toolkit.Uwp.Audio.Controls;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions.Helpers;
 
 namespace Yugen.DJ.Uwp.ViewModels
 {
@@ -17,6 +21,7 @@ namespace Yugen.DJ.Uwp.ViewModels
         private bool _isPaused = true;
         private string _playPauseButton = "\uE768";
         private double _tempo;
+        private ObservableCollection<EqualizerBandObservableOject> _equalizer = new ObservableCollection<EqualizerBandObservableOject>();
 
         public DeckViewModel(IDockServiceProvider dockServiceProvider)
         {
@@ -24,6 +29,22 @@ namespace Yugen.DJ.Uwp.ViewModels
 
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
             ScratchCommand = new AsyncRelayCommand<VinylEventArgs>(ScratchCommandBehavior);
+
+            foreach(var band in EqualizerHelper.ListBands())
+            {
+                var equalizerBandObservableOject = new EqualizerBandObservableOject(band);
+                Equalizer.Add(equalizerBandObservableOject);
+                equalizerBandObservableOject.PropertyChanged += OnEqualizerPropertyChanged;
+            }
+        }
+
+        private void OnEqualizerPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(EqualizerBandObservableOject.Gain))
+            {
+                var equalizerBandObservableOject = (EqualizerBandObservableOject)sender;
+                _dockService.ChangeEQ(equalizerBandObservableOject.BandNo, equalizerBandObservableOject.Gain);
+            }
         }
 
         public Side Side
@@ -36,9 +57,9 @@ namespace Yugen.DJ.Uwp.ViewModels
             }
         }
 
-        public ICommand OpenCommand { get; }
+        public IAsyncRelayCommand OpenCommand { get; }
 
-        public ICommand ScratchCommand { get; }
+        public IAsyncRelayCommand ScratchCommand { get; }
 
         public bool IsSongLoaded
         {
@@ -76,6 +97,12 @@ namespace Yugen.DJ.Uwp.ViewModels
                     _dockService.ChangePitch(_tempo);
                 }
             }
+        }
+
+        public ObservableCollection<EqualizerBandObservableOject> Equalizer
+        {
+            get => _equalizer;
+            set => SetProperty(ref _equalizer, value);
         }
 
         private async Task OpenCommandBehavior()

@@ -7,6 +7,8 @@
              xmlns:controls="using:Yugen.Toolkit.Uwp.Audio.Controls"
              xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
              xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+             xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+             xmlns:observableobjects="using:Yugen.DJ.Uwp.ObservableObjects"
              mc:Ignorable="d"
              d:DesignHeight="300"
              d:DesignWidth="400">
@@ -20,8 +22,10 @@
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
                         <Setter Target="PlayToggleButton.(Grid.Column)"
-                                Value="1" />
+                                Value="2" />
                         <Setter Target="EjectButton.(Grid.Column)"
+                                Value="1" />
+                        <Setter Target="EqualizerButton.(Grid.Column)"
                                 Value="0" />
                         <Setter Target="ButtonsGrid.HorizontalAlignment"
                                 Value="Right" />
@@ -55,7 +59,7 @@
             <ToggleButton x:Name="PlayToggleButton"
                           Grid.Column="0"
                           IsChecked="{x:Bind ViewModel.IsPaused, Mode=TwoWay}"
-                          Margin="8,4">
+                          Margin="4,8">
                 <FontIcon FontSize="28"
                           Glyph="{x:Bind ViewModel.PlayPauseButton, Mode=OneWay}" />
             </ToggleButton>
@@ -64,10 +68,41 @@
                     Grid.Column="1"
                     Command="{x:Bind ViewModel.OpenCommand}"
                     Background="Transparent"
-                    Foreground="{StaticResource SystemColorHighlightBrush}">
+                    Foreground="{StaticResource SystemColorHighlightBrush}"
+                    Margin="4,8">
                 <FontIcon FontSize="28"
                           Glyph="{StaticResource EjectIcon}" />
             </Button>
+
+            <Button x:Name="EqualizerButton"
+                    Grid.Column="2"
+                    Background="Transparent"
+                    Foreground="{StaticResource SystemColorHighlightBrush}"
+                    Margin="4,8">
+                <FontIcon FontSize="28"
+                          Glyph="{StaticResource EqualizerIcon}" />
+                <Button.Flyout>
+                    <Flyout>
+                        <GridView ItemsSource="{x:Bind ViewModel.Equalizer, Mode=OneWay}">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="observableobjects:EqualizerBandObservableOject">
+                                    <Slider FontSize="10" 
+                                        Header="{x:Bind Label}"
+                                        Height="200"
+                                        Margin="4"
+                                        Minimum="-15"
+                                        Maximum="+15"
+                                        Orientation="Vertical"
+                                        TickFrequency="3"
+                                        TickPlacement="Outside" 
+                                        Value="{x:Bind Gain, Mode=TwoWay}"/>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </Flyout> 
+                </Button.Flyout>
+            </Button>
+
         </Grid>
 
         <!-- Row 1 -->

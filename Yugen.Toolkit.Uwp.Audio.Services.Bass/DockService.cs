@@ -79,6 +79,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 
         public void ChangePitch(double pitch) => _audioPlaybackService.ChangePitch(pitch);
 
+        public void ChangeEQ(int band, double gain) => _audioPlaybackService.ChangeEq(band, gain);
+
         public Task Scratch(bool isTouched, bool isClockwise, float crossProduct)
         {
             return _audioPlaybackService.Scratch(isTouched, isClockwise, crossProduct);

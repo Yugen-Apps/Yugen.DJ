@@ -7,6 +7,7 @@ using System.Timers;
 using Windows.Media.Audio;
 using Windows.Storage;
 using Yugen.Toolkit.Uwp.Audio.Services.Abstractions;
+using Yugen.Toolkit.Uwp.Audio.Services.Abstractions.Helpers;
 
 namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
 {
@@ -62,6 +63,10 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
             // get => ManagedBass.Bass.ChannelGetAttribute(_primarySplitStream, ChannelAttribute.Volume);
         }
 
+        public PeakEQ PeakEQ { get; private set; }
+
+        public void ChangeEq(int band, double gain) => PeakEQ?.UpdateBand(band, gain);
+
         public void IsHeadphones(bool isHeadphones)
         {
             _headphonesVolume = isHeadphones ? 1 : 0;
@@ -108,6 +113,13 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Bass
                 ManagedBass.Bass.ChannelSetAttribute(_secondarySplitStream, ChannelAttribute.Volume, _headphonesVolume);
 
                 ManagedBass.Bass.ChannelSetLink(_primarySplitStream, _secondarySplitStream);
+
+                PeakEQ = new PeakEQ(_primarySplitStream);
+
+                for (int i = 0; i < EqualizerHelper.EqDefaultValues.Length; i++)
+                {
+                    PeakEQ.AddBand(EqualizerHelper.EqDefaultValues[i]);
+                }
             }
 
             return Task.CompletedTask;
