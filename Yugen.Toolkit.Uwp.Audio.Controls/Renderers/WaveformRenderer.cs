@@ -3,14 +3,13 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using Windows.UI;
-using Yugen.Toolkit.Uwp.Helpers;
 
 namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
 {
     public class WaveformRenderer
     {
-        Color _topColor;
-        Color _bottomColor;
+        private Color _topColor;
+        private Color _bottomColor;
 
         public WaveformRenderer(Color color)
         {
@@ -32,9 +31,9 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls.Renderers
 
             for (int x = 0; x < peakList.Count; x+=10)
             {
-                var currentPeak = peakList[x];
-                float topLineHeight = midPoint * currentPeak.max;
-                float bottomLineHeight = midPoint * currentPeak.min;
+                var (min, max) = peakList[x];
+                float topLineHeight = midPoint * max;
+                float bottomLineHeight = midPoint * min;
 
                 ds.DrawLine(x, midPoint, x, midPoint - topLineHeight, _topColor, strokeWidth);
                 ds.DrawLine(x, midPoint, x, midPoint - bottomLineHeight, _bottomColor, strokeWidth);

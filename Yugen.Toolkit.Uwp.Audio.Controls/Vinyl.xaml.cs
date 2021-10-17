@@ -27,20 +27,13 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
                 typeof(Vinyl),
                 new PropertyMetadata(false, IsStepPropertyChanged));
 
-        //public static readonly DependencyProperty StepProperty =
-        //    DependencyProperty.Register(
-        //        nameof(Step),
-        //        typeof(ICommand),
-        //        typeof(Vinyl),
-        //        new PropertyMetadata(null));
-
         private VinylRenderer _vinylRenderer;
-        private TouchPointsRenderer _touchPointsRenderer = new TouchPointsRenderer();
+        private readonly TouchPointsRenderer _touchPointsRenderer = new TouchPointsRenderer();
 
 #if DEBUG
-        private bool _debug = true;
+        private readonly bool _debug = true;
 #else
-        private bool _debug = false;
+        private readonly bool _debug = false;
 #endif
 
         public Vinyl()
@@ -61,12 +54,6 @@ namespace Yugen.Toolkit.Uwp.Audio.Controls
             get => (bool)GetValue(IsStepProperty);
             set => SetValue(IsStepProperty, value);
         }
-
-        //public ICommand Step
-        //{
-        //    get { return (ICommand)GetValue(StepProperty); }
-        //    set { SetValue(StepProperty, value); }
-        //}
 
         private static void IsPausedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
