@@ -19,7 +19,6 @@ namespace Yugen.DJ.Uwp.ViewModels
         private Side _side;
         private bool _isSongLoaded;
         private bool _isPaused = true;
-        private bool _isEqualizerOpen;
         private string _playPauseButton = "\uE768";
         private double _tempo;
         private ObservableCollection<EqualizerBandObservableOject> _equalizer = new ObservableCollection<EqualizerBandObservableOject>();
@@ -29,7 +28,6 @@ namespace Yugen.DJ.Uwp.ViewModels
             _dockServiceProvider = dockServiceProvider;
 
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
-            EqualizerCommand = new RelayCommand(EqualizerCommandBehavior);
             ScratchCommand = new AsyncRelayCommand<VinylEventArgs>(ScratchCommandBehavior);
 
             foreach(var band in EqualizerHelper.ListBands())
@@ -61,8 +59,6 @@ namespace Yugen.DJ.Uwp.ViewModels
 
         public IAsyncRelayCommand OpenCommand { get; }
 
-        public IRelayCommand EqualizerCommand { get; }
-
         public IAsyncRelayCommand ScratchCommand { get; }
 
         public bool IsSongLoaded
@@ -83,12 +79,6 @@ namespace Yugen.DJ.Uwp.ViewModels
                     PlayPauseButton = _isPaused ? "\uE768" : "\uE769";
                 }
             }
-        }
-
-        public bool IsEqualizerOpen
-        {
-            get => _isEqualizerOpen;
-            set => SetProperty(ref _isEqualizerOpen, value);
         }
 
         public string PlayPauseButton
@@ -124,11 +114,6 @@ namespace Yugen.DJ.Uwp.ViewModels
                 IsSongLoaded = true;
                 Tempo = 0;
             }
-        }
-
-        private void EqualizerCommandBehavior()
-        {
-            IsEqualizerOpen = !IsEqualizerOpen;
         }
 
         private Task ScratchCommandBehavior(VinylEventArgs e)

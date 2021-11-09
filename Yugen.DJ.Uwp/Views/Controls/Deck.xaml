@@ -76,22 +76,17 @@
 
             <Button x:Name="EqualizerButton"
                     Grid.Column="2"
-                    Command="{x:Bind ViewModel.EqualizerCommand}"
                     Background="Transparent"
                     Foreground="{StaticResource SystemColorHighlightBrush}"
                     Margin="4,8">
                 <FontIcon FontSize="28"
                           Glyph="{StaticResource EqualizerIcon}" />
-            </Button>
-
-            <muxc:TeachingTip x:Name="EqualizerTeachingTip"
-                              IsOpen="{x:Bind ViewModel.IsEqualizerOpen, Mode=OneWay}"
-                              Target="{x:Bind EqualizerButton}">
-                <muxc:TeachingTip.Content>
-                    <GridView ItemsSource="{x:Bind ViewModel.Equalizer, Mode=OneWay}">
-                        <GridView.ItemTemplate>
-                            <DataTemplate x:DataType="observableobjects:EqualizerBandObservableOject">
-                                <Slider FontSize="10" 
+                <Button.Flyout>
+                    <Flyout>
+                        <GridView ItemsSource="{x:Bind ViewModel.Equalizer, Mode=OneWay}">
+                            <GridView.ItemTemplate>
+                                <DataTemplate x:DataType="observableobjects:EqualizerBandObservableOject">
+                                    <Slider FontSize="10" 
                                         Header="{x:Bind Label}"
                                         Height="200"
                                         Margin="4"
@@ -101,11 +96,13 @@
                                         TickFrequency="3"
                                         TickPlacement="Outside" 
                                         Value="{x:Bind Gain, Mode=TwoWay}"/>
-                            </DataTemplate>
-                        </GridView.ItemTemplate>
-                    </GridView>
-                </muxc:TeachingTip.Content>
-            </muxc:TeachingTip>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
+                    </Flyout> 
+                </Button.Flyout>
+            </Button>
+
         </Grid>
 
         <!-- Row 1 -->

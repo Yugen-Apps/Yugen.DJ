@@ -5,16 +5,11 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions.Helpers
     public class EqualizerHelper
     {
         public static readonly float[] EqDefaultValues = {
-              //32f,
-              64f,
-              //125f,
-              250f,
-              //500f,
-              1000f,
-              //2000f,
-              4000f,
-              //8000f,
-              16000f
+            50f,
+            200f,
+            800f,
+            3200f,
+            12800f
         };
 
         public static IEnumerable<EqualizerBand> ListBands()
@@ -33,20 +28,20 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Abstractions.Helpers
 
         public static IEnumerable<EqualizerConfig> ListConfigs = new EqualizerConfig[]
         {
-                _custom,
-                _flat,
-                _rock,
-                _classical,
-                _club,
-                _dance,
-                _fullBass,
-                _fullBassAndTreble,
-                _fulltreble,
-                _headphones,
-                _largehall,
-                _live,
-                _party,
-                _pop
+            _custom,
+            _flat,
+            _rock,
+            _classical,
+            _club,
+            _dance,
+            _fullBass,
+            _fullBassAndTreble,
+            _fulltreble,
+            _headphones,
+            _largehall,
+            _live,
+            _party,
+            _pop
         };
 
         private static readonly EqualizerConfig _flat = new EqualizerConfig
