@@ -1,6 +1,6 @@
 ﻿using AudioVisualizer;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Toolkit.Uwp;
 using Microsoft.Toolkit.Uwp.Helpers;
 using System;
@@ -35,7 +35,7 @@ namespace Yugen.DJ.ViewModels
 
             OpenCommand = new AsyncRelayCommand(OpenCommandBehavior);
 
-            _dockService.Init(Side);
+            _dockService.Initialize(Side);
 
             _dockService.AudioPropertiesLoaded += AudioServiceOnAudioPropertiesLoaded;
             _dockService.PositionChanged += AudioServiceOnPositionChanged;

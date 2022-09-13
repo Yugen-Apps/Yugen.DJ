@@ -146,8 +146,8 @@ namespace Yugen.DJ
 
         private async Task InitializeServices()
         {
-            await Services.GetService<IAudioDeviceService>().Init();
-            Services.GetService<IAudioPlaybackServiceProvider>().Init();
+            await Services.GetService<IAudioDeviceService>().Initialize();
+            Services.GetService<IAudioPlaybackServiceProvider>().Initialize();
         }
     }
 }

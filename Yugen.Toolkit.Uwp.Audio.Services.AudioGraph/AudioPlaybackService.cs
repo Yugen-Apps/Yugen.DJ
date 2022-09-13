@@ -32,7 +32,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         public TimeSpan NaturalDuration => MasterFileInput?.Duration ?? new TimeSpan();
 
-        public async Task Init()
+        public async Task Initialize()
         {
             await _masterAudioGraphService.InitDevice(_audioDeviceService.PrimaryDevice.Driver, true);
             await _headphonesAudioGraphService.InitDevice(_audioDeviceService.SecondaryDevice.Driver, false);
@@ -79,7 +79,12 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         private void OnPositionChanged(object sender, TimeSpan e) => PositionChanged?.Invoke(sender, e);
 
-        public Task Scratch()
+        public Task Scratch(bool isTouched, bool isClockwise, float crossProduct)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ChangeEq(int band, double gain)
         {
             throw new NotImplementedException();
         }

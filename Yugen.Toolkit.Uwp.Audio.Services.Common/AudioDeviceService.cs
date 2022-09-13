@@ -21,7 +21,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.Common
 
         public void SetVolume(double volume) => SystemVolumeHelper.SetVolume(volume / 100);
 
-        public async Task Init()
+        public async Task Initialize()
         {
             var defaultAudioDeviceDriver = MediaDevice.GetDefaultAudioRenderId(AudioDeviceRole.Default);
             var deviceInfoList = await DeviceInformation.FindAllAsync(DeviceClass.AudioRender);

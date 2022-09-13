@@ -42,13 +42,13 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         public double Bpm { get; private set; }
 
-        public void Init(Side side)
+        public void Initialize(Side side)
         {
-            _audioPlaybackService = _audioPlaybackServiceProvider.GetAudioPlaybackService(side);
+            _audioPlaybackService = _audioPlaybackServiceProvider.Get(side);
             _audioPlaybackService.PositionChanged += (sender, e) => PositionChanged?.Invoke(sender, e);
         }
 
-        public async Task LoadSong()
+        public async Task<bool> LoadSong()
         {
             if (await _trackService.LoadFile())
             {
@@ -70,6 +70,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
                     DetectBpm(bpmStream);
                 });
             }
+
+            return true;
         }
 
         public void TogglePlay(bool isPaused) => _audioPlaybackService.TogglePlay(isPaused);
@@ -94,7 +96,12 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
             BpmGenerated?.Invoke(this, bmp);
         }
 
-        public Task Scratch()
+        public Task Scratch(bool isTouched, bool isClockwise, float crossProduct)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ChangeEQ(int band, double gain)
         {
             throw new NotImplementedException();
         }

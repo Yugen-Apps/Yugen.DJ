@@ -1,5 +1,5 @@
 ﻿using AudioVisualizer;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using Windows.UI;

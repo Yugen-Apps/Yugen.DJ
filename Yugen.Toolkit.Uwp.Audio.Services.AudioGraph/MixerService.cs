@@ -23,7 +23,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         public void IsHeadphones(bool isHeadPhones, Side side)
         {
-            _audioPlaybackServiceProvider.GetAudioPlaybackService(side)?.IsHeadphones(isHeadPhones);
+            _audioPlaybackServiceProvider.Get(side)?.IsHeadphones(isHeadPhones);
         }
 
         public void ChangeVolume(double volume, Side side)
@@ -55,8 +55,8 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         private void UpdateVolume()
         {
-            _audioPlaybackServiceProvider.LeftAudioPlaybackService?.ChangeVolume(_leftVolume, _leftFader);
-            _audioPlaybackServiceProvider.RightAudioPlaybackService?.ChangeVolume(_rightVolume, _rightFader);
+            _audioPlaybackServiceProvider.Get(Side.Left)?.ChangeVolume(_leftVolume, _leftFader);
+            _audioPlaybackServiceProvider.Get(Side.Right)?.ChangeVolume(_rightVolume, _rightFader);
         }
     }
 }

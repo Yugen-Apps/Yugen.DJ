@@ -15,13 +15,13 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.AudioGraph
 
         public IAudioPlaybackService RightAudioPlaybackService { get; private set; }
 
-        public void Init()
+        public void Initialize()
         {
-            LeftAudioPlaybackService.Init();
-            RightAudioPlaybackService.Init();
+            LeftAudioPlaybackService.Initialize();
+            RightAudioPlaybackService.Initialize();
         }
 
-        public IAudioPlaybackService GetAudioPlaybackService(Side side)
+        public IAudioPlaybackService Get(Side side)
         {
             if (side == Side.Left)
             {

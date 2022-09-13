@@ -13,7 +13,7 @@ namespace Yugen.Toolkit.Uwp.Audio.Services.NAudio
     {
         public StorageFile AudioFile { get; private set; }
 
-        public Task<byte[]> AudioBytes => AudioFile?.ReadBytesAsync() ?? null;
+        public Task<byte[]> GetAudioBytes() => AudioFile?.ReadBytesAsync() ?? null;
 
         public MusicProperties MusicProperties { get; private set; }
 
