@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{BC3C720D-F6C3-449E-8723-3B6F093BA11F}"
 	ProjectSection(SolutionItems) = preProject
 		azure-pipelines.yml = azure-pipelines.yml
+		.github\workflows\dotnet-desktop.yml = .github\workflows\dotnet-desktop.yml
 		GitVersion.yml = GitVersion.yml
 		Docs\Info.md = Docs\Info.md
 		Docs\MockupDark.png = Docs\MockupDark.png
